@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thanks for your order | ADV Supplies</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="hdr"><div class="wrap">
+  <a class="logo" href="/"><span class="logo-mark">ADV</span><span class="logo-txt">SUPPLIES<small>It all starts from the ground UP</small></span></a>
+</div></header>
+<section class="hero" style="min-height:calc(100vh - 75px)"><div class="wrap" style="max-width:760px">
+  <div class="eyebrow">Order received</div>
+  <h1>Thanks, <span>we've got it.</span></h1>
+  <p class="lead" id="msg">Your payment went through and your order is in our system. You'll get a receipt from Square by email.</p>
+  <p class="lead">Your order number is <b id="ref" style="color:#F5C518"></b>. We'll call to confirm a time. Questions? Call <a href="tel:0397996399" style="color:#F5C518">(03) 9799 6399</a>.</p>
+  <a class="btn" href="/">Back to the shop</a>
+</div></section>
+<script>
+(function(){
+  var p=new URLSearchParams(location.search), ref=p.get('ref')||'', m=p.get('m');
+  document.getElementById('ref').textContent=ref||'on your receipt';
+  if(m==='pickup')document.getElementById('msg').textContent="Your payment went through. Your order will be ready to collect from 320 Hallam Rd, Hampton Park on the day you chose. You'll get a receipt from Square by email.";
+  try{localStorage.removeItem('adv_cart');localStorage.removeItem('adv_pending');}catch(e){}
+})();
+</script>
+</body>
+</html>
