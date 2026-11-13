@@ -1,4 +1,5 @@
 import { sq } from "./square.mjs";
+import { placesEnabled } from "./places.mjs";
 import { CONFIG } from "./config.mjs";
 import { SUBURBS } from "./suburbs.mjs";
 
@@ -223,6 +224,7 @@ export function publicCatalog(data) {
       firstDayOffset: CONFIG.firstDayOffset,
       maxDaysAhead: CONFIG.maxDaysAhead,
       closedWeekdays: CONFIG.closedWeekdays,
+      addressSearch: placesEnabled(),
     },
   };
 }

@@ -259,7 +259,9 @@
       if (co.mode === "delivery") {
         autocomplete($("#cSub"), $("#cSubList"), function (s) {
           if (s === undefined) return;
-          co.suburb = s ? s.s : $("#cSub").value.trim();
+          var nextSub = s ? s.s : $("#cSub").value.trim();
+          if (co.address && co.address.placeId && nextSub !== co.suburb) co.address = { line2: co.address.line2 || "" };
+          co.suburb = nextSub;
           if (s && !co.address.postcode) co.address.postcode = s.pc;
           if (s) co.address.postcode = s.pc;
           save();
@@ -277,17 +279,81 @@
         '<div class="field"><label for="fEmail">Email</label><input id="fEmail" type="email" autocomplete="email" value="' + esc(c.email) + '"></div>';
       if (dl) {
         var s2 = findSuburb(co.suburb);
-        f += '<div class="field"><label for="fLine1">Delivery street address</label><input id="fLine1" autocomplete="address-line1" placeholder="e.g. 12 Smith Street" value="' + esc(a.line1) + '"></div>' +
-          '<div class="field"><label for="fLine2">Unit, lot or site name (optional)</label><input id="fLine2" autocomplete="address-line2" value="' + esc(a.line2) + '"></div>' +
-          '<div class="row2"><div class="field"><label>Suburb</label><input value="' + esc(s2 ? s2.s : "") + '" disabled></div>' +
-          '<div class="field"><label for="fPc">Postcode</label><input id="fPc" inputmode="numeric" maxlength="4" value="' + esc(a.postcode || (s2 && s2.pc) || "") + '"></div></div>';
+        if (DATA.settings.addressSearch) {
+          f += a.placeId
+            ? '<div class="field"><label>Delivery address</label><div class="res ok"><b>' + esc(a.line1) + ", " + esc(co.suburb) + " VIC " + esc(a.postcode) + '</b>Zone ' + (s2 ? s2.z : "") + ' delivery · <a href="#" id="addrChange">Change address</a></div></div>'
+            : '<div class="field"><label for="fAddr">Delivery address</label><div class="ac"><input id="fAddr" type="text" autocomplete="off" placeholder="Start typing your street address"><div class="ac-list" id="fAddrList"></div></div><div class="hint" id="fAddrHint">Pick your address from the list. Can\'t find it? Call <a href="tel:0397996399">(03) 9799 6399</a>.</div></div>';
+          f += '<div class="field"><label for="fLine2">Unit, lot or site name (optional)</label><input id="fLine2" autocomplete="address-line2" value="' + esc(a.line2) + '"></div>';
+        } else {
+          f += '<div class="field"><label for="fLine1">Delivery street address</label><input id="fLine1" autocomplete="address-line1" placeholder="e.g. 12 Smith Street" value="' + esc(a.line1) + '"></div>' +
+            '<div class="field"><label for="fLine2">Unit, lot or site name (optional)</label><input id="fLine2" autocomplete="address-line2" value="' + esc(a.line2) + '"></div>' +
+            '<div class="row2"><div class="field"><label>Suburb</label><input value="' + esc(s2 ? s2.s : "") + '" disabled></div>' +
+            '<div class="field"><label for="fPc">Postcode</label><input id="fPc" inputmode="numeric" maxlength="4" value="' + esc(a.postcode || (s2 && s2.pc) || "") + '"></div></div>';
+        }
       }
       f += '<div class="field"><label for="fDate">' + (dl ? "Delivery date" : "Pick-up date") + '</label><input id="fDate" type="date" min="' + dmin + '" max="' + dmax + '" value="' + esc(co.date && co.date >= dmin ? co.date : "") + '"><div class="hint">Monday to Saturday. We\'ll call to confirm a time.</div></div>' +
         (dl ? '<div class="field"><label>Where should we tip it?</label><div class="seg3">' + DATA.settings.tipLocations.map(function (t) { return '<button type="button" data-tip="' + esc(t) + '" aria-pressed="' + (co.tip === t) + '" class="' + (co.tip === t ? "on" : "") + '">' + esc(t) + "</button>"; }).join("") + '</div><div class="hint">Our trucks stay on the road, so we can\'t tip in backyards or on lawns past the nature strip.</div></div>' : "") +
         '<div class="field"><label for="fNotes">' + (dl ? "Access notes (optional)" : "Notes (optional)") + '</label><textarea id="fNotes" rows="2" maxlength="400" placeholder="' + (dl ? "e.g. Gate code, steep street, call when 10 minutes away." : "") + '">' + esc(co.notes) + "</textarea></div>";
       body.innerHTML = f;
+      if (dl && DATA.settings.addressSearch && !a.placeId) addressSearch($("#fAddr"), $("#fAddrList"));
       foot.innerHTML = totalsHtml() + '<button class="btn block" id="pay" style="margin-top:12px">Pay securely with Square</button><p class="note" style="text-align:center">You\'ll pay on Square\'s secure checkout page.</p>';
     }
+  }
+
+  /* ---------- address search (street, suburb and postcode locked together) ---------- */
+  var addrSession = null;
+  function newSession() { addrSession = "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 12); }
+  function addressSearch(input, list) {
+    var hits = [], ai = -1, timer = null, seq = 0;
+    if (!addrSession) newSession();
+    function close() { list.style.display = "none"; ai = -1; }
+    function hint(html, bad) { var h = $("#fAddrHint"); if (h) { h.innerHTML = html; h.style.color = bad ? "#b00020" : ""; } }
+    function pick(hit) {
+      close(); input.value = hit.text; input.disabled = true; hint("Checking address…");
+      fetch("/api/address?id=" + encodeURIComponent(hit.id) + "&s=" + addrSession)
+        .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+        .then(function (res) {
+          newSession();
+          if (!res.ok) throw new Error(res.j.error || "Address search isn't working right now.");
+          var sub = findSuburb(res.j.suburb);
+          if (!sub || !ZONES[sub.z]) throw new Error("We don't have a set online rate for " + res.j.suburb + ". Call (03) 9799 6399 and we'll quote it.");
+          readForm();
+          var moved = sub.s !== co.suburb;
+          co.suburb = sub.s;
+          co.address = { placeId: hit.id, line1: res.j.line1, postcode: res.j.postcode, line2: (co.address || {}).line2 || "" };
+          save(); renderCart();
+          if (moved) $("#coErr").innerHTML = '<div class="res ok" style="margin-bottom:12px"><b>Delivery updated</b>That address is in ' + esc(sub.s) + " (Zone " + sub.z + "), so the delivery price has been updated below.</div>";
+        })
+        .catch(function (e) { input.disabled = false; input.value = ""; input.focus(); hint(esc(e.message) , true); });
+    }
+    input.addEventListener("input", function () {
+      var v = input.value.trim(); clearTimeout(timer);
+      if (v.length < 4) { close(); return; }
+      timer = setTimeout(function () {
+        var my = ++seq;
+        fetch("/api/address?q=" + encodeURIComponent(v) + "&s=" + addrSession)
+          .then(function (r) { return r.json(); })
+          .then(function (j) {
+            if (my !== seq) return;
+            hits = j.items || []; ai = -1;
+            if (!hits.length) { close(); return; }
+            list.innerHTML = hits.map(function (h, i) { return '<div data-i="' + i + '">' + esc(h.text) + "</div>"; }).join("");
+            list.style.display = "block";
+          }).catch(function () {});
+      }, 250);
+    });
+    list.addEventListener("mousedown", function (e) { var t = e.target.closest("[data-i]"); if (t) { e.preventDefault(); pick(hits[+t.dataset.i]); } });
+    input.addEventListener("keydown", function (e) {
+      if (list.style.display !== "block") return;
+      var items = list.children;
+      if (e.key === "ArrowDown") ai = Math.min(ai + 1, items.length - 1);
+      else if (e.key === "ArrowUp") ai = Math.max(ai - 1, 0);
+      else if (e.key === "Enter") { e.preventDefault(); pick(hits[ai < 0 ? 0 : ai]); return; }
+      else if (e.key === "Escape") { close(); return; } else return;
+      e.preventDefault();
+      [].forEach.call(items, function (x, i) { x.classList.toggle("on", i === ai); });
+    });
+    input.addEventListener("blur", function () { setTimeout(close, 150); });
   }
 
   function dateAdd(n) {
@@ -297,7 +363,10 @@
 
   function readForm() {
     co.contact = { first: $("#fFirst").value.trim(), last: $("#fLast").value.trim(), phone: $("#fPhone").value.trim(), email: $("#fEmail").value.trim() };
-    if (co.mode === "delivery") co.address = { line1: $("#fLine1").value.trim(), line2: $("#fLine2").value.trim(), postcode: $("#fPc").value.trim() };
+    if (co.mode === "delivery") {
+      if (DATA.settings.addressSearch) { co.address = co.address || {}; co.address.line2 = $("#fLine2").value.trim(); }
+      else co.address = { line1: $("#fLine1").value.trim(), line2: $("#fLine2").value.trim(), postcode: $("#fPc").value.trim() };
+    }
     co.date = $("#fDate").value; co.notes = $("#fNotes").value.trim();
     save();
   }
@@ -307,6 +376,8 @@
     if (!/^(\+?61|0)4\d{8}$|^(\+?61|0)[2378]\d{8}$/.test(c.phone.replace(/[\s()-]/g, ""))) return "Please enter a valid Australian phone number.";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.email)) return "Please enter a valid email address.";
     if (co.mode === "delivery") {
+      if (DATA.settings.addressSearch && !co.address.placeId) return "Please search for your delivery address and pick it from the list.";
+      if (deliveryFee() == null || deliveryProblem()) return "Please go back to the cart and check your delivery details.";
       if ((co.address.line1 || "").length < 4) return "Please enter the street address for delivery.";
       if (!/^\d{4}$/.test(co.address.postcode || "")) return "Please enter a 4-digit postcode.";
     }
@@ -363,6 +434,7 @@
     var md = t.closest("[data-mode]"); if (md) { co.mode = md.dataset.mode; save(); renderCart(); return; }
     if (t.closest("#toDetails")) { step = "details"; renderCart(); return; }
     if (t.closest("#toCart")) { readForm(); step = "cart"; renderCart(); return; }
+    if (t.closest("#addrChange")) { e.preventDefault(); readForm(); co.address = { line2: co.address.line2 || "" }; save(); renderCart(); return; }
     var tp = t.closest("[data-tip]"); if (tp) { readForm(); co.tip = tp.dataset.tip; save(); [].forEach.call(document.querySelectorAll("[data-tip]"), function (b) { var on = b.dataset.tip === co.tip; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); }); return; }
     var pb = t.closest("#pay"); if (pb) { pay(pb); return; }
   });
@@ -391,7 +463,7 @@
     autocomplete($("#heroSuburb"), $("#heroList"), function (s) {
       if (s === undefined) { $("#heroRes").innerHTML = ""; return; }
       $("#heroRes").innerHTML = s ? zoneMsg(s) : outsideMsg();
-      if (s) { co.suburb = s.s; co.address = co.address || {}; co.address.postcode = s.pc; co.mode = "delivery"; save(); }
+      if (s) { co.address = co.address || {}; if (co.address.placeId && s.s !== co.suburb) co.address = { line2: co.address.line2 || "" }; co.suburb = s.s; co.address.postcode = co.address.placeId ? co.address.postcode : s.pc; co.mode = "delivery"; save(); }
     });
     if (co.suburb && findSuburb(co.suburb)) { $("#heroSuburb").value = co.suburb; }
   }).catch(function (e) {

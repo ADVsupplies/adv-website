@@ -1,6 +1,7 @@
 import { getCatalog } from "./lib/catalog.mjs";
 import { buildOrder, InputError } from "./lib/order.mjs";
 import { sq } from "./lib/square.mjs";
+import { placesEnabled, resolve, okPlaceId } from "./lib/places.mjs";
 
 const json = (status, obj) =>
   new Response(JSON.stringify(obj), { status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } });
@@ -16,6 +17,19 @@ export default async (req) => {
 
   try {
     const catalog = await getCatalog();
+
+    // Delivery address: the customer picks it from the address search, and the street,
+    // suburb and postcode are taken from that one pick here on the server, so the
+    // suburb (and its delivery zone) can never differ from the street address.
+    if (body.mode !== "pickup" && placesEnabled()) {
+      const id = body.address?.placeId;
+      if (!okPlaceId(id)) throw new InputError("Please search for your delivery address and pick it from the list.");
+      const a = await resolve(id);
+      if (!a) throw new InputError("Please pick a full street address, including the street number.");
+      if (a.state && a.state !== "VIC") throw new InputError("We only deliver in Victoria.");
+      body.suburb = a.suburb;
+      body.address = { line1: a.line1, line2: body.address?.line2, postcode: a.postcode };
+    }
     const built = buildOrder(catalog, body);
     const site = (process.env.URL || new URL(req.url).origin).replace(/\/$/, "");
 
