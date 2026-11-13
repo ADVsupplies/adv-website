@@ -71,7 +71,15 @@ export function buildLines(catalog, items) {
       volumes.push(q);
       const fx = p._fixed && p._fixed[q];
       if (q < 1 && fx) lines.push({ catalog_object_id: fx.id, quantity: "1" });
-      else lines.push({ catalog_object_id: p.variationId, quantity: q.toFixed(2) });
+      else
+        // One clear line per material, e.g. "Tree Mulch x 2.5 m³" at the full price.
+        // (Square's payment page rounds 2.5 m³ to "x 2" when the line is a catalog item.)
+        // Make reads the cubic metres from the " x N" at the end of the name.
+        lines.push({
+          name: `${p.name} x ${String(q)} m³`.slice(0, 500),
+          quantity: "1",
+          base_price_money: { amount: Math.round(p.price * q), currency: "AUD" },
+        });
     } else {
       if (!p.deliver) noZone.push(p.name);
       const v = p.variations.find((x) => x.id === it.variationId) || (p.variations.length === 1 ? p.variations[0] : null);
@@ -165,9 +173,12 @@ export function buildOrder(catalog, body, now = new Date()) {
     zoneLine = lines[lines.length - 1];
   }
 
-  // Delivery details travel on the Square order itself (metadata + a note staff can read).
-  // Square payment links do not keep a delivery fulfillment, so nothing relies on one.
+  // Delivery details travel on the Square order in a note on the delivery line:
+  //   DELIVER TO: address | date | name | phone | email | TIP ON: X | customer notes
+  // Make splits it on " | " to build the Detrack job. Square payment links keep neither a
+  // delivery fulfillment nor order metadata, so nothing relies on those.
   const clip = (s, n = 250) => String(s).slice(0, n);
+  const bar = (s) => String(s).replace(/\s*\|\s*/g, " "); // keep the note's " | " separators unambiguous
   const metadata = { adv_mode: mode, adv_name: clip(display), adv_phone: phone, adv_email: clip(email), adv_date: body.date };
   if (notes) metadata.adv_note = clip(notes);
   if (mode === "delivery") {
@@ -175,11 +186,11 @@ export function buildOrder(catalog, body, now = new Date()) {
     metadata.adv_suburb = address.suburb;
     metadata.adv_postcode = address.postcode;
     zoneLine.note = clip(
-      `DELIVER TO: ${address.line1}, ${address.suburb} VIC ${address.postcode} | ${body.date} | ${display} ${phone}${notes ? " | " + notes : ""}`,
+      `DELIVER TO: ${address.line1}, ${address.suburb} VIC ${address.postcode} | ${body.date} | ${bar(display)} | ${phone} | ${bar(email)}${notes ? " | " + notes : ""}`,
       480
     );
   } else {
-    lines[0].note = clip(`PICK UP: ${body.date} | ${display} ${phone}${notes ? " | " + notes : ""}`, 480);
+    lines[0].note = clip(`PICK UP: ${body.date} | ${bar(display)} | ${phone} | ${bar(email)}${notes ? " | " + notes : ""}`, 480);
   }
 
   const order = {

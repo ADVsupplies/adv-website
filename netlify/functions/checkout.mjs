@@ -34,48 +34,23 @@ export default async (req) => {
     const site = (process.env.URL || new URL(req.url).origin).replace(/\/$/, "");
 
     const delivery = built.mode === "delivery";
-    const buyer = { buyer_email: built.contact.email, buyer_phone_number: built.contact.phone };
-    const link = (askAddress) =>
-      sq("/v2/online-checkout/payment-links", {
-        method: "POST",
-        body: {
-          idempotency_key: crypto.randomUUID(),
-          description: `ADV website order ${built.ref}`,
-          order: built.order,
-          checkout_options: {
-            redirect_url: `${site}/thanks.html?ref=${encodeURIComponent(built.ref)}&m=${built.mode}`,
-            ask_for_shipping_address: askAddress,
-            merchant_support_email: "sales@advsupplies.com.au",
-            accepted_payment_methods: { apple_pay: true, google_pay: true },
-          },
-          pre_populated_data: askAddress
-            ? {
-                ...buyer,
-                buyer_address: {
-                  first_name: built.contact.first,
-                  last_name: built.contact.last,
-                  address_line_1: built.address.line1,
-                  locality: built.address.suburb,
-                  administrative_district_level_1: "VIC",
-                  postal_code: built.address.postcode,
-                  country: "AU",
-                },
-              }
-            : buyer,
+    // Square's own address step stays off: the address is locked in on our site, and with
+    // it on, Square Pay swaps in the buyer's saved address and adds a "Shipping" line.
+    const r = await sq("/v2/online-checkout/payment-links", {
+      method: "POST",
+      body: {
+        idempotency_key: crypto.randomUUID(),
+        description: `ADV website order ${built.ref}`,
+        order: built.order,
+        checkout_options: {
+          redirect_url: `${site}/thanks.html?ref=${encodeURIComponent(built.ref)}&m=${built.mode}`,
+          ask_for_shipping_address: false,
+          merchant_support_email: "sales@advsupplies.com.au",
+          accepted_payment_methods: { apple_pay: true, google_pay: true },
         },
-      });
-
-    // Delivery orders show the address on Square's payment page (pre-filled) so it
-    // lands on the Square order and receipt. Detrack still uses the address stored
-    // in the order metadata, which is the one the delivery zone was charged for.
-    let r;
-    try {
-      r = await link(delivery);
-    } catch (e) {
-      if (!delivery) throw e;
-      console.error("payment link with address step failed, retrying without it", e);
-      r = await link(false);
-    }
+        pre_populated_data: { buyer_email: built.contact.email, buyer_phone_number: built.contact.phone },
+      },
+    });
 
     // Safety net: never send the customer to pay unless Square kept the note that
     // carries the delivery details (Make reads it to build the Detrack job).
