@@ -188,3 +188,32 @@ input,select,textarea{font:inherit;color:inherit}
   .logo-txt small{display:none}.cart-btn span{display:none}
   .sec-title{font-size:34px}
 }
+
+/* promo band: gift cards + delivery map */
+.promo{padding:34px 0 6px}
+.promo-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.promo-box{border-radius:10px;padding:28px;position:relative;overflow:hidden}
+.promo-box h2{font:800 38px/1 var(--head);text-transform:uppercase;margin:0 0 10px}
+.promo-box p{margin:0 0 18px;font-size:16px}
+.promo-tag{font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:12px;margin-bottom:10px}
+.promo-gift{background:linear-gradient(160deg,#D81B1B 0%,#C41212 55%,#A50E0E 100%);color:#fff;display:grid;grid-template-columns:1fr 190px;gap:20px;align-items:center}
+.promo-gift h2 span{color:#fff;opacity:.85}
+.promo-gift p{color:#ffe4e0}
+.promo-gift .promo-tag{color:#ffd9d4}
+.promo-gift .btn{background:#fff;color:var(--red)}
+.promo-gift .btn:hover{background:var(--ink);color:#fff}
+.promo-cta{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.promo-cta span{font-size:14px;color:#ffe4e0;max-width:210px;line-height:1.35}
+.gcard{background:#fff;color:var(--ink);border-radius:12px;aspect-ratio:1.58/1;width:190px;transform:rotate(-5deg);box-shadow:0 14px 30px rgba(0,0,0,.35);padding:12px 12px 0;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.gcard-top{display:flex;justify-content:space-between;align-items:flex-start;gap:6px}
+.gcard-top .logo-mark{font-size:13px;padding:3px 6px}
+.gcard-top b{font:800 10px/1.05 var(--head);text-transform:uppercase;text-align:right}
+.gcard-top i{font-style:normal;color:var(--red)}
+.gcard-title{font:800 27px/.9 var(--head);text-transform:uppercase;color:var(--red);margin-top:4px}
+.gcard-foot{margin:auto -12px 0;background:var(--ink);color:#fff;font-size:8px;font-weight:600;padding:5px 12px;display:flex;justify-content:space-between;border-top:6px solid var(--red-d)}
+.promo-map{background:#fff;border:1px solid var(--line);border-top:5px solid var(--red)}
+.promo-map h2 span{color:var(--red)}
+.promo-map .promo-tag{color:var(--red)}
+.promo-map p{color:var(--mut);max-width:440px}
+@media(max-width:900px){.promo-grid{grid-template-columns:1fr}}
+@media(max-width:520px){.promo-gift{grid-template-columns:1fr}.gcard{margin:6px auto 10px}.promo-box h2{font-size:32px}}
