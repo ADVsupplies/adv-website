@@ -465,6 +465,14 @@
       $("#heroRes").innerHTML = s ? zoneMsg(s) : outsideMsg();
       if (s) { co.address = co.address || {}; if (co.address.placeId && s.s !== co.suburb) co.address = { line2: co.address.line2 || "" }; co.suburb = s.s; co.address.postcode = co.address.placeId ? co.address.postcode : s.pc; co.mode = "delivery"; save(); }
     });
+    // Arriving from the delivery map: /?suburb=Berwick#shop preselects that suburb.
+    var qsSub = findSuburb(new URLSearchParams(location.search).get("suburb"));
+    if (qsSub) {
+      co.address = co.address || {};
+      if (co.address.placeId && qsSub.s !== co.suburb) co.address = { line2: co.address.line2 || "" };
+      co.suburb = qsSub.s; co.mode = "delivery"; save();
+      $("#heroRes").innerHTML = zoneMsg(qsSub);
+    }
     if (co.suburb && findSuburb(co.suburb)) { $("#heroSuburb").value = co.suburb; }
   }).catch(function (e) {
     $("#grid").innerHTML = '<div class="empty">' + esc(e.message || "Products couldn't be loaded.") + ' Please call <a href="tel:0397996399">(03) 9799 6399</a>.</div>';
