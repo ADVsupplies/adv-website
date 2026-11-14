@@ -460,6 +460,8 @@
     cart = cart.filter(function (l) { return BYID[l.id] && maxQty(BYID[l.id], l.variationId) > 0; });
     cart.forEach(function (l) { l.qty = clampQty(BYID[l.id], l.qty, l.variationId); });
     save(); renderChips(); renderGrid(); renderZones();
+    var pz = $("#promoZones");
+    if (pz) pz.innerHTML = d.zones.slice().sort(function (a, b) { return a.zone - b.zone; }).map(function (z) { return "<span>Zone " + z.zone + " <b>" + money(z.price) + "</b></span>"; }).join("");
     autocomplete($("#heroSuburb"), $("#heroList"), function (s) {
       if (s === undefined) { $("#heroRes").innerHTML = ""; return; }
       $("#heroRes").innerHTML = s ? zoneMsg(s) : outsideMsg();
