@@ -420,6 +420,12 @@
   document.addEventListener("click", function (e) {
     var t = e.target;
     if (t.closest("[data-close]")) { closeAll(); return; }
+    var sc = t.closest("[data-shopcat]");
+    if (sc && DATA) {
+      var want = sc.dataset.shopcat, hit = DATA.categories.filter(function (x) { return x.toUpperCase().indexOf(want) === 0; })[0];
+      if (hit) { S.cat = hit; S.q = ""; S.shown = 48; var sb = $("#q"); if (sb) sb.value = ""; renderChips(); renderGrid(); }
+      return;
+    }
     var c = t.closest(".chip"); if (c) { S.cat = c.dataset.c; S.shown = 48; renderChips(); renderGrid(); return; }
     var pc = t.closest(".p"); if (pc) { openProduct(pc.dataset.id); return; }
     if (t.closest("#moreBtn")) { S.shown += 48; renderGrid(); return; }
