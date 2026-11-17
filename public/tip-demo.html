@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Mulch animation preview | ADV Supplies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tip/tip.css">
+<style>
+body{margin:0;background:#141414;color:#fff;font-family:"Barlow Condensed",Arial,sans-serif}
+main{max-width:1100px;margin:0 auto;padding:28px 16px 60px}
+h1{font-size:34px;letter-spacing:.04em;text-transform:uppercase;margin:0 0 16px}
+h1 span{color:#d81f26}
+</style>
+</head>
+<body>
+<main>
+  <h1>Mulch <span>/ preview</span></h1>
+  <div id="tip"></div>
+</main>
+<script type="module">
+import { mountTip } from '/tip/tip.js';
+const go = () => { window.__tip = mountTip(document.getElementById('tip'), 'mulch'); };
+(document.fonts && document.fonts.load ? document.fonts.load('900 40px "Barlow Condensed"').then(go, go) : go());
+</script>
+</body>
+</html>
