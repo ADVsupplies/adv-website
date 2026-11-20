@@ -4,55 +4,105 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ADV Supplies | Soil, Mulch, Sand &amp; Rock Delivered | Hampton Park</title>
-<meta name="description" content="Bulk landscape and building supplies delivered across Melbourne's south-east from our Hampton Park yard. Order online with your exact delivery price for your suburb.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,900&family=Barlow+Semi+Condensed:wght@600&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="description" content="Bulk landscape and building supplies delivered across Melbourne&#x27;s south-east from our Hampton Park yard. Order online with your exact delivery price for your suburb.">
+<link rel="icon" href="/adv-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,900&family=Barlow+Semi+Condensed:wght@600&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/site.css">
 </head>
 <body>
-<div class="topbar"><div class="wrap">
-  <span>Delivering across Melbourne's south-east · Monday to Saturday</span>
-  <a href="tel:0397996399">Call (03) 9799 6399</a>
-</div></div>
-
-<header class="hdr"><div class="wrap">
-  <a class="logo" href="/" aria-label="ADV Supplies home">
-    <span class="logo-mark">ADV</span><span class="logo-txt">SUPPLIES<small>It all starts from the ground UP</small></span>
-  </a>
-  <nav class="nav">
-    <a href="#shop">Shop</a>
-    <a href="/delivery.html">Delivery areas</a>
-    <a href="#contact">Contact</a>
-  </nav>
-  <button class="cart-btn" id="cartBtn" aria-label="Open cart">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h9.7a1 1 0 0 0 1-.8L21 8H6.2"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>
-    <span>Cart</span><b id="cartCount">0</b>
-  </button>
+<header class="sh roll"><div class="sh-in">
+  <a class="sh-logo" href="/" aria-label="ADV Supplies home"><span class="sh-curtain" aria-hidden="true"></span><img src="/adv-logo.png" alt="" width="56" height="56"><span class="sh-word">ADV</span></a>
+  <nav class="sh-nav" aria-label="Main"><a href="/products.html">Products</a><a href="/#delivery">Need delivery?</a><a href="/#calculator">Need measurements?</a><a href="/delivery.html">Delivery map</a><a href="#contact">Contact</a></nav>
+  <div class="sh-act"><a class="sh-call" href="tel:0397996399">Call us</a><button class="sh-cart" id="cartBtn" type="button" aria-label="Open cart"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h9.7a1 1 0 0 0 1-.8L21 8H6.2"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg><b id="cartCount">0</b></button></div>
 </div></header>
+<div class="sh-strip"></div>
 
-<section class="hero"><div class="wrap hero-grid">
-  <div>
-    <div class="eyebrow">Hampton Park yard · 320 Hallam Rd</div>
-    <h1>Soil, mulch, sand &amp; rock <span>delivered</span> to your door.</h1>
-    <p class="lead">Order online and see your exact delivery price for your suburb before you pay. No callbacks, no surprises.</p>
-    <div class="hero-pts">
-      <span><b>111</b> suburbs</span><span><b>10</b> delivery zones</span><span>Trade &amp; home orders</span>
-    </div>
-    <a class="btn" href="#shop">Shop materials</a>
+<section class="hero3d" aria-label="ADV delivers to homes, new estates and construction sites">
+  <div class="m-hero"><div class="m-eye">We deliver to</div><h1>Homes · New estates <span>&amp;</span> construction sites</h1><p>Landscapers · Builders · Tradies · DIY</p><div class="m-cta"><a class="sx-btn" href="/products.html">Shop products</a><a class="sx-btn alt" href="tel:0397996399">(03) 9799 6399</a></div></div>
+  <div class="hero3d-box" data-adv-hero="1"></div>
+</section>
+
+<section class="sx-intro"><div class="sx-wrap sx-center">
+  <h2 class="sx-h2">Delivered from our yard to your site</h2>
+  <p>Our six trucks run loads across Melbourne's south-east every day, from Hampton Park out to the Peninsula, Pakenham and the eastern suburbs. Every suburb has a flat rate per truck load, so you know the delivery cost before you order.</p>
+</div></section>
+
+<section class="sx-prods" id="products"><div class="sx-wrap">
+  <div class="sx-head">
+    <div><h2 class="sx-h2 red">Products</h2><span class="sx-bar"></span><p>Our main ranges, and what each one does for your project or property.</p></div>
+    <a class="sx-btn dark" href="/products.html">See all products</a>
   </div>
-  <div class="check card">
-    <h2>Do we deliver <span>to you?</span></h2>
-    <p>Type your suburb to see your delivery zone and price.</p>
-    <div class="ac">
-      <input id="heroSuburb" type="text" placeholder="e.g. Cranbourne East" autocomplete="off" aria-label="Your suburb">
-      <div class="ac-list" id="heroList"></div>
-    </div>
+  <div class="mc-grid" id="mcGrid">
+    <article class="mc">
+      <div class="mc-img"><img src="/img/cat-pebbles.jpg" alt="White pebbles edging a garden bed" loading="lazy" width="640" height="640"></div>
+      <div class="mc-b"><h3>Pebbles</h3><p>Decorative ground cover that lifts the whole front of a property.</p><ul><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="a-pop" d="M4 11l8-6 8 6M6 10v9h12v-9M10 19v-5h4v5"/></svg></span>Lifts the look of the front yard</li><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21l3-18M16 21l-3-18"/><path class="a-flow" d="M12 20V4"/></svg></span>Paths and garden edging</li><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="a-drop" d="M12 4c3 4 5 6.5 5 9a5 5 0 0 1-10 0c0-2.5 2-5 5-9z"/></svg></span>Free-draining, so water gets away</li></ul><a class="mc-btn" href="/products.html#cat-pebbles">View products</a></div>
+    </article>
+    <article class="mc">
+      <div class="mc-img"><img src="/img/cat-mulch.jpg" alt="Black mulch spread across a garden bed" loading="lazy" width="640" height="640"></div>
+      <div class="mc-b"><h3>Mulch</h3><p>Suppress weeds, retain moisture, finish the look.</p><ul><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="a-wilt" d="M7 20c0-4 1-7 3-9M10 11c-2-1-4-1-5 1M10 11c1-2 3-3 5-2"/><path d="M3 21h18"/></svg></span>Blocks the light weeds need</li><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="a-drop" d="M12 4c3 4 5 6.5 5 9a5 5 0 0 1-10 0c0-2.5 2-5 5-9z"/></svg></span>Holds moisture in the soil</li><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="a-grow" d="M12 21v-8M12 13c0-4 3-7 7-7 0 4-3 7-7 7zM12 15c0-3-2.5-5.5-6-5.5 0 3.5 2.5 5.5 6 5.5z"/></svg></span>Keeps roots cool so plants thrive</li></ul><a class="mc-btn" href="/products.html#cat-mulch">View products</a></div>
+    </article>
+    <article class="mc">
+      <div class="mc-img"><img src="/img/cat-soil.jpg" alt="Dark soil with a red shovel" loading="lazy" width="640" height="640"></div>
+      <div class="mc-b"><h3>Compost &amp; Soil</h3><p>Feed your garden from the ground up.</p><ul><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="a-grow" d="M12 21v-8M12 13c0-4 3-7 7-7 0 4-3 7-7 7zM12 15c0-3-2.5-5.5-6-5.5 0 3.5 2.5 5.5 6 5.5z"/></svg></span>Feeds new garden beds</li><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="a-grow" d="M4 20l1-6M8 20l0-8M12 20l1-9M16 20l-1-7M20 20l-1-5"/><path d="M3 21h18"/></svg></span>Levels and tops up lawns</li><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="a-pop" d="M4 10h16v9H4zM4 10l2-4h12l2 4"/><path class="a-grow" d="M12 10V6"/></svg></span>Fills raised beds and planters</li></ul><a class="mc-btn" href="/products.html#cat-compost-soil">View products</a></div>
+    </article>
+    <article class="mc mc-more">
+      <div class="mc-img"><img src="/img/cat-sand.jpg" alt="White sand with a red shovel" loading="lazy" width="640" height="640"></div>
+      <div class="mc-b"><h3>Sand</h3><p>Washed, graded and ready for any job.</p><ul><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><g class="a-slide"><path d="M3 9h8v5H3zM13 9h8v5h-8zM7 15h8v5H7z"/></g></svg></span>Bedding under pavers</li><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15l3-8h10l3 8z"/><path class="a-flow" d="M8 18h8M12 15v6"/></svg></span>Concreting and bricklaying</li><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17h18M5 17c0-3 3-5 7-5s7 2 7 5"/><path class="a-pop" d="M15 8l3-3M15 5h3v3"/></svg></span>Sandpits and play areas</li></ul><a class="mc-btn" href="/products.html#cat-sand">View products</a></div>
+    </article>
+    <article class="mc mc-more">
+      <div class="mc-img"><img src="/img/cat-toppings.jpg" alt="Red scoria packed around a drainage pipe" loading="lazy" width="640" height="640"></div>
+      <div class="mc-b"><h3>Toppings &amp; Screenings</h3><p>Gravel and screenings for driveways, paths and base layers.</p><ul><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><g class="a-roll"><path d="M3 15l2-5h14l2 5v3H3z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></g></svg></span>Hard-wearing driveways</li><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="a-pop" d="M12 4l9 4-9 4-9-4z"/><path d="M3 12l9 4 9-4M3 16l9 4 9-4"/></svg></span>Compacted base under slabs and pavers</li><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="a-drop" d="M12 4c3 4 5 6.5 5 9a5 5 0 0 1-10 0c0-2.5 2-5 5-9z"/></svg></span>Drainage around pipes and walls</li></ul><a class="mc-btn" href="/products.html#cat-toppings-screenings">View products</a></div>
+    </article>
+    <article class="mc mc-more">
+      <div class="mc-img"><img src="/img/cat-rocks.jpg" alt="Large grey boulders in a front garden bed" loading="lazy" width="640" height="640"></div>
+      <div class="mc-b"><h3>Rocks</h3><p>Bold, natural statement pieces for any landscape.</p><ul><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="a-pop" d="M3 19h18M4 19v-4h6v4M10 19v-4h6v4M16 19v-4h4M6 15v-4h6v4M12 15v-4h6"/></svg></span>Retaining walls and terraces</li><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="a-pop" d="M4 18l2-7 5-3 6 2 3 8z"/><path d="M3 20h18"/></svg></span>Feature boulders that stand out</li><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21l3-18M16 21l-3-18"/><path class="a-flow" d="M12 20V4"/></svg></span>Garden edging and dry creek beds</li></ul><a class="mc-btn" href="/products.html#cat-rocks">View products</a></div>
+    </article>
+    <article class="mc mc-more">
+      <div class="mc-img"><img src="/img/cat-bags.jpg" alt="Pallet of red bagged soil improver" loading="lazy" width="640" height="640"></div>
+      <div class="mc-b"><h3>Bag Products</h3><p>Quality products, conveniently bagged &amp; ready to go.</p><ul><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><g class="a-roll"><path d="M3 15l2-5h14l2 5v3H3z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></g></svg></span>Fits in the boot or ute tray</li><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="a-grow" d="M12 21v-8M12 13c0-4 3-7 7-7 0 4-3 7-7 7zM12 15c0-3-2.5-5.5-6-5.5 0 3.5 2.5 5.5 6 5.5z"/></svg></span>Potting mix, fertiliser and soil improver</li><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="a-pop" d="M6 7h12l1 13H5zM9 7V5h6v2"/><path d="M9 12h6"/></svg></span>Just right for small jobs and top-ups</li></ul><a class="mc-btn" href="/products.html#cat-bag-products">View products</a></div>
+    </article>
+    <article class="mc mc-more">
+      <div class="mc-img"><img src="/img/cat-hardware.jpg" alt="Red shovels, rakes and witches hats on a tool wall" loading="lazy" width="640" height="640"></div>
+      <div class="mc-b"><h3>Hardware &amp; Tools</h3><p>The right gear, when you need it.</p><ul><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><g class="a-slide"><path d="M12 3v11M10 3h4"/><path d="M8 14h8v3a4 4 0 0 1-8 0z"/></g></svg></span>Shovels, rakes and spades</li><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><g class="a-roll"><path d="M3 9h12l-2 6H6zM15 9l5-2M10 15l-2 3"/><circle cx="8" cy="19" r="1.6"/></g></svg></span>Barrows to move the load</li><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="a-pop" d="M10 5h4l4 14H6zM8.5 11h7M7.5 15h9"/><path d="M4 20h16"/></svg></span>Site safety gear</li></ul><a class="mc-btn" href="/products.html#cat-hardware-tools">View products</a></div>
+    </article>
+    <article class="mc mc-more">
+      <div class="mc-img"><img src="/img/cat-accessories.jpg" alt="Landscaper in red gloves measuring a garden bed" loading="lazy" width="640" height="640"></div>
+      <div class="mc-b"><h3>Accessories</h3><p>Everything else the job needs.</p><ul><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15h14v4H3z"/><path class="a-flow" d="M17 17h4"/><path d="M6 15v-2M10 15v-2M14 15v-2"/></svg></span>Tape measures and string lines</li><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="a-pop" d="M7 21V11l-2-3V4h3v4h2V4h3v4h2V4h3v4l-2 3v10z"/></svg></span>Gloves and workwear</li><li><span class="mc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="a-grow" d="M12 21V9"/><path d="M8 21h8M6 9h12l-2-5H8z"/></svg></span>Edging, pegs and weed mat</li></ul><a class="mc-btn" href="/products.html#cat-accessories">View products</a></div>
+    </article>
+  </div>
+  <div class="sx-center"><button class="sx-btn" id="mcMore" type="button" aria-expanded="false" aria-controls="mcGrid">Show more</button></div>
+</div></section>
+
+<section class="sx-deliv" id="delivery"><div class="sx-wrap sx-two">
+  <div>
+    <svg viewBox="0 0 930 330" width="100%" class="sx-arc" aria-hidden="true">
+      <defs>
+        <radialGradient id="advGlow" cx="0.08" cy="0.9" r="1.1"><stop offset="0" stop-color="#5a1a08"/><stop offset="0.55" stop-color="#2e0c0a"/><stop offset="1" stop-color="#160707"/></radialGradient>
+        <pattern id="advDots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#5a2a2a"/></pattern>
+        <radialGradient id="advYard" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#F5C518" stop-opacity="0.55"/><stop offset="1" stop-color="#F5C518" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect width="930" height="330" fill="url(#advGlow)"/><rect width="930" height="285" fill="url(#advDots)"/>
+      <path d="M72 285 Q 420 95 755 285 Z" fill="#C80000" fill-opacity="0.22"/><path d="M72 285 Q 320 140 560 285 Z" fill="#E8661A" fill-opacity="0.35"/><path d="M72 285 Q 220 190 370 285 Z" fill="#F5C518" fill-opacity="0.55"/>
+      <path d="M72 285 Q 420 95 755 285" fill="none" stroke="#E8302A" stroke-width="4"/><path d="M72 285 Q 320 140 560 285" fill="none" stroke="#F08A24" stroke-width="4"/><path d="M72 285 Q 220 190 370 285" fill="none" stroke="#F5C518" stroke-width="5"/>
+      <g fill="#FFFFFF" stroke="#1A1A1A" stroke-width="3"><circle cx="162" cy="219" r="7"/><circle cx="215" cy="172" r="7"/><circle cx="340" cy="118" r="7"/><circle cx="266" cy="255" r="7"/><circle cx="423" cy="184" r="7"/><circle cx="488" cy="252" r="7"/><circle cx="565" cy="101" r="7"/><circle cx="621" cy="172" r="7"/><circle cx="690" cy="250" r="7"/></g>
+      <rect x="0" y="285" width="930" height="45" fill="#1C1C1C"/><line x1="0" y1="306" x2="930" y2="306" stroke="#F5C518" stroke-width="4" stroke-dasharray="22 18"/>
+      <circle cx="72" cy="285" r="48" fill="url(#advYard)"/><circle cx="72" cy="285" r="20" fill="#FFFFFF"/><circle cx="72" cy="285" r="13" fill="#C80000"/>
+      <g class="sx-truck" transform="translate(755 210)"><path d="M18 18 Q 42 -2 66 18 Z" fill="#8a5a2b"/><rect x="0" y="16" width="84" height="44" rx="4" fill="#F5C518"/><path d="M84 30 H108 L126 48 V62 H84 Z" fill="#C80000"/><path d="M90 34 H106 L118 46 H90 Z" fill="#9fd3ff"/><circle cx="22" cy="68" r="11" fill="#1A1A1A" stroke="#FFFFFF" stroke-width="4"/><circle cx="101" cy="68" r="11" fill="#1A1A1A" stroke="#FFFFFF" stroke-width="4"/></g>
+    </svg>
+    <div class="sx-legend"><span><i style="background:#F5C518"></i>Zones 1–4</span><span><i style="background:#F08A24"></i>5–7</span><span><i style="background:#E8302A"></i>8–10</span></div>
+  </div>
+  <div class="sx-check">
+    <h2 class="sx-h1">Do we deliver <span>to you?</span></h2>
+    <p>111 suburbs across 10 zones from our Hampton Park yard. Check your suburb and per-load rate.</p>
+    <div class="ac"><input id="heroSuburb" type="text" placeholder="Type your suburb" autocomplete="off" aria-label="Your suburb"><div class="ac-list" id="heroList"></div></div>
     <div class="check-res" id="heroRes"></div>
+    <div class="sx-zones" id="promoZones"></div>
+    <a class="sx-btn block" href="/delivery.html">See all delivery areas on the map</a>
   </div>
 </div></section>
 
-<section class="promo"><div class="wrap promo-grid">
+<section class="sx-gift"><div class="sx-wrap">
   <div class="promo-box promo-gift">
     <div class="promo-txt">
       <div class="promo-tag">Available now · Christmas</div>
@@ -111,123 +161,41 @@
 </div></div>
     </div>
   </div>
-  <div class="promo-box promo-map">
-    <div class="promo-tag">111 suburbs · 10 zones</div>
-    <h2>Find your <span>delivery rate</span></h2>
-    <p>See every suburb we deliver to on the map, with the price per truck load from our Hampton Park yard.</p>
-    <div class="promo-zones" id="promoZones"></div>
-    <a class="btn" href="/delivery.html">Open the delivery map</a>
-  </div>
 </div></section>
 
-<section class="mats" id="products"><div class="wrap">
-  <div class="mats-head">
-    <h2>Our main <span>products</span></h2>
-    <p>Five materials, and what each one does for your project or property.</p>
-  </div>
-  <div class="mats-list">
-    <article class="mat">
-      <div class="mat-img"><img src="/img/cat-pebbles.jpg" alt="White pebbles edging a garden bed" loading="lazy" width="640" height="640"></div>
-      <div class="mat-bp"><div class="bp"><div class="bp-pan" role="img" aria-label="Blueprint of a pebble border beside a house in section, then in 3D: a 50 millimetre layer of white and grey pebbles lets water drain through and gives a clean border"><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><pattern id="pA" width="18" height="13" patternUnits="userSpaceOnUse"><ellipse cx="5" cy="4" rx="4.2" ry="3" fill="#F6F2E9" stroke="#1A1A1A" stroke-width=".8"></ellipse><ellipse cx="13.5" cy="9" rx="4" ry="2.9" fill="#9A9A9A" stroke="#1A1A1A" stroke-width=".8"></ellipse><ellipse cx="13" cy="2" rx="2" ry="1.4" fill="#9A9A9A" stroke="none"></ellipse><ellipse cx="4" cy="10.5" rx="2.2" ry="1.5" fill="#F6F2E9" stroke="none"></ellipse></pattern><pattern id="pB" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="2.5" cy="3" r="1.2" fill="#7A4A24" stroke="none"></circle><circle cx="7.5" cy="7" r="1" fill="#C99A5B" stroke="none"></circle><circle cx="5" cy="8.5" r=".7" fill="#7A4A24" stroke="none"></circle></pattern></defs></svg><div class="bp-tag"><i>Section view</i><i>3D view</i></div><div class="bp-cam"><div class="bp-blk"><div class="bp-f bp-back"></div><div class="bp-f bp-left"><svg viewBox="0 0 150 84" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="150" height="20" fill="#2B2B2B" stroke="none"></rect><rect x="0" y="0" width="150" height="20" fill="url(#pA)" stroke="none"></rect><path d="M0 20h150" stroke="#1A1A1A" stroke-width="2"></path><rect x="0" y="20" width="150" height="64" fill="#4A2C17" stroke="none"></rect><rect x="0" y="20" width="150" height="64" fill="url(#pB)" stroke="none"></rect></svg></div><div class="bp-f bp-right"><svg viewBox="0 0 150 84" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="150" height="20" fill="#2B2B2B" stroke="none"></rect><rect x="0" y="0" width="150" height="20" fill="url(#pA)" stroke="none"></rect><path d="M0 20h150" stroke="#1A1A1A" stroke-width="2"></path><rect x="0" y="20" width="150" height="64" fill="#4A2C17" stroke="none"></rect><rect x="0" y="20" width="150" height="64" fill="url(#pB)" stroke="none"></rect></svg></div><div class="bp-f bp-top"><svg viewBox="0 0 190 150" preserveAspectRatio="none" aria-hidden="true"><rect width="190" height="150" fill="#2B2B2B" stroke="none"></rect><rect width="190" height="150" fill="url(#pA)" stroke="none"></rect></svg></div><div class="bp-f bp-front"><svg viewBox="0 0 190 84" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="190" height="20" fill="#2B2B2B" stroke="none"></rect><rect x="0" y="0" width="190" height="20" fill="url(#pA)" stroke="none"></rect><path d="M0 20h190" stroke="#1A1A1A" stroke-width="2"></path><rect x="0" y="20" width="190" height="64" fill="#4A2C17" stroke="none"></rect><rect x="0" y="20" width="190" height="64" fill="url(#pB)" stroke="none"></rect><path class="bp-flow" stroke="#F6F2E9" stroke-width="2" d="M50 0v78M95 0v78M140 0v78"></path></svg></div><div class="bp-up" style="left:0cqw;top:-13.333cqw;width:39.583cqw;height:13.333cqw;transform:translateZ(-14.583cqw)"><div class="bp-f " style="left:0;top:0;width:39.583cqw;height:13.333cqw;transform:translateZ(1.042cqw)"><svg viewBox="0 0 190 64" aria-hidden="true"><rect width="190" height="64" fill="#4F4F4F" stroke="none"></rect><g stroke="#9A9A9A" stroke-width="1"><path d="M0 16h190M0 32h190M0 48h190"></path></g><rect x="24" y="14" width="36" height="30" fill="#F5C518" stroke="#F6F2E9"></rect><path d="M42 14v30M24 29h36" stroke="#F6F2E9"></path><rect x="124" y="14" width="36" height="30" fill="#F5C518" stroke="#F6F2E9"></rect><path d="M142 14v30M124 29h36" stroke="#F6F2E9"></path></svg></div><div class="bp-f " style="left:0;top:0;width:39.583cqw;height:13.333cqw;transform:translateZ(-1.042cqw)"></div><div class="bp-f " style="left:18.750cqw;top:0;width:2.083cqw;height:13.333cqw;transform:rotateY(90deg) translateZ(19.792cqw)"></div><div class="bp-f " style="left:18.750cqw;top:0;width:2.083cqw;height:13.333cqw;transform:rotateY(-90deg) translateZ(19.792cqw)"></div><div class="bp-f " style="left:0;top:5.625cqw;width:39.583cqw;height:2.083cqw;transform:rotateX(90deg) translateZ(6.667cqw)"></div></div></div></div><div class="bp-veil"></div><div class="bp-dim" style="left:9.792cqw;top:26.250cqw;height:4.167cqw;border-left:0.292cqw solid #FF4A4A;border-top:0.292cqw solid #FF4A4A;border-bottom:0.292cqw solid #FF4A4A;width:1.250cqw"></div><div class="bp-dim" style="left:-0.208cqw;top:27.083cqw;width:9.167cqw;text-align:right">50 mm</div><div class="bp-lab bp-l1" style="top:25.417cqw"><span><b>Pebble layer</b>Decorative cover</span></div><div class="bp-lab bp-l2" style="top:34.583cqw"><span><b>Drainage</b>Water runs through</span></div><div class="bp-lab bp-l3" style="top:16.250cqw"><span><b>House wall</b>Stays clean and dry</span></div><div class="bp-lab bp-l4" style="top:28.333cqw"><span><b>Borders and paths</b>Low upkeep finish</span></div></div></div></div>
-      <div class="mat-txt">
-        <h3>Pebbles</h3>
-        <p>Decorative ground cover that lifts the whole front of a property.</p>
-        <a class="btn" href="#shop" data-shopcat="PEBBLES">View products</a>
-      </div>
-    </article>
-    <article class="mat">
-      <div class="mat-img"><img src="/img/cat-mulch.jpg" alt="Black mulch spread across a garden bed" loading="lazy" width="640" height="640"></div>
-      <div class="mat-bp"><div class="bp"><div class="bp-pan" role="img" aria-label="Blueprint of a garden bed in section, then in 3D: a 75 millimetre layer of brown mulch over dark soil blocks light to weeds and holds moisture, giving a clean finished bed"><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><pattern id="mA" width="16" height="11" patternUnits="userSpaceOnUse"><path d="M2 3l5 1.5" stroke="#C99A5B" stroke-width="2.2"></path><path d="M10 2l4-1.5" stroke="#E8661A" stroke-width="2"></path><path d="M6 8.500l5 .500" stroke="#E8661A" stroke-width="2.2"></path><path d="M13 7l2.5 2" stroke="#C99A5B" stroke-width="1.8"></path></pattern><pattern id="mB" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="2.5" cy="3" r="1.2" fill="#7A4A24" stroke="none"></circle><circle cx="7.5" cy="7" r="1" fill="#C99A5B" stroke="none"></circle><circle cx="5" cy="8.5" r=".7" fill="#7A4A24" stroke="none"></circle></pattern></defs></svg><div class="bp-tag"><i>Section view</i><i>3D view</i></div><div class="bp-cam"><div class="bp-blk"><div class="bp-f bp-back"></div><div class="bp-f bp-left"><svg viewBox="0 0 150 84" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="150" height="24" fill="#4A2C17" stroke="none"></rect><rect x="0" y="0" width="150" height="24" fill="url(#mA)" stroke="none"></rect><path d="M0 24h150" stroke="#1A1A1A" stroke-width="2"></path><rect x="0" y="24" width="150" height="60" fill="#33200F" stroke="none"></rect><rect x="0" y="24" width="150" height="60" fill="url(#mB)" stroke="none"></rect></svg></div><div class="bp-f bp-right"><svg viewBox="0 0 150 84" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="150" height="24" fill="#4A2C17" stroke="none"></rect><rect x="0" y="0" width="150" height="24" fill="url(#mA)" stroke="none"></rect><path d="M0 24h150" stroke="#1A1A1A" stroke-width="2"></path><rect x="0" y="24" width="150" height="60" fill="#33200F" stroke="none"></rect><rect x="0" y="24" width="150" height="60" fill="url(#mB)" stroke="none"></rect></svg></div><div class="bp-f bp-top"><svg viewBox="0 0 190 150" preserveAspectRatio="none" aria-hidden="true"><rect width="190" height="150" fill="#4A2C17" stroke="none"></rect><rect width="190" height="150" fill="url(#mA)" stroke="none"></rect></svg></div><div class="bp-f bp-front"><svg viewBox="0 0 190 84" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="190" height="24" fill="#4A2C17" stroke="none"></rect><rect x="0" y="0" width="190" height="24" fill="url(#mA)" stroke="none"></rect><path d="M0 24h190" stroke="#1A1A1A" stroke-width="2"></path><rect x="0" y="24" width="190" height="60" fill="#33200F" stroke="none"></rect><rect x="0" y="24" width="190" height="60" fill="url(#mB)" stroke="none"></rect><path class="bp-flow" stroke="#F5C518" stroke-width="2" d="M40 3v16M150 3v16"></path><g class="bp-pulse"><path d="M30 40c2.5 3 4 5 4 7a4 4 0 0 1-8 0c0-2 1.5-4 4-7z" fill="#F6F2E9" stroke="#1A1A1A" stroke-width="1"></path><path d="M124 52c2.5 3 4 5 4 7a4 4 0 0 1-8 0c0-2 1.5-4 4-7z" fill="#F6F2E9" stroke="#1A1A1A" stroke-width="1"></path><path d="M166 36c2.5 3 4 5 4 7a4 4 0 0 1-8 0c0-2 1.5-4 4-7z" fill="#F6F2E9" stroke="#1A1A1A" stroke-width="1"></path></g><path class="bp-draw" stroke="#F6F2E9" stroke-width="2" style="--n:90" d="M95 24c0 14-12 16-16 30M95 24c0 16 10 20 14 34M95 24v40"></path></svg></div><div class="bp-up" style="left:13.542cqw;top:-16.250cqw;width:12.500cqw;height:16.250cqw;transform:translateZ(0)"><svg viewBox="0 0 60 78" aria-hidden="true"><g stroke="#F6F2E9"><path d="M30 78V22"></path><path d="M30 50c-16 0-22-10-22-22 16 0 22 10 22 22z" fill="#F5C518"></path><path d="M30 38c16 0 22-10 22-22-16 0-22 10-22 22z" fill="#F5C518"></path><path d="M30 64c-10 0-14-6-14-13 10 0 14 6 14 13z" fill="#E8661A"></path></g></svg></div><div class="bp-up" style="left:13.542cqw;top:-16.250cqw;width:12.500cqw;height:16.250cqw;transform:rotateY(90deg)"><svg viewBox="0 0 60 78" aria-hidden="true"><g stroke="#F6F2E9"><path d="M30 78V22"></path><path d="M30 50c-16 0-22-10-22-22 16 0 22 10 22 22z" fill="#F5C518"></path><path d="M30 38c16 0 22-10 22-22-16 0-22 10-22 22z" fill="#F5C518"></path><path d="M30 64c-10 0-14-6-14-13 10 0 14 6 14 13z" fill="#E8661A"></path></g></svg></div></div></div><div class="bp-veil"></div><div class="bp-dim" style="left:9.792cqw;top:26.250cqw;height:5cqw;border-left:0.292cqw solid #FF4A4A;border-top:0.292cqw solid #FF4A4A;border-bottom:0.292cqw solid #FF4A4A;width:1.250cqw"></div><div class="bp-dim" style="left:-0.208cqw;top:27.500cqw;width:9.167cqw;text-align:right">75 mm</div><div class="bp-lab bp-l1" style="top:25.833cqw"><span><b>Mulch layer</b>Blocks light to weeds</span></div><div class="bp-lab bp-l2" style="top:35cqw"><span><b>Moisture</b>Held in the soil</span></div><div class="bp-lab bp-l3" style="top:15.833cqw"><span><b>Planting</b>Roots stay cool</span></div><div class="bp-lab bp-l4" style="top:28.333cqw"><span><b>Finished bed</b>Clean, even cover</span></div></div></div></div>
-      <div class="mat-txt">
-        <h3>Mulch</h3>
-        <p>Suppress weeds, retain moisture, finish the look.</p>
-        <a class="btn" href="#shop" data-shopcat="MULCH">View products</a>
-      </div>
-    </article>
-    <article class="mat">
-      <div class="mat-img"><img src="/img/cat-soil.jpg" alt="Dark soil with a red shovel" loading="lazy" width="640" height="640"></div>
-      <div class="mat-bp"><div class="bp"><div class="bp-pan" role="img" aria-label="Blueprint of a garden bed in section, then in 3D: 100 millimetres of rich brown garden soil over the existing ground feeds roots and gives a base for lawn and garden beds"><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><pattern id="sA" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="2.5" cy="3" r="1.2" fill="#F5C518" stroke="none"></circle><circle cx="6.5" cy="6" r="1" fill="#E8661A" stroke="none"></circle><circle cx="4.5" cy="7.5" r=".7" fill="#F5C518" stroke="none"></circle></pattern><pattern id="sB" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><path d="M0 0v9" stroke="#9A9A9A" stroke-width="1.4"></path></pattern></defs></svg><div class="bp-tag"><i>Section view</i><i>3D view</i></div><div class="bp-cam"><div class="bp-blk"><div class="bp-f bp-back"></div><div class="bp-f bp-left"><svg viewBox="0 0 150 84" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="150" height="34" fill="#7A4A24" stroke="none"></rect><rect x="0" y="0" width="150" height="34" fill="url(#sA)" stroke="none"></rect><path d="M0 34h150" stroke="#1A1A1A" stroke-width="2"></path><rect x="0" y="34" width="150" height="50" fill="#5A5048" stroke="none"></rect><rect x="0" y="34" width="150" height="50" fill="url(#sB)" stroke="none"></rect></svg></div><div class="bp-f bp-right"><svg viewBox="0 0 150 84" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="150" height="34" fill="#7A4A24" stroke="none"></rect><rect x="0" y="0" width="150" height="34" fill="url(#sA)" stroke="none"></rect><path d="M0 34h150" stroke="#1A1A1A" stroke-width="2"></path><rect x="0" y="34" width="150" height="50" fill="#5A5048" stroke="none"></rect><rect x="0" y="34" width="150" height="50" fill="url(#sB)" stroke="none"></rect></svg></div><div class="bp-f bp-top"><svg viewBox="0 0 190 150" preserveAspectRatio="none" aria-hidden="true"><rect width="190" height="150" fill="#7A4A24" stroke="none"></rect><rect width="190" height="150" fill="url(#sA)" stroke="none"></rect><path stroke="#F5C518" d="M24 30v-7M24 30l-3-5M24 30l3-5"></path><path stroke="#F5C518" d="M60 22v-7M60 22l-3-5M60 22l3-5"></path><path stroke="#F5C518" d="M140 26v-7M140 26l-3-5M140 26l3-5"></path><path stroke="#F5C518" d="M170 60v-7M170 60l-3-5M170 60l3-5"></path><path stroke="#F5C518" d="M30 90v-7M30 90l-3-5M30 90l3-5"></path><path stroke="#F5C518" d="M70 120v-7M70 120l-3-5M70 120l3-5"></path><path stroke="#F5C518" d="M130 110v-7M130 110l-3-5M130 110l3-5"></path><path stroke="#F5C518" d="M165 128v-7M165 128l-3-5M165 128l3-5"></path></svg></div><div class="bp-f bp-front"><svg viewBox="0 0 190 84" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="190" height="34" fill="#7A4A24" stroke="none"></rect><rect x="0" y="0" width="190" height="34" fill="url(#sA)" stroke="none"></rect><path d="M0 34h190" stroke="#1A1A1A" stroke-width="2"></path><rect x="0" y="34" width="190" height="50" fill="#5A5048" stroke="none"></rect><rect x="0" y="34" width="190" height="50" fill="url(#sB)" stroke="none"></rect><path class="bp-draw" stroke="#F6F2E9" stroke-width="2" style="--n:120" d="M95 0c0 12-18 14-26 28M95 0c0 14 16 16 24 30M95 0v32M69 28c-6 4-8 10-14 12M119 30c6 4 8 8 16 10"></path></svg></div><div class="bp-up" style="left:13.542cqw;top:-16.250cqw;width:12.500cqw;height:16.250cqw;transform:translateZ(0)"><svg viewBox="0 0 60 78" aria-hidden="true"><g stroke="#F6F2E9"><path d="M30 78V22"></path><path d="M30 50c-16 0-22-10-22-22 16 0 22 10 22 22z" fill="#F5C518"></path><path d="M30 38c16 0 22-10 22-22-16 0-22 10-22 22z" fill="#F5C518"></path><path d="M30 64c-10 0-14-6-14-13 10 0 14 6 14 13z" fill="#E8661A"></path></g></svg></div><div class="bp-up" style="left:13.542cqw;top:-16.250cqw;width:12.500cqw;height:16.250cqw;transform:rotateY(90deg)"><svg viewBox="0 0 60 78" aria-hidden="true"><g stroke="#F6F2E9"><path d="M30 78V22"></path><path d="M30 50c-16 0-22-10-22-22 16 0 22 10 22 22z" fill="#F5C518"></path><path d="M30 38c16 0 22-10 22-22-16 0-22 10-22 22z" fill="#F5C518"></path><path d="M30 64c-10 0-14-6-14-13 10 0 14 6 14 13z" fill="#E8661A"></path></g></svg></div></div></div><div class="bp-veil"></div><div class="bp-dim" style="left:9.792cqw;top:26.250cqw;height:7.083cqw;border-left:0.292cqw solid #FF4A4A;border-top:0.292cqw solid #FF4A4A;border-bottom:0.292cqw solid #FF4A4A;width:1.250cqw"></div><div class="bp-dim" style="left:-0.208cqw;top:28.542cqw;width:9.167cqw;text-align:right">100 mm</div><div class="bp-lab bp-l1" style="top:26.667cqw"><span><b>Garden soil</b>Feeds the roots</span></div><div class="bp-lab bp-l2" style="top:35.833cqw"><span><b>Existing ground</b>Roots spread down</span></div><div class="bp-lab bp-l3" style="top:15.833cqw"><span><b>Healthy growth</b>Stronger plants</span></div><div class="bp-lab bp-l4" style="top:28.333cqw"><span><b>Lawn and beds</b>Ready to plant or turf</span></div></div></div></div>
-      <div class="mat-txt">
-        <h3>Compost &amp; Soil</h3>
-        <p>Feed your garden from the ground up.</p>
-        <a class="btn" href="#shop" data-shopcat="COMPOST">View products</a>
-      </div>
-    </article>
-    <article class="mat">
-      <div class="mat-img"><img src="/img/cat-sand.jpg" alt="White sand with a red shovel" loading="lazy" width="640" height="640"></div>
-      <div class="mat-bp"><div class="bp"><div class="bp-pan" role="img" aria-label="Blueprint of paving in section, then in 3D: orange pavers sit on a levelled bed of yellow sand over a grey compacted base"><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><pattern id="aA" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="2.5" cy="3" r="1.2" fill="#7A4A24" stroke="none"></circle><circle cx="3.5" cy="3" r="1" fill="#C99A5B" stroke="none"></circle><circle cx="3" cy="4.5" r=".7" fill="#7A4A24" stroke="none"></circle></pattern><pattern id="aB" width="18" height="13" patternUnits="userSpaceOnUse"><ellipse cx="5" cy="4" rx="4.2" ry="3" fill="#9A9A9A" stroke="#1A1A1A" stroke-width=".8"></ellipse><ellipse cx="13.5" cy="9" rx="4" ry="2.9" fill="#6E6E6E" stroke="#1A1A1A" stroke-width=".8"></ellipse><ellipse cx="13" cy="2" rx="2" ry="1.4" fill="#6E6E6E" stroke="none"></ellipse><ellipse cx="4" cy="10.5" rx="2.2" ry="1.5" fill="#9A9A9A" stroke="none"></ellipse></pattern></defs></svg><div class="bp-tag"><i>Section view</i><i>3D view</i></div><div class="bp-cam"><div class="bp-blk"><div class="bp-f bp-back"></div><div class="bp-f bp-left"><svg viewBox="0 0 150 84" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="150" height="14" fill="#E8661A" stroke="none"></rect><path d="M0 14h150" stroke="#1A1A1A" stroke-width="2"></path><rect x="0" y="14" width="150" height="20" fill="#EBD79A" stroke="none"></rect><rect x="0" y="14" width="150" height="20" fill="url(#aA)" stroke="none"></rect><path d="M0 34h150" stroke="#1A1A1A" stroke-width="2"></path><rect x="0" y="34" width="150" height="50" fill="#4F4F4F" stroke="none"></rect><rect x="0" y="34" width="150" height="50" fill="url(#aB)" stroke="none"></rect><path stroke="#1A1A1A" stroke-width="2" d="M30 0v14"></path><path stroke="#1A1A1A" stroke-width="2" d="M60 0v14"></path><path stroke="#1A1A1A" stroke-width="2" d="M90 0v14"></path><path stroke="#1A1A1A" stroke-width="2" d="M120 0v14"></path></svg></div><div class="bp-f bp-right"><svg viewBox="0 0 150 84" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="150" height="14" fill="#E8661A" stroke="none"></rect><path d="M0 14h150" stroke="#1A1A1A" stroke-width="2"></path><rect x="0" y="14" width="150" height="20" fill="#EBD79A" stroke="none"></rect><rect x="0" y="14" width="150" height="20" fill="url(#aA)" stroke="none"></rect><path d="M0 34h150" stroke="#1A1A1A" stroke-width="2"></path><rect x="0" y="34" width="150" height="50" fill="#4F4F4F" stroke="none"></rect><rect x="0" y="34" width="150" height="50" fill="url(#aB)" stroke="none"></rect><path stroke="#1A1A1A" stroke-width="2" d="M30 0v14"></path><path stroke="#1A1A1A" stroke-width="2" d="M60 0v14"></path><path stroke="#1A1A1A" stroke-width="2" d="M90 0v14"></path><path stroke="#1A1A1A" stroke-width="2" d="M120 0v14"></path></svg></div><div class="bp-f bp-top"><svg viewBox="0 0 190 150" preserveAspectRatio="none" aria-hidden="true"><rect width="190" height="150" fill="#E8661A" stroke="none"></rect><path stroke="#1A1A1A" stroke-width="2" d="M38 0v150"></path><path stroke="#1A1A1A" stroke-width="2" d="M76 0v150"></path><path stroke="#1A1A1A" stroke-width="2" d="M114 0v150"></path><path stroke="#1A1A1A" stroke-width="2" d="M152 0v150"></path><path stroke="#1A1A1A" stroke-width="2" d="M0 30h190"></path><path stroke="#1A1A1A" stroke-width="2" d="M0 60h190"></path><path stroke="#1A1A1A" stroke-width="2" d="M0 90h190"></path><path stroke="#1A1A1A" stroke-width="2" d="M0 120h190"></path></svg></div><div class="bp-f bp-front"><svg viewBox="0 0 190 84" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="190" height="14" fill="#E8661A" stroke="none"></rect><path d="M0 14h190" stroke="#1A1A1A" stroke-width="2"></path><rect x="0" y="14" width="190" height="20" fill="#EBD79A" stroke="none"></rect><rect x="0" y="14" width="190" height="20" fill="url(#aA)" stroke="none"></rect><path d="M0 34h190" stroke="#1A1A1A" stroke-width="2"></path><rect x="0" y="34" width="190" height="50" fill="#4F4F4F" stroke="none"></rect><rect x="0" y="34" width="190" height="50" fill="url(#aB)" stroke="none"></rect><path stroke="#1A1A1A" stroke-width="2" d="M38 0v14"></path><path stroke="#1A1A1A" stroke-width="2" d="M76 0v14"></path><path stroke="#1A1A1A" stroke-width="2" d="M114 0v14"></path><path stroke="#1A1A1A" stroke-width="2" d="M152 0v14"></path></svg></div></div></div><div class="bp-veil"></div><div class="bp-dim" style="left:9.792cqw;top:26.250cqw;height:7.083cqw;border-left:0.292cqw solid #FF4A4A;border-top:0.292cqw solid #FF4A4A;border-bottom:0.292cqw solid #FF4A4A;width:1.250cqw"></div><div class="bp-dim" style="left:-0.208cqw;top:28.542cqw;width:9.167cqw;text-align:right">50 mm</div><div class="bp-lab bp-l1" style="top:20.833cqw"><span><b>Pavers</b>Flat and locked in</span></div><div class="bp-lab bp-l2" style="top:28.333cqw"><span><b>Sand bedding</b>Screeded level</span></div><div class="bp-lab bp-l3" style="top:35.833cqw"><span><b>Compacted base</b>Carries the load</span></div><div class="bp-lab bp-l4" style="top:28.333cqw"><span><b>Finished paving</b>Also brick and concrete mixes</span></div></div></div></div>
-      <div class="mat-txt">
-        <h3>Sand</h3>
-        <p>Washed, graded and ready for any job.</p>
-        <a class="btn" href="#shop" data-shopcat="SAND">View products</a>
-      </div>
-    </article>
-    <article class="mat">
-      <div class="mat-img"><img src="/img/cat-toppings.jpg" alt="Red scoria packed around a drainage pipe" loading="lazy" width="640" height="640"></div>
-      <div class="mat-bp"><div class="bp"><div class="bp-pan" role="img" aria-label="Blueprint of a driveway in section, then in 3D: 75 to 100 millimetres of compacted orange-brown toppings over a grey sub-base carries a car and drains freely"><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><pattern id="tA" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="2.5" cy="3" r="1.2" fill="#F6F2E9" stroke="none"></circle><circle cx="3.5" cy="3" r="1" fill="#4A2C17" stroke="none"></circle><circle cx="3" cy="4.5" r=".7" fill="#F6F2E9" stroke="none"></circle></pattern><pattern id="tB" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><path d="M0 0v9" stroke="#9A9A9A" stroke-width="1.4"></path></pattern></defs></svg><div class="bp-tag"><i>Section view</i><i>3D view</i></div><div class="bp-cam"><div class="bp-blk"><div class="bp-f bp-back"></div><div class="bp-f bp-left"><svg viewBox="0 0 150 84" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="150" height="30" fill="#C9893A" stroke="none"></rect><rect x="0" y="0" width="150" height="30" fill="url(#tA)" stroke="none"></rect><path d="M0 30h150" stroke="#1A1A1A" stroke-width="2"></path><rect x="0" y="30" width="150" height="54" fill="#4F4F4F" stroke="none"></rect><rect x="0" y="30" width="150" height="54" fill="url(#tB)" stroke="none"></rect></svg></div><div class="bp-f bp-right"><svg viewBox="0 0 150 84" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="150" height="30" fill="#C9893A" stroke="none"></rect><rect x="0" y="0" width="150" height="30" fill="url(#tA)" stroke="none"></rect><path d="M0 30h150" stroke="#1A1A1A" stroke-width="2"></path><rect x="0" y="30" width="150" height="54" fill="#4F4F4F" stroke="none"></rect><rect x="0" y="30" width="150" height="54" fill="url(#tB)" stroke="none"></rect></svg></div><div class="bp-f bp-top"><svg viewBox="0 0 190 150" preserveAspectRatio="none" aria-hidden="true"><rect width="190" height="150" fill="#C9893A" stroke="none"></rect><rect width="190" height="150" fill="url(#tA)" stroke="none"></rect></svg></div><div class="bp-f bp-front"><svg viewBox="0 0 190 84" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="190" height="30" fill="#C9893A" stroke="none"></rect><rect x="0" y="0" width="190" height="30" fill="url(#tA)" stroke="none"></rect><path d="M0 30h190" stroke="#1A1A1A" stroke-width="2"></path><rect x="0" y="30" width="190" height="54" fill="#4F4F4F" stroke="none"></rect><rect x="0" y="30" width="190" height="54" fill="url(#tB)" stroke="none"></rect><path class="bp-flow" stroke="#F6F2E9" stroke-width="2" d="M30 30v48M160 30v48"></path><g class="bp-pulse" stroke="#F5C518" stroke-width="2"><path d="M70 -2v10M70 8l-4-5M70 8l4-5M120 -2v10M120 8l-4-5M120 8l4-5"></path></g></svg></div><div class="bp-up" style="left:7.292cqw;top:-6.667cqw;width:25cqw;height:5cqw;transform:translateZ(0cqw)"><div class="bp-f bp-car" style="left:0;top:0;width:25cqw;height:5cqw;transform:translateZ(6.875cqw)"></div><div class="bp-f bp-car" style="left:0;top:0;width:25cqw;height:5cqw;transform:translateZ(-6.875cqw)"></div><div class="bp-f bp-car" style="left:5.625cqw;top:0;width:13.750cqw;height:5cqw;transform:rotateY(90deg) translateZ(12.500cqw)"></div><div class="bp-f bp-car" style="left:5.625cqw;top:0;width:13.750cqw;height:5cqw;transform:rotateY(-90deg) translateZ(12.500cqw)"></div><div class="bp-f bp-car" style="left:0;top:-4.375cqw;width:25cqw;height:13.750cqw;transform:rotateX(90deg) translateZ(2.500cqw)"></div></div><div class="bp-up" style="left:11.875cqw;top:-10.833cqw;width:13.333cqw;height:4.167cqw;transform:translateZ(0cqw)"><div class="bp-f bp-cab" style="left:0;top:0;width:13.333cqw;height:4.167cqw;transform:translateZ(6.250cqw)"></div><div class="bp-f bp-cab" style="left:0;top:0;width:13.333cqw;height:4.167cqw;transform:translateZ(-6.250cqw)"></div><div class="bp-f bp-cab" style="left:0.417cqw;top:0;width:12.500cqw;height:4.167cqw;transform:rotateY(90deg) translateZ(6.667cqw)"></div><div class="bp-f bp-cab" style="left:0.417cqw;top:0;width:12.500cqw;height:4.167cqw;transform:rotateY(-90deg) translateZ(6.667cqw)"></div><div class="bp-f bp-cab" style="left:0;top:-4.167cqw;width:13.333cqw;height:12.500cqw;transform:rotateX(90deg) translateZ(2.083cqw)"></div></div><div class="bp-up" style="left:7.292cqw;top:-4.167cqw;width:25cqw;height:4.167cqw;transform:translateZ(7.083cqw)"><svg viewBox="0 0 120 20" aria-hidden="true"><g fill="#1A1A1A" stroke="#F6F2E9"><circle cx="24" cy="11" r="9"></circle><circle cx="96" cy="11" r="9"></circle></g></svg></div><div class="bp-up" style="left:7.292cqw;top:-4.167cqw;width:25cqw;height:4.167cqw;transform:translateZ(-7.083cqw)"><svg viewBox="0 0 120 20" aria-hidden="true"><g fill="#1A1A1A" stroke="#F6F2E9"><circle cx="24" cy="11" r="9"></circle><circle cx="96" cy="11" r="9"></circle></g></svg></div></div></div><div class="bp-veil"></div><div class="bp-dim" style="left:9.792cqw;top:26.250cqw;height:6.250cqw;border-left:0.292cqw solid #FF4A4A;border-top:0.292cqw solid #FF4A4A;border-bottom:0.292cqw solid #FF4A4A;width:1.250cqw"></div><div class="bp-dim" style="left:-0.208cqw;top:27.083cqw;width:9.167cqw;text-align:right">75–100 mm</div><div class="bp-lab bp-l1" style="top:26.250cqw"><span><b>Toppings</b>Compact down hard</span></div><div class="bp-lab bp-l2" style="top:35.417cqw"><span><b>Sub-base</b>Water drains below</span></div><div class="bp-lab bp-l3" style="top:16.250cqw"><span><b>Vehicle load</b>Holds under traffic</span></div><div class="bp-lab bp-l4" style="top:28.333cqw"><span><b>Driveways and paths</b>Firm, tidy surface</span></div></div></div></div>
-      <div class="mat-txt">
-        <h3>Toppings &amp; Screenings</h3>
-        <p>Gravel and screenings for driveways, paths and base layers.</p>
-        <a class="btn" href="#shop" data-shopcat="TOPPINGS">View products</a>
-      </div>
-    </article>
-  </div>
-</div></section>
-
-<main id="shop" class="wrap shop">
-  <div class="shop-head">
-    <h2 class="sec-title">Shop <span>materials</span></h2>
-    <div class="search"><input id="q" type="search" placeholder="Search products" aria-label="Search products"></div>
-  </div>
-  <div class="chips" id="chips"></div>
-  <div class="grid" id="grid"><div class="loading">Loading products…</div></div>
-  <div class="more"><button class="btn alt" id="moreBtn" hidden>Show more</button></div>
-</main>
-
-<section id="areas" class="areas"><div class="wrap">
-  <h2 class="sec-title">Delivery <span>areas</span></h2>
-  <p class="lead">Every price is per truck load from our Hampton Park yard. One truck carries one material up to 10 m³, or two materials in separate compartments. Not on the list? Call us and we'll quote it.</p>
-  <p><a class="btn" href="/delivery.html">See the delivery map</a></p>
-  <div class="zones" id="zones"></div>
-</div></section>
-
-<footer id="contact" class="ftr"><div class="wrap ftr-grid">
+<section class="sx-calc" id="calculator"><div class="sx-wrap sx-two top">
   <div>
-    <div class="logo"><span class="logo-mark">ADV</span><span class="logo-txt">SUPPLIES<small>It all starts from the ground UP</small></span></div>
-    <p>Bulk landscape and building supplies for trade and home, delivered across Melbourne's south-east.</p>
+    <span class="sx-eye">Material calculator</span>
+    <h2 class="sx-h1">Do you need <span>measurements?</span></h2>
+    <p class="sx-lead">Tell us your measurements here and we'll tell you how much you need.</p>
+    <p class="sx-small">Typical depths: mulch 75 mm, garden soil 100 mm, pebbles and sand 50 mm, toppings and crushed rock 75 to 100 mm.</p>
   </div>
-  <div><h4>Visit the yard</h4><p>320 Hallam Rd<br>Hampton Park VIC 3976<br>Open 7 days, 8am to 4pm</p></div>
-  <div><h4>Talk to us</h4><p><a href="tel:0397996399">(03) 9799 6399</a><br><a href="mailto:sales@advsupplies.com.au">sales@advsupplies.com.au</a></p></div>
-</div><div class="wrap ftr-bot">© ADV Garden and Building Supplies Pty Ltd · Payments processed securely by Square</div></footer>
-
-<!-- Product modal -->
-<div class="modal" id="modal" hidden>
-  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="mName">
-    <button class="x" data-close aria-label="Close">×</button>
-    <div class="m-img" id="mImg"></div>
-    <div class="m-body">
-      <div class="m-cat" id="mCat"></div>
-      <h3 id="mName"></h3>
-      <div class="m-price" id="mPrice"></div>
-      <p class="m-desc" id="mDesc"></p>
-      <div id="mOpts"></div>
-      <div class="m-total"><span>Total</span><b id="mTotal"></b></div>
-      <button class="btn block" id="mAdd">Add to cart</button>
+  <div class="sx-calcbox">
+    <label class="fl">Product<select id="hcProd"><option>Loading products…</option></select></label>
+    <div class="fl3">
+      <label class="fl">Length (m)<input id="hcL" type="number" min="0" step="0.1" inputmode="decimal" value="5"></label>
+      <label class="fl">Width (m)<input id="hcW" type="number" min="0" step="0.1" inputmode="decimal" value="3"></label>
+      <label class="fl">Depth (mm)<input id="hcD" type="number" min="0" step="10" inputmode="numeric" value="75"></label>
     </div>
+    <div id="hcOut" class="hc-out" aria-live="polite"></div>
   </div>
+</div></section>
+<footer id="contact" class="sf"><div class="sf-in">
+  <div class="sf-col">
+    <div class="sf-brand">ADV Supplies <span>|</span> Garden &amp; Building</div>
+    <p>Bulk landscape and building supplies for trade and home, delivered across Melbourne's south-east. It all starts from the ground UP.</p>
+    <nav class="sf-nav" aria-label="Footer"><a href="/products.html">Products</a><a href="/#delivery">Need delivery?</a><a href="/#calculator">Need measurements?</a><a href="/delivery.html">Delivery map</a></nav>
+  </div>
+  <div class="sf-col"><h4>Visit the yard</h4><p>320 Hallam Rd<br>Hampton Park VIC 3976<br>Open 7 days, 8am to 4pm</p></div>
+  <div class="sf-col"><h4>Talk to us</h4><p><a href="tel:0397996399">(03) 9799 6399</a><br><a href="mailto:sales@advsupplies.com.au">sales@advsupplies.com.au</a></p></div>
 </div>
-
-<!-- Cart drawer -->
-<div class="drawer" id="drawer" hidden>
-  <div class="drawer-bg" data-close></div>
-  <aside class="drawer-box" aria-label="Cart">
-    <div class="d-head"><h3 id="dTitle">Your cart</h3><button class="x" data-close aria-label="Close">×</button></div>
-    <div class="d-body" id="dBody"></div>
-    <div class="d-foot" id="dFoot"></div>
-  </aside>
-</div>
-
-<div class="toast" id="toast"></div>
+<div class="sf-bot"><span>© ADV Garden and Building Supplies Pty Ltd · Payments processed securely by Square</span><span class="sf-legal"><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms &amp; Conditions</a><a href="/refunds.html">Refunds &amp; Returns</a><a href="/gift-cards.html">Gift Card Terms</a></span></div>
+</footer>
 <script src="/app.js"></script>
+<script>
+(function(){var b=document.getElementById('mcMore'),g=document.getElementById('mcGrid');if(b)b.addEventListener('click',function(){var o=g.classList.toggle('open');b.textContent=o?'Show less':'Show more';b.setAttribute('aria-expanded',o);});})();
+(function(){var el=document.querySelector('[data-adv-hero]');if(!el)return;var go=function(){if(go.d)return;go.d=1;var s=document.createElement('script');s.src='/hero/hero3d.js';document.body.appendChild(s);};
+if('IntersectionObserver' in window){new IntersectionObserver(function(es,o){if(es.some(function(e){return e.isIntersecting})){o.disconnect();go();}},{rootMargin:'200px'}).observe(el);}else go();})();
+</script>
 </body>
 </html>

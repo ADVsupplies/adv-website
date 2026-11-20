@@ -7,6 +7,14 @@
   var r2 = function (n) { return Math.round(n * 100) / 100; };
   var fmtM3 = function (q) { return (+q).toFixed(2).replace(/\.?0+$/, "") + " m³"; };
 
+  (function () {
+    if (document.getElementById("modal")) return;
+    var w = document.createElement("div");
+    w.innerHTML = '<div class="modal" id="modal" hidden><div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="mName"><button class="x" data-close aria-label="Close">×</button><div class="m-img" id="mImg"></div><div class="m-body"><div class="m-cat" id="mCat"></div><h3 id="mName"></h3><div class="m-price" id="mPrice"></div><p class="m-desc" id="mDesc"></p><div id="mOpts"></div><div class="m-total"><span>Total</span><b id="mTotal"></b></div><button class="btn block" id="mAdd">Add to cart</button></div></div></div>' +
+      '<div class="drawer" id="drawer" hidden><div class="drawer-bg" data-close></div><aside class="drawer-box" aria-label="Cart"><div class="d-head"><h3 id="dTitle">Your cart</h3><button class="x" data-close aria-label="Close">×</button></div><div class="d-body" id="dBody"></div><div class="d-foot" id="dFoot"></div></aside></div>' +
+      '<div class="toast" id="toast"></div>';
+    while (w.firstChild) document.body.appendChild(w.firstChild);
+  })();
   var DATA = null, BYID = {}, ZONES = {};
   var S = { cat: "All", q: "", shown: 48 };
   var store = {
@@ -17,7 +25,7 @@
   var co = store.get("checkout", { mode: "delivery", suburb: "", contact: {}, address: {}, date: "", notes: "" });
   var step = "cart";
 
-  function save() { store.set("cart", cart); store.set("checkout", co); $("#cartCount").textContent = cart.length; }
+  function save() { store.set("cart", cart); store.set("checkout", co); var cc = $("#cartCount"); if (cc) cc.textContent = cart.length; }
 
   function toast(msg) { var t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(function () { t.classList.remove("show"); }, 2200); }
 
@@ -115,6 +123,7 @@
 
   /* ---------- shop ---------- */
   function renderChips() {
+    if (!$("#chips")) return;
     var cats = ["All"].concat(DATA.categories);
     $("#chips").innerHTML = cats.map(function (c) {
       return '<button class="chip' + (c === S.cat ? " on" : "") + '" data-c="' + esc(c) + '">' + esc(niceCat(c)) + "</button>";
@@ -128,6 +137,7 @@
     });
   }
   function renderGrid() {
+    if (!$("#grid")) return;
     var list = filtered();
     var shown = list.slice(0, S.shown);
     $("#grid").innerHTML = shown.length ? shown.map(function (p) {
@@ -409,11 +419,105 @@
 
   /* ---------- zones section ---------- */
   function renderZones() {
+    if (!$("#zones")) return;
     var by = {};
     DATA.suburbs.forEach(function (s) { (by[s.z] = by[s.z] || []).push(s.s); });
     $("#zones").innerHTML = DATA.zones.sort(function (a, b) { return a.zone - b.zone; }).map(function (z) {
       return '<div class="zone"><h4><span>Zone ' + z.zone + ' <small>' + (by[z.zone] || []).length + " suburbs</small></span><b>" + money(z.price) + "</b></h4><p>" + (by[z.zone] || []).sort().map(esc).join(", ") + "</p></div>";
     }).join("");
+  }
+
+
+  /* ---------- products page ---------- */
+  var PS = { q: "", open: {} };
+  var CATCFG = [
+    ["MULCHES", "Mulch", "Suppress weeds, retain moisture, finish the look.", "mulch"],
+    ["PEBBLES", "Pebbles", "Decorative ground cover that lifts the whole front of a property.", "pebbles"],
+    ["TOPPINGS & SCREENINGS", "Toppings & Screenings", "Gravel and screenings for driveways, paths and base layers.", "toppings"],
+    ["COMPOST & SOIL", "Compost & Soil", "Feed your garden from the ground up.", "soil"],
+    ["SAND", "Sand", "Washed, graded and ready for any job.", "sand"],
+    ["ROCKS", "Rocks", "Bold, natural statement pieces for any landscape.", "rocks"],
+    ["FIREWOOD", "Firewood", "Dry, split and ready to burn.", "firewood"],
+    ["BAG PRODUCTS", "Bag Products", "Quality products, conveniently bagged & ready to go.", "bags"],
+    ["BLOCKS & PAVERS", "Blocks & Pavers", "Solid surfaces for paths, driveways and walls.", "blocks"],
+    ["TIMBERS", "Timber", "Sleepers, posts and structural timber in stock.", "timber"],
+    ["HARDWARE & TOOLS", "Hardware & Tools", "The right gear, when you need it.", "hardware"],
+    ["ACCESSORIES", "Accessories", "Everything else the job needs.", "accessories"],
+    ["LAWN / TURF & GRASS SEEDS", "Lawn, Turf & Grass Seed", "Establish, repair and maintain a healthy lawn.", "lawn"],
+    ["SOIL TREATMENT", "Soil Treatment", "Condition, enrich and prepare your ground.", "soiltreat"],
+    ["LIQUID / CHEMICAL PRODUCTS", "Liquid & Chemical Products", "Fertilisers, herbicides and treatments for every application.", "liquid"],
+    ["WATER TANK", "Water Tanks", "Reliable water storage for any property.", "tank"]
+  ];
+  var SHADES = ["#C80000", "#B00808", "#961010", "#7A1414", "#5E1717", "#431818", "#2B2B2B", "#3D3D3D", "#555555", "#707070", "#8C8C8C", "#A9A9A9", "#C4C4C4", "#DCDCDC", "#EEEEEE", "#FFFFFF"];
+  var slug = function (s) { return String(s).toLowerCase().replace(/&/g, " ").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); };
+  function psCats() {
+    var known = CATCFG.map(function (c) { return c[0]; });
+    var list = CATCFG.filter(function (c) { return DATA.categories.indexOf(c[0]) > -1; });
+    DATA.categories.forEach(function (c) { if (known.indexOf(c) < 0) list.push([c, niceCat(c), "", ""]); });
+    return list.map(function (c, i) {
+      var shade = SHADES[Math.round(i * (SHADES.length - 1) / Math.max(1, list.length - 1))];
+      var dark = SHADES.indexOf(shade) <= 9;
+      return { key: c[0], name: c[1], tag: c[2], img: c[3] ? "/img/cat-" + c[3] + ".jpg" : "", id: "cat-" + slug(c[1]), bg: shade, dark: dark, redHead: SHADES.indexOf(shade) >= 12 };
+    });
+  }
+  function pcard(p, cat) {
+    var img = p.image || cat.img;
+    var tag = p.out ? '<span class="pc-tag out">Out of stock</span>' : p.bulk ? '<span class="pc-tag">Delivered</span>' : !p.deliver ? '<span class="pc-tag pk">Pick up</span>' : "";
+    var unit = p.bulk ? "per m³" : (p.variations && p.variations.length > 1 ? "from" : "each");
+    return '<button type="button" class="pcard" data-id="' + p.id + '"><span class="pc-img"' + (img ? ' style="background-image:url(\'' + esc(img) + '\')"' : "") + ">" + tag + '</span><span class="pc-b"><span class="pc-n">' + esc(p.name) + '</span><span class="pc-row"><span class="pc-pr"><b>' + money(p.price) + "</b><span>" + unit + '</span></span><span class="pc-v">View</span></span></span></button>';
+  }
+  function renderSections() {
+    var box = $("#psSections"); if (!box || !DATA) return;
+    var cats = psCats(), q = PS.q.toLowerCase(), any = false, SHOW = 8, html = "";
+    var chips = $("#psChips");
+    if (chips && !chips.innerHTML) chips.innerHTML = cats.map(function (c) { return '<a href="#' + c.id + '" style="background:' + c.bg + ";color:" + (c.dark ? "#fff" : "#1A1A1A") + '">' + esc(c.name) + "</a>"; }).join("");
+    cats.forEach(function (c) {
+      var all = DATA.products.filter(function (p) { return p.category === c.key && (!q || p.name.toLowerCase().indexOf(q) > -1); });
+      if (!all.length) return; any = true;
+      var open = !!PS.open[c.key] || !!q, shown = open ? all : all.slice(0, SHOW);
+      var fg = c.dark ? "#fff" : "#1A1A1A", sub = c.dark ? "rgba(255,255,255,.88)" : "#3A3A3A";
+      html += '<section class="ps-sec" id="' + c.id + '" aria-label="' + esc(c.name) + '" style="background:' + c.bg + ";color:" + fg + '"><div class="sx-wrap">' +
+        '<div class="ps-hd">' + (c.img ? '<img src="' + c.img + '" alt="" loading="lazy">' : "") + '<div><h2' + (c.redHead ? ' style="color:#C80000"' : "") + ">" + esc(c.name) + '</h2><span class="sx-bar" style="margin:2px 0"></span>' + (c.tag ? '<p style="color:' + sub + '">' + esc(c.tag) + "</p>" : "") + '<span class="ps-count">' + all.length + " product" + (all.length > 1 ? "s" : "") + "</span></div></div>" +
+        '<div class="ps-grid">' + shown.map(function (p) { return pcard(p, c); }).join("") + "</div>" +
+        (!q && all.length > SHOW ? '<button type="button" class="ps-more" data-psmore="' + esc(c.key) + '">' + (PS.open[c.key] ? "Show fewer" : "Show all " + all.length) + "</button>" : "") +
+        "</div></section>";
+    });
+    box.innerHTML = html;
+    var none = $("#psNone"); if (none) { none.hidden = any; none.innerHTML = any ? "" : 'No products match “' + esc(PS.q) + '”. Try another word, or call <a href="tel:0397996399">(03) 9799 6399</a>.'; }
+    if (location.hash && !renderSections.jumped) { renderSections.jumped = 1; var el = document.getElementById(location.hash.slice(1)); if (el) setTimeout(function () { el.scrollIntoView(); }, 30); }
+  }
+  if ($("#psQ")) { var psT; $("#psQ").addEventListener("input", function (e) { clearTimeout(psT); psT = setTimeout(function () { PS.q = e.target.value.trim(); renderSections(); }, 150); }); }
+
+  /* ---------- home calculator ---------- */
+  var DEPTHS = { "MULCHES": 75, "COMPOST & SOIL": 100, "SAND": 50, "PEBBLES": 50, "ROCKS": 100, "TOPPINGS & SCREENINGS": 75 };
+  function hcInit() {
+    var sel = $("#hcProd"); if (!sel) return;
+    var bulk = DATA.products.filter(function (p) { return p.bulk; }), groups = {};
+    bulk.forEach(function (p) { (groups[p.category] = groups[p.category] || []).push(p); });
+    sel.innerHTML = Object.keys(groups).map(function (g) { return '<optgroup label="' + esc(niceCat(g)) + '">' + groups[g].map(function (p) { return '<option value="' + p.id + '">' + esc(p.name) + " (" + money(p.price) + "/m³)</option>"; }).join("") + "</optgroup>"; }).join("");
+    var pick = bulk.filter(function (p) { return /blackwood/i.test(p.name); })[0] || bulk[0];
+    if (pick) sel.value = pick.id;
+    sel.addEventListener("change", function () { var p = BYID[sel.value]; if (p && DEPTHS[p.category]) $("#hcD").value = DEPTHS[p.category]; hcCalc(); });
+    ["#hcL", "#hcW", "#hcD"].forEach(function (k) { $(k).addEventListener("input", hcCalc); });
+    hcCalc();
+  }
+  var HC = null;
+  function hcCalc() {
+    var p = BYID[$("#hcProd").value], L = parseFloat($("#hcL").value), W = parseFloat($("#hcW").value), D = parseFloat($("#hcD").value), out = $("#hcOut");
+    if (!p || !(L > 0 && W > 0 && D > 0)) { HC = null; out.innerHTML = '<span>Enter the length, width and depth of your area.</span>'; return; }
+    var st = DATA.settings.bulkStep, m3 = L * W * D / 1000, up = r2(Math.max(st, Math.ceil(m3 / st - 1e-9) * st));
+    var big = up > DATA.settings.bulkMaxPerProduct;
+    HC = big ? null : { p: p, q: up };
+    out.innerHTML = '<div class="hc-row"><span>You need about <b>' + m3.toFixed(2) + ' m³</b></span><span class="hc-big">Order ' + fmtM3(up) + "</span></div>" +
+      (big ? '<div class="hc-row"><span>That\'s a bulk order (10 m³ or more). Call us for bulk pricing.</span><a class="sx-btn" href="tel:0397996399">Call (03) 9799 6399</a></div>'
+           : '<div class="hc-row"><span>' + esc(p.name) + ' · <b class="pr">' + money2(bulkPrice(p, up)) + '</b> plus delivery</span><button type="button" class="sx-btn" id="hcAdd">Add ' + fmtM3(up) + " to cart</button></div>");
+  }
+  function hcAdd() {
+    if (!HC) return;
+    M = { p: HC.p, qty: HC.q, variationId: null };
+    var ex = cart.filter(function (l) { return l.id === HC.p.id; })[0];
+    if (ex) ex.qty = clampQty(HC.p, ex.qty + HC.q, null); else cart.push({ id: HC.p.id, variationId: null, qty: HC.q });
+    save(); toast("Added to cart: " + HC.p.name); openCart();
   }
 
   /* ---------- events ---------- */
@@ -427,7 +531,9 @@
       return;
     }
     var c = t.closest(".chip"); if (c) { S.cat = c.dataset.c; S.shown = 48; renderChips(); renderGrid(); return; }
-    var pc = t.closest(".p"); if (pc) { openProduct(pc.dataset.id); return; }
+    var pc = t.closest(".p, .pcard"); if (pc) { openProduct(pc.dataset.id); return; }
+    var pm = t.closest("[data-psmore]"); if (pm) { PS.open[pm.dataset.psmore] = !PS.open[pm.dataset.psmore]; renderSections(); return; }
+    if (t.closest("#hcAdd")) { hcAdd(); return; }
     if (t.closest("#moreBtn")) { S.shown += 48; renderGrid(); return; }
     if (t.closest("#cartBtn")) { openCart(); return; }
     var q = t.closest("[data-q]"); if (q) { var st = M.p.bulk ? DATA.settings.bulkStep : 1; $("#mQty").value = clampQty(M.p, M.qty + st * +q.dataset.q, M.variationId); updModal(); return; }
@@ -455,7 +561,7 @@
     if (e.target.id === "mQty") { var v = parseFloat(e.target.value); if (v > 0) { M.qty = clampQty(M.p, v, M.variationId); $("#mTotal").textContent = money2(M.p.bulk ? bulkPrice(M.p, M.qty) : (M.p.variations.filter(function (x) { return x.id === M.variationId; })[0] || M.p.variations[0]).price * M.qty); } }
   });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeAll(); });
-  var qt; $("#q").addEventListener("input", function (e) { clearTimeout(qt); qt = setTimeout(function () { S.q = e.target.value.trim(); S.shown = 48; renderGrid(); }, 150); });
+  var qt; if ($("#q")) $("#q").addEventListener("input", function (e) { clearTimeout(qt); qt = setTimeout(function () { S.q = e.target.value.trim(); S.shown = 48; renderGrid(); }, 150); });
 
   /* ---------- boot ---------- */
   fetch("/api/catalog").then(function (r) { return r.json(); }).then(function (d) {
@@ -468,7 +574,7 @@
     save(); renderChips(); renderGrid(); renderZones();
     var pz = $("#promoZones");
     if (pz) pz.innerHTML = d.zones.slice().sort(function (a, b) { return a.zone - b.zone; }).map(function (z) { return "<span>Zone " + z.zone + " <b>" + money(z.price) + "</b></span>"; }).join("");
-    autocomplete($("#heroSuburb"), $("#heroList"), function (s) {
+    if ($("#heroSuburb")) autocomplete($("#heroSuburb"), $("#heroList"), function (s) {
       if (s === undefined) { $("#heroRes").innerHTML = ""; return; }
       $("#heroRes").innerHTML = s ? zoneMsg(s) : outsideMsg();
       if (s) { co.address = co.address || {}; if (co.address.placeId && s.s !== co.suburb) co.address = { line2: co.address.line2 || "" }; co.suburb = s.s; co.address.postcode = co.address.placeId ? co.address.postcode : s.pc; co.mode = "delivery"; save(); }
@@ -479,11 +585,13 @@
       co.address = co.address || {};
       if (co.address.placeId && qsSub.s !== co.suburb) co.address = { line2: co.address.line2 || "" };
       co.suburb = qsSub.s; co.mode = "delivery"; save();
-      $("#heroRes").innerHTML = zoneMsg(qsSub);
+      if ($("#heroRes")) $("#heroRes").innerHTML = zoneMsg(qsSub); else toast("Delivering to " + qsSub.s + " · Zone " + qsSub.z);
     }
-    if (co.suburb && findSuburb(co.suburb)) { $("#heroSuburb").value = co.suburb; }
+    if (co.suburb && findSuburb(co.suburb) && $("#heroSuburb")) { $("#heroSuburb").value = co.suburb; }
+    renderSections(); hcInit();
   }).catch(function (e) {
-    $("#grid").innerHTML = '<div class="empty">' + esc(e.message || "Products couldn't be loaded.") + ' Please call <a href="tel:0397996399">(03) 9799 6399</a>.</div>';
+    var box = $("#grid") || $("#psSections"); if (!box) return;
+    box.innerHTML = '<div class="empty">' + esc(e.message || "Products couldn't be loaded.") + ' Please call <a href="tel:0397996399">(03) 9799 6399</a>.</div>';
   });
   save();
 })();

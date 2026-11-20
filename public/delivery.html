@@ -7,26 +7,18 @@
 <meta name="description" content="See ADV Supplies' delivery zones across Melbourne's south-east on the map. Find your suburb, your zone and your delivery rate per truck load.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Barlow+Condensed:wght@600;700;800&family=Barlow+Semi+Condensed:wght@600&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/site.css">
 </head>
 <body>
-<div class="topbar"><div class="wrap">
-  <span>Delivering across Melbourne's south-east · Monday to Saturday</span>
-  <a href="tel:0397996399">Call (03) 9799 6399</a>
-</div></div>
-
-<header class="hdr"><div class="wrap">
-  <a class="logo" href="/" aria-label="ADV Supplies home">
-    <span class="logo-mark">ADV</span><span class="logo-txt">SUPPLIES<small>It all starts from the ground UP</small></span>
-  </a>
-  <nav class="nav">
-    <a href="/#shop">Shop</a>
-    <a href="/delivery.html" aria-current="page" style="color:#fff">Delivery areas</a>
-    <a href="#contact">Contact</a>
-  </nav>
-  <a class="cart-btn" href="/#shop" style="text-decoration:none">Shop materials</a>
+<header class="sh"><div class="sh-in">
+  <a class="sh-logo" href="/" aria-label="ADV Supplies home"><span class="sh-curtain" aria-hidden="true"></span><img src="/adv-logo.png" alt="" width="56" height="56"><span class="sh-word">ADV</span></a>
+  <nav class="sh-nav" aria-label="Main"><a href="/products.html">Products</a><a href="/#delivery">Need delivery?</a><a href="/#calculator">Need measurements?</a><a href="/delivery.html" aria-current="page">Delivery map</a><a href="#contact">Contact</a></nav>
+  <div class="sh-act"><a class="sh-call" href="tel:0397996399">Call us</a><a class="sh-cart" href="/products.html" aria-label="Shop products"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h9.7a1 1 0 0 0 1-.8L21 8H6.2"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg></a></div>
 </div></header>
+<div class="sh-strip"></div>
+
 
 <main>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
@@ -197,7 +189,7 @@ var cells=L.geoJSON(SHAPES.cells,{
   onEachFeature:function(f,layer){
     var d=byName[f.properties.s];d.layer=layer;d.feat=f;
     var l=link(d);
-    layer.bindPopup('<div class="advd-pop"><b>'+d.s+' '+d.pc+'</b><div>Zone '+d.z+(CONFIG.showRates?' · <strong>$'+d.f+'</strong> per load':'')+'</div>'+'<a href="/?suburb='+encodeURIComponent(d.s)+'#shop">Order delivery to '+d.s+' →</a>'+'</div>');
+    layer.bindPopup('<div class="advd-pop"><b>'+d.s+' '+d.pc+'</b><div>Zone '+d.z+(CONFIG.showRates?' · <strong>$'+d.f+'</strong> per load':'')+'</div>'+'<a href="/products.html?suburb='+encodeURIComponent(d.s)+'">Order delivery to '+d.s+' →</a>'+'</div>');
     {
       layer.on('mouseover',function(e){hi(d);showTip(d,e.latlng)});
       layer.on('mousemove',function(e){if(current===d)showTip(d,e.latlng)});
@@ -262,13 +254,16 @@ fetch('/api/zones').then(function(r){return r.json()}).then(function(j){advdBoot
 </script>
 </main>
 
-<footer id="contact" class="ftr"><div class="wrap ftr-grid">
-  <div>
-    <div class="logo"><span class="logo-mark">ADV</span><span class="logo-txt">SUPPLIES<small>It all starts from the ground UP</small></span></div>
-    <p>Bulk landscape and building supplies for trade and home, delivered across Melbourne's south-east.</p>
+<footer id="contact" class="sf"><div class="sf-in">
+  <div class="sf-col">
+    <div class="sf-brand">ADV Supplies <span>|</span> Garden &amp; Building</div>
+    <p>Bulk landscape and building supplies for trade and home, delivered across Melbourne's south-east. It all starts from the ground UP.</p>
+    <nav class="sf-nav" aria-label="Footer"><a href="/products.html">Products</a><a href="/#delivery">Need delivery?</a><a href="/#calculator">Need measurements?</a><a href="/delivery.html">Delivery map</a></nav>
   </div>
-  <div><h4>Visit the yard</h4><p>320 Hallam Rd<br>Hampton Park VIC 3976<br>Open 7 days, 8am to 4pm</p></div>
-  <div><h4>Talk to us</h4><p><a href="tel:0397996399">(03) 9799 6399</a><br><a href="mailto:sales@advsupplies.com.au">sales@advsupplies.com.au</a></p></div>
-</div><div class="wrap ftr-bot">© ADV Garden and Building Supplies Pty Ltd · Payments processed securely by Square</div></footer>
+  <div class="sf-col"><h4>Visit the yard</h4><p>320 Hallam Rd<br>Hampton Park VIC 3976<br>Open 7 days, 8am to 4pm</p></div>
+  <div class="sf-col"><h4>Talk to us</h4><p><a href="tel:0397996399">(03) 9799 6399</a><br><a href="mailto:sales@advsupplies.com.au">sales@advsupplies.com.au</a></p></div>
+</div>
+<div class="sf-bot"><span>© ADV Garden and Building Supplies Pty Ltd · Payments processed securely by Square</span><span class="sf-legal"><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms &amp; Conditions</a><a href="/refunds.html">Refunds &amp; Returns</a><a href="/gift-cards.html">Gift Card Terms</a></span></div>
+</footer>
 </body>
 </html>
