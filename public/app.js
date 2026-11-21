@@ -462,7 +462,7 @@
   }
   function pcard(p, cat) {
     var img = p.image || cat.img;
-    var tag = p.out ? '<span class="pc-tag out">Out of stock</span>' : p.bulk ? '<span class="pc-tag">Delivered</span>' : !p.deliver ? '<span class="pc-tag pk">Pick up</span>' : "";
+    var tag = p.out ? '<span class="pc-tag out">Out of stock</span>' : !p.deliver ? '<span class="pc-tag pk">Pick up</span>' : "";
     var unit = p.bulk ? "per m³" : (p.variations && p.variations.length > 1 ? "from" : "each");
     return '<button type="button" class="pcard" data-id="' + p.id + '"><span class="pc-img"' + (img ? ' style="background-image:url(\'' + esc(img) + '\')"' : "") + ">" + tag + '</span><span class="pc-b"><span class="pc-n">' + esc(p.name) + '</span><span class="pc-row"><span class="pc-pr"><b>' + money(p.price) + "</b><span>" + unit + '</span></span><span class="pc-v">View</span></span></span></button>';
   }

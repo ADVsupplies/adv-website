@@ -218,7 +218,7 @@ page("index.html", "ADV Supplies | Soil, Mulch, Sand &amp; Rock Delivered | Hamp
 PRODUCTS = '''
 <section class="ps-top"><div class="sx-wrap">
   <div class="sx-head">
-    <div><h1 class="sx-h2 red big">Products</h1><span class="sx-bar"></span><p>Everything we stock at the Hampton Park yard, with today's prices. Bulk materials are priced per m³ and delivered by the truck load.</p></div>
+    <div><h1 class="sx-h2 red big">Products</h1><span class="sx-bar"></span><p>Everything we stock at the Hampton Park yard, with today's prices. Bulk materials are priced per m³. Delivery is extra, charged per truck load by suburb.</p></div>
     <div class="ps-search"><label class="sr" for="psQ">Search products</label><input id="psQ" type="search" placeholder="Search products" autocomplete="off"></div>
   </div>
   <nav class="ps-chips" id="psChips" aria-label="Product categories"></nav>
