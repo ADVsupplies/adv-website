@@ -427,3 +427,7 @@ body{background:#fff}
 @keyframes gcShine{0%{transform:translateX(-120%)}22%,100%{transform:translateX(120%)}}
 .sx-gift .gc.live .gc-card:hover{box-shadow:0 22px 40px rgba(0,0,0,.38)}
 @media(prefers-reduced-motion:reduce){.sx-gift .gc-card{transition:none!important;opacity:1!important}.sx-gift .gc-card::after{display:none}}
+.tr-lock{display:flex;gap:22px;align-items:center;background:#fff;border:3px dashed #1A1A1A;border-radius:14px;padding:26px 30px}
+.tr-lock svg{flex:none;width:54px;height:54px;fill:none;stroke:var(--adv);stroke-width:2.2}
+.tr-lock h2{margin:0 0 6px;font:800 40px/1 var(--cond);text-transform:uppercase}.tr-lock h2 span{color:var(--adv)}
+.tr-lock p{margin:0;font-size:17px;max-width:720px}

@@ -276,9 +276,8 @@ TRADE_SECTION = f"""
   <div class="tr-copy">
     <span class="tr-pill">ADV Trade</span>
     <h2>Trade prices.<br><span>One call.</span></h2>
-    <p>For builders, landscapers, developers and contractors. Open a trade account to see trade pricing on bulk materials and order for every site from one place.</p>
+    <p>For builders, landscapers, developers and contractors. Approved trade accounts get trade pricing on bulk materials and order for every site from one place.</p>
     <ul class="tr-feats">{tfeat('tag', 'Trade pricing', 'Lower prices on mulch, pebbles, sand, toppings and more.')}{tfeat('truck', 'Split loads', 'Two materials in one truck, one delivery fee per load.')}{tfeat('grid', 'Multi-unit jobs', 'Twelve yards or one: book the whole job in one order.')}</ul>
-    <div class="tr-ex">{''.join(f'<div><span>{n}</span><span><s>{r}</s><b>{t}</b><small>per m³</small></span></div>' for n, r, t in TEX)}</div>
     <div class="tr-cta"><a class="tr-btn" href="/trade.html#apply">Apply for a trade account</a><a class="tr-btn ghost" href="/trade.html#login">Trade log in</a></div>
   </div>
   <div class="tr-anim"><div data-adv-units="1" data-music="/trade/units-music.mp3"></div></div>
@@ -340,7 +339,7 @@ TRADE_PAGE = f"""
   <div class="tr-why">
     <h2>Why trade with <span>ADV</span></h2>
     <ul>
-      <li><b>Trade prices</b> on mulch, pebbles, sand, toppings, compost and firewood. Save up to $36 per m³.</li>
+      <li><b>Trade prices</b> on mulch, pebbles, sand, toppings, compost and firewood.</li>
       <li><b>Six trucks</b> running loads across 111 suburbs, with split trays for two materials per load.</li>
       <li><b>One call for big jobs.</b> Multi-unit sites and estates booked as one order.</li>
       <li><b>Talk to the yard.</b> <a href="tel:0397996399">(03) 9799 6399</a>, 320 Hallam Rd, Hampton Park.</li>
@@ -349,11 +348,10 @@ TRADE_PAGE = f"""
   </div>
 </div></section>
 <section class="tr-prices"><div class="tr-wrap">
-  <div class="tr-ph"><h2>Trade <span>price list</span></h2><span class="tr-pill">Prices include GST</span></div>
-  <div class="tr-table"><table>
-    <thead><tr><th>Product</th><th>Range</th><th class="r">Retail</th><th class="r">Trade</th><th class="r">You save</th></tr></thead>
-    <tbody>{rows}</tbody>
-  </table></div>
+  <div class="tr-lock">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+    <div><h2>Trade <span>price list</span></h2><p>Trade prices are only shared with approved trade account holders. Apply above and we'll send your price list once your account is set up, or call <a href="tel:0397996399">(03) 9799 6399</a>.</p></div>
+  </div>
 </div></section>
 """
 TRADE_JS = UNITS_LOADER + """<script>(function(){
