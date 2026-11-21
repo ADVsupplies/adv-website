@@ -24,7 +24,7 @@ def head(title, desc, extra=""):
 CART_SVG = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h9.7a1 1 0 0 0 1-.8L21 8H6.2"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>'
 
 def header(active="", roll=False, cart=True):
-    links = [("/products.html", "Products", "products"), ("/#delivery", "Need delivery?", "delivery"), ("/#calculator", "Need measurements?", "calc"), ("/delivery.html", "Delivery map", "map"), ("/trade.html", "Trade", "trade"), ("/fleet.html", "Our trucks", "fleet"), ("/about.html", "About", "about"), ("#contact", "Contact", "contact")]
+    links = [("/products.html", "Products", "products"), ("/#delivery", "Need delivery?", "delivery"), ("/delivery.html", "Delivery map", "map"), ("/trade.html", "Trade", "trade"), ("/fleet.html", "Our trucks", "fleet"), ("/about.html", "About", "about"), ("#contact", "Contact", "contact")]
     nav = "".join(f'<a href="{h}"' + (' aria-current="page"' if k == active else "") + f'>{t}</a>' for h, t, k in links)
     cartbtn = f'<button class="sh-cart" id="cartBtn" type="button" aria-label="Open cart">{CART_SVG}<b id="cartCount">0</b></button>' if cart else f'<a class="sh-cart" href="/products.html" aria-label="Shop products">{CART_SVG}</a>'
     return f'''<header class="sh{' roll' if roll else ''}"><div class="sh-in">
@@ -56,7 +56,7 @@ FOOTER = '''<footer id="contact" class="sf"><div class="sf-in">
   <div class="sf-col">
     <div class="sf-brand">ADV Supplies <span>|</span> Garden &amp; Building</div>
     <p>Bulk landscape and building supplies for trade and home, delivered across Melbourne's south-east. It all starts from the ground UP.</p>
-    <nav class="sf-nav" aria-label="Footer"><a href="/products.html">Products</a><a href="/#delivery">Need delivery?</a><a href="/#calculator">Need measurements?</a><a href="/delivery.html">Delivery map</a><a href="/fleet.html">Our trucks</a><a href="/trade.html" class="sf-trade">Trade account</a><a href="/about.html">About ADV</a><a href="#drivers">Drivers wanted</a></nav>
+    <nav class="sf-nav" aria-label="Footer"><a href="/products.html">Products</a><a href="/#delivery">Need delivery?</a><a href="/delivery.html">Delivery map</a><a href="/fleet.html">Our trucks</a><a href="/trade.html" class="sf-trade">Trade account</a><a href="/about.html">About ADV</a><a href="#drivers">Drivers wanted</a></nav>
   </div>
   <div class="sf-col"><h4>Visit the yard</h4><p>320 Hallam Rd<br>Hampton Park VIC 3976<br>Open 7 days, 8am to 4pm</p></div>
   <div class="sf-col"><h4>Talk to us</h4><p><a href="tel:0397996399">(03) 9799 6399</a><br><a href="mailto:sales@advsupplies.com.au">sales@advsupplies.com.au</a></p></div>
@@ -184,23 +184,6 @@ HOME = f'''
   {gift_block()}
 </div></section>
 
-<section class="sx-calc" id="calculator"><div class="sx-wrap sx-two top">
-  <div>
-    <span class="sx-eye">Material calculator</span>
-    <h2 class="sx-h1">Do you need <span>measurements?</span></h2>
-    <p class="sx-lead">Tell us your measurements here and we'll tell you how much you need.</p>
-    <p class="sx-small">Typical depths: mulch 75 mm, garden soil 100 mm, pebbles and sand 50 mm, toppings and crushed rock 75 to 100 mm.</p>
-  </div>
-  <div class="sx-calcbox">
-    <label class="fl">Product<select id="hcProd"><option>Loading products…</option></select></label>
-    <div class="fl3">
-      <label class="fl">Length (m)<input id="hcL" type="number" min="0" step="0.1" inputmode="decimal" value="5"></label>
-      <label class="fl">Width (m)<input id="hcW" type="number" min="0" step="0.1" inputmode="decimal" value="3"></label>
-      <label class="fl">Depth (mm)<input id="hcD" type="number" min="0" step="10" inputmode="numeric" value="75"></label>
-    </div>
-    <div id="hcOut" class="hc-out" aria-live="polite"></div>
-  </div>
-</div></section>
 '''
 
 HOME_JS = '''<script src="/app.js"></script>
@@ -261,6 +244,11 @@ if '<header class="sh' not in s:
     open(p, "w").write(s)
 
 s = open(p).read()
+ha = s.index('<header class="sh'); hb = s.index('</header>', ha) + len('</header>')
+s = s[:ha] + header("map", cart=False).strip() + s[hb:]
+fa = s.index('<footer id="contact" class="sf">'); fb = s.index('</footer>', fa) + len('</footer>')
+s = s[:fa] + FOOTER.strip() + s[fb:]
+open(p, "w").write(s)
 if 'class="dw"' not in s:
     s = s.replace('<footer id="contact" class="sf">', DRIVERS + '<footer id="contact" class="sf">', 1); open(p, "w").write(s)
 
