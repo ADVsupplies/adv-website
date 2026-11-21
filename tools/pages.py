@@ -245,7 +245,8 @@ if '<header class="sh' not in s:
 
 s = open(p).read()
 ha = s.index('<header class="sh'); hb = s.index('</header>', ha) + len('</header>')
-s = s[:ha] + header("map", cart=False).strip() + s[hb:]
+_rest = re.sub(r'^(\s*<div class="sh-strip"></div>)+', '', s[hb:])
+s = s[:ha] + header("map", cart=False).strip() + _rest
 fa = s.index('<footer id="contact" class="sf">'); fb = s.index('</footer>', fa) + len('</footer>')
 s = s[:fa] + FOOTER.strip() + s[fb:]
 open(p, "w").write(s)
@@ -429,5 +430,13 @@ function f(){raf=0;var r=run.getBoundingClientRect(),h=run.offsetHeight-innerHei
 addEventListener('scroll',function(){if(!raf)raf=requestAnimationFrame(f)},{passive:true});addEventListener('resize',f);f();
 })();</script>"""
 page("fleet.html", "Our Trucks | The ADV Fleet | ADV Supplies", "Meet the six ADV tip trucks that deliver soil, mulch, sand and rock from our Hampton Park yard across Melbourne's south-east.", FLEET_PAGE, active="fleet", scripts='<script src="/app.js"></script>\n' + FLEET_JS)
+
+# ---------------- site chat (ADV Assist) on every page ----------------
+CHAT = '<script src="/chat/chat.js" defer></script>'
+for _f in os.listdir(PUB):
+    if _f.endswith(".html") and _f not in ("hero-demo.html", "tip-demo.html", "thanks.html"):
+        _p = os.path.join(PUB, _f); _s = open(_p).read()
+        if CHAT not in _s and "</body>" in _s:
+            open(_p, "w").write(_s.replace("</body>", CHAT + "\n</body>", 1))
 
 print("pages built")
