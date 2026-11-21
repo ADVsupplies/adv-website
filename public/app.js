@@ -472,7 +472,7 @@
     var chips = $("#psChips");
     if (chips && !chips.innerHTML) chips.innerHTML = cats.map(function (c) { return '<a href="#' + c.id + '" style="background:' + c.bg + ";color:" + (c.dark ? "#fff" : "#1A1A1A") + '">' + esc(c.name) + "</a>"; }).join("");
     cats.forEach(function (c) {
-      var all = DATA.products.filter(function (p) { return p.category === c.key && (!q || p.name.toLowerCase().indexOf(q) > -1); });
+      var all = DATA.products.filter(function (p) { return p.category === c.key && !/\btrade\b/i.test(p.name) && (!q || p.name.toLowerCase().indexOf(q) > -1); });
       if (!all.length) return; any = true;
       var open = !!PS.open[c.key] || !!q, shown = open ? all : all.slice(0, SHOW);
       var fg = c.dark ? "#fff" : "#1A1A1A", sub = c.dark ? "rgba(255,255,255,.88)" : "#3A3A3A";
@@ -492,7 +492,7 @@
   var DEPTHS = { "MULCHES": 75, "COMPOST & SOIL": 100, "SAND": 50, "PEBBLES": 50, "ROCKS": 100, "TOPPINGS & SCREENINGS": 75 };
   function hcInit() {
     var sel = $("#hcProd"); if (!sel) return;
-    var bulk = DATA.products.filter(function (p) { return p.bulk; }), groups = {};
+    var bulk = DATA.products.filter(function (p) { return p.bulk && !/\btrade\b/i.test(p.name); }), groups = {};
     bulk.forEach(function (p) { (groups[p.category] = groups[p.category] || []).push(p); });
     sel.innerHTML = Object.keys(groups).map(function (g) { return '<optgroup label="' + esc(niceCat(g)) + '">' + groups[g].map(function (p) { return '<option value="' + p.id + '">' + esc(p.name) + " (" + money(p.price) + "/m³)</option>"; }).join("") + "</optgroup>"; }).join("");
     var pick = bulk.filter(function (p) { return /blackwood/i.test(p.name); })[0] || bulk[0];

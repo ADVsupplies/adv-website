@@ -13,7 +13,7 @@
 <body>
 <header class="sh roll"><div class="sh-in">
   <a class="sh-logo" href="/" aria-label="ADV Supplies home"><span class="sh-curtain" aria-hidden="true"></span><img src="/adv-logo.png" alt="" width="56" height="56"><span class="sh-word">ADV</span></a>
-  <nav class="sh-nav" aria-label="Main"><a href="/products.html">Products</a><a href="/#delivery">Need delivery?</a><a href="/#calculator">Need measurements?</a><a href="/delivery.html">Delivery map</a><a href="#contact">Contact</a></nav>
+  <nav class="sh-nav" aria-label="Main"><a href="/products.html">Products</a><a href="/#delivery">Need delivery?</a><a href="/#calculator">Need measurements?</a><a href="/delivery.html">Delivery map</a><a href="/trade.html">Trade</a><a href="#contact">Contact</a></nav>
   <div class="sh-act"><a class="sh-call" href="tel:0397996399">Call us</a><button class="sh-cart" id="cartBtn" type="button" aria-label="Open cart"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h9.7a1 1 0 0 0 1-.8L21 8H6.2"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg><b id="cartCount">0</b></button></div>
 </div></header>
 <div class="sh-strip"></div>
@@ -180,11 +180,23 @@
     <div id="hcOut" class="hc-out" aria-live="polite"></div>
   </div>
 </div></section>
+
+<section class="tr-home" id="trade" aria-label="ADV Trade"><div class="sx-wrap tr-grid">
+  <div class="tr-copy">
+    <span class="tr-pill">ADV Trade</span>
+    <h2>Trade prices.<br><span>One call.</span></h2>
+    <p>For builders, landscapers, developers and contractors. Open a trade account to see trade pricing on bulk materials and order for every site from one place.</p>
+    <ul class="tr-feats"><li><span class="tr-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l9-9h8v8l-9 9z"/><circle cx="16" cy="8" r="1.6"/></svg></span><span><b>Trade pricing</b>Lower prices on mulch, pebbles, sand, toppings and more.</span></li><li><span class="tr-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 7h11v9H2zM13 10h4l3 3v3h-7"/><circle cx="6" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg></span><span><b>Split loads</b>Two materials in one truck, one delivery fee per load.</span></li><li><span class="tr-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/></svg></span><span><b>Multi-unit jobs</b>Twelve yards or one: book the whole job in one order.</span></li></ul>
+    <div class="tr-ex"><div><span>Tree Mulch</span><span><s>$35</s><b>$25</b><small>per m³</small></span></div><div><span>Organic Compost</span><span><s>$67.50</s><b>$50</b><small>per m³</small></span></div><div><span>Quarter Minus 7mm</span><span><s>$135</s><b>$99</b><small>per m³</small></span></div></div>
+    <div class="tr-cta"><a class="tr-btn" href="/trade.html#apply">Apply for a trade account</a><a class="tr-btn ghost" href="/trade.html#login">Trade log in</a></div>
+  </div>
+  <div class="tr-anim"><div data-adv-units="1" data-music="/trade/units-music.mp3"></div></div>
+</div></section>
 <footer id="contact" class="sf"><div class="sf-in">
   <div class="sf-col">
     <div class="sf-brand">ADV Supplies <span>|</span> Garden &amp; Building</div>
     <p>Bulk landscape and building supplies for trade and home, delivered across Melbourne's south-east. It all starts from the ground UP.</p>
-    <nav class="sf-nav" aria-label="Footer"><a href="/products.html">Products</a><a href="/#delivery">Need delivery?</a><a href="/#calculator">Need measurements?</a><a href="/delivery.html">Delivery map</a></nav>
+    <nav class="sf-nav" aria-label="Footer"><a href="/products.html">Products</a><a href="/#delivery">Need delivery?</a><a href="/#calculator">Need measurements?</a><a href="/delivery.html">Delivery map</a><a href="/trade.html" class="sf-trade">Trade account</a></nav>
   </div>
   <div class="sf-col"><h4>Visit the yard</h4><p>320 Hallam Rd<br>Hampton Park VIC 3976<br>Open 7 days, 8am to 4pm</p></div>
   <div class="sf-col"><h4>Talk to us</h4><p><a href="tel:0397996399">(03) 9799 6399</a><br><a href="mailto:sales@advsupplies.com.au">sales@advsupplies.com.au</a></p></div>
@@ -197,5 +209,6 @@
 (function(){var el=document.querySelector('[data-adv-hero]');if(!el)return;var go=function(){if(go.d)return;go.d=1;var s=document.createElement('script');s.src='/hero/hero3d.js';document.body.appendChild(s);};
 if('IntersectionObserver' in window){new IntersectionObserver(function(es,o){if(es.some(function(e){return e.isIntersecting})){o.disconnect();go();}},{rootMargin:'200px'}).observe(el);}else go();})();
 </script>
+<script>(function(){var el=document.querySelector('[data-adv-units]');if(!el)return;var go=function(){if(go.d)return;go.d=1;var s=document.createElement('script');s.src='/trade/units.js';document.body.appendChild(s);};if('IntersectionObserver' in window){new IntersectionObserver(function(es,o){if(es.some(function(e){return e.isIntersecting})){o.disconnect();go();}},{rootMargin:'300px'}).observe(el);}else go();})();</script>
 </body>
 </html>

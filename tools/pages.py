@@ -24,7 +24,7 @@ def head(title, desc, extra=""):
 CART_SVG = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h9.7a1 1 0 0 0 1-.8L21 8H6.2"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>'
 
 def header(active="", roll=False, cart=True):
-    links = [("/products.html", "Products", "products"), ("/#delivery", "Need delivery?", "delivery"), ("/#calculator", "Need measurements?", "calc"), ("/delivery.html", "Delivery map", "map"), ("#contact", "Contact", "contact")]
+    links = [("/products.html", "Products", "products"), ("/#delivery", "Need delivery?", "delivery"), ("/#calculator", "Need measurements?", "calc"), ("/delivery.html", "Delivery map", "map"), ("/trade.html", "Trade", "trade"), ("#contact", "Contact", "contact")]
     nav = "".join(f'<a href="{h}"' + (' aria-current="page"' if k == active else "") + f'>{t}</a>' for h, t, k in links)
     cartbtn = f'<button class="sh-cart" id="cartBtn" type="button" aria-label="Open cart">{CART_SVG}<b id="cartCount">0</b></button>' if cart else f'<a class="sh-cart" href="/products.html" aria-label="Shop products">{CART_SVG}</a>'
     return f'''<header class="sh{' roll' if roll else ''}"><div class="sh-in">
@@ -39,7 +39,7 @@ FOOTER = '''<footer id="contact" class="sf"><div class="sf-in">
   <div class="sf-col">
     <div class="sf-brand">ADV Supplies <span>|</span> Garden &amp; Building</div>
     <p>Bulk landscape and building supplies for trade and home, delivered across Melbourne's south-east. It all starts from the ground UP.</p>
-    <nav class="sf-nav" aria-label="Footer"><a href="/products.html">Products</a><a href="/#delivery">Need delivery?</a><a href="/#calculator">Need measurements?</a><a href="/delivery.html">Delivery map</a></nav>
+    <nav class="sf-nav" aria-label="Footer"><a href="/products.html">Products</a><a href="/#delivery">Need delivery?</a><a href="/#calculator">Need measurements?</a><a href="/delivery.html">Delivery map</a><a href="/trade.html" class="sf-trade">Trade account</a></nav>
   </div>
   <div class="sf-col"><h4>Visit the yard</h4><p>320 Hallam Rd<br>Hampton Park VIC 3976<br>Open 7 days, 8am to 4pm</p></div>
   <div class="sf-col"><h4>Talk to us</h4><p><a href="tel:0397996399">(03) 9799 6399</a><br><a href="mailto:sales@advsupplies.com.au">sales@advsupplies.com.au</a></p></div>
@@ -233,4 +233,97 @@ if '<header class="sh' not in s:
     fa = s.index('<footer'); fb = s.index('</footer>') + len('</footer>')
     s = s[:fa] + FOOTER.rstrip() + s[fb:]
     open(p, "w").write(s)
+
+# ---------------- trade ----------------
+import json as _json
+TD = _json.load(open(os.path.join(ROOT, "tools", "trade_data.json")))
+for d in TD: d["name"] = re.sub(r"\s+", " ", d["name"]).replace("For Artificial Turf", "for artificial turf")
+TICON = {'tag': '<path d="M3 12l9-9h8v8l-9 9z"/><circle cx="16" cy="8" r="1.6"/>', 'truck': '<path d="M2 7h11v9H2zM13 10h4l3 3v3h-7"/><circle cx="6" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/>', 'grid': '<path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/>'}
+def tfeat(ic, t, d): return f'<li><span class="tr-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{TICON[ic]}</svg></span><span><b>{t}</b>{d}</span></li>'
+TEX = [('Tree Mulch', '$35', '$25'), ('Organic Compost', '$67.50', '$50'), ('Quarter Minus 7mm', '$135', '$99')]
+TRADE_SECTION = f"""
+<section class="tr-home" id="trade" aria-label="ADV Trade"><div class="sx-wrap tr-grid">
+  <div class="tr-copy">
+    <span class="tr-pill">ADV Trade</span>
+    <h2>Trade prices.<br><span>One call.</span></h2>
+    <p>For builders, landscapers, developers and contractors. Open a trade account to see trade pricing on bulk materials and order for every site from one place.</p>
+    <ul class="tr-feats">{tfeat('tag', 'Trade pricing', 'Lower prices on mulch, pebbles, sand, toppings and more.')}{tfeat('truck', 'Split loads', 'Two materials in one truck, one delivery fee per load.')}{tfeat('grid', 'Multi-unit jobs', 'Twelve yards or one: book the whole job in one order.')}</ul>
+    <div class="tr-ex">{''.join(f'<div><span>{n}</span><span><s>{r}</s><b>{t}</b><small>per m³</small></span></div>' for n, r, t in TEX)}</div>
+    <div class="tr-cta"><a class="tr-btn" href="/trade.html#apply">Apply for a trade account</a><a class="tr-btn ghost" href="/trade.html#login">Trade log in</a></div>
+  </div>
+  <div class="tr-anim"><div data-adv-units="1" data-music="/trade/units-music.mp3"></div></div>
+</div></section>
+"""
+UNITS_LOADER = """<script>(function(){var el=document.querySelector('[data-adv-units]');if(!el)return;var go=function(){if(go.d)return;go.d=1;var s=document.createElement('script');s.src='/trade/units.js';document.body.appendChild(s);};if('IntersectionObserver' in window){new IntersectionObserver(function(es,o){if(es.some(function(e){return e.isIntersecting})){o.disconnect();go();}},{rootMargin:'300px'}).observe(el);}else go();})();</script>"""
+h = open(os.path.join(PUB, "index.html")).read()
+h = h.replace('<footer id="contact" class="sf">', TRADE_SECTION + '<footer id="contact" class="sf">', 1).replace('</body>', UNITS_LOADER + '\n</body>', 1)
+open(os.path.join(PUB, "index.html"), "w").write(h)
+
+TRADES = ['Landscaper', 'Builder', 'Developer', 'Concreter', 'Plumber or drainer', 'Council or civil', 'Other trade']
+rows = "".join(f'<tr><td><b>{E(d["name"])}</b></td><td class="tr-cat">{E(d["cat"])}</td><td class="r"><s>{d["retail"] or "—"}</s></td><td class="r"><b class="tp">{d["trade"]}</b> <small>{d["unit"]}</small></td><td class="r"><span class="sv">{d["save"] or "Trade only"}</span></td></tr>' for d in TD)
+TRADE_PAGE = f"""
+<section class="tr-top"><div class="tr-wrap">
+  <span class="tr-pill">ADV Trade</span>
+  <h1>Trade account</h1>
+  <p>Trade prices on bulk landscape and building supplies for builders, landscapers, developers and contractors across Melbourne's south-east.</p>
+</div></section>
+<section class="tr-forms"><div class="tr-wrap tr-two">
+  <div class="tr-card">
+    <div class="tr-tabs" role="tablist"><button type="button" role="tab" id="tabLogin" aria-selected="true" data-trtab="login">Log in</button><button type="button" role="tab" id="tabApply" aria-selected="false" data-trtab="apply">Apply for an account</button></div>
+    <form class="tr-form" id="trLogin" data-trpane="login">
+      <label>Email<input type="email" name="email" autocomplete="email" placeholder="you@business.com.au" required></label>
+      <label>Password<input type="password" name="password" autocomplete="current-password" required></label>
+      <button type="submit" class="tr-btn">Log in</button>
+      <div class="tr-msg" id="trLoginMsg" hidden><b>Online trade log in is coming soon.</b> Your account is set up at the yard for now. Call <a href="tel:0397996399">(03) 9799 6399</a> to order at your trade prices.</div>
+      <p class="tr-small">New to ADV Trade? <a href="#apply" data-trtab="apply">Apply for an account</a></p>
+    </form>
+    <form class="tr-form" id="trApply" data-trpane="apply" name="trade-application" method="POST" data-netlify="true" netlify-honeypot="company_website" action="/trade.html?applied=1#apply" hidden>
+      <input type="hidden" name="form-name" value="trade-application">
+      <p class="sr"><label>Leave this empty<input name="company_website"></label></p>
+      <div class="tr-2col">
+        <label>Business name<input name="business" autocomplete="organization" required></label>
+        <label>ABN<input name="abn" inputmode="numeric" placeholder="11 digits" pattern="[0-9 ]{{11,14}}" required></label>
+        <label>Your name<input name="name" autocomplete="name" required></label>
+        <label>Mobile<input name="mobile" type="tel" autocomplete="tel" required></label>
+      </div>
+      <label>Email<input name="email" type="email" autocomplete="email" required></label>
+      <label>Your trade<select name="trade">{''.join(f'<option>{t}</option>' for t in TRADES)}</select></label>
+      <label>Delivery suburbs you work in most<input name="suburbs" placeholder="e.g. Clyde North, Officer, Cranbourne East"></label>
+      <label class="tr-check"><input type="checkbox" name="agree" value="yes" required><span>I agree to the <a href="/terms.html">Terms &amp; Conditions</a> and the <mark>[trade account terms]</mark>.</span></label>
+      <button type="submit" class="tr-btn">Apply for a trade account</button>
+    </form>
+    <div class="tr-form" id="trDone" hidden>
+      <b class="tr-done">Thanks, application received</b>
+      <p>We'll check your ABN and set up your trade pricing within <mark>[1 business day]</mark>. We'll email you when your account is ready.</p>
+    </div>
+  </div>
+  <div class="tr-why">
+    <h2>Why trade with <span>ADV</span></h2>
+    <ul>
+      <li><b>Trade prices</b> on mulch, pebbles, sand, toppings, compost and firewood. Save up to $36 per m³.</li>
+      <li><b>Six trucks</b> running loads across 111 suburbs, with split trays for two materials per load.</li>
+      <li><b>One call for big jobs.</b> Multi-unit sites and estates booked as one order.</li>
+      <li><b>Talk to the yard.</b> <a href="tel:0397996399">(03) 9799 6399</a>, 320 Hallam Rd, Hampton Park.</li>
+    </ul>
+    <div class="tr-anim small"><div data-adv-units="1" data-music="/trade/units-music.mp3"></div></div>
+  </div>
+</div></section>
+<section class="tr-prices"><div class="tr-wrap">
+  <div class="tr-ph"><h2>Trade <span>price list</span></h2><span class="tr-pill">Prices include GST</span></div>
+  <div class="tr-table"><table>
+    <thead><tr><th>Product</th><th>Range</th><th class="r">Retail</th><th class="r">Trade</th><th class="r">You save</th></tr></thead>
+    <tbody>{rows}</tbody>
+  </table></div>
+</div></section>
+"""
+TRADE_JS = UNITS_LOADER + """<script>(function(){
+var tabs=document.querySelectorAll('[data-trtab]'),L=document.getElementById('trLogin'),A=document.getElementById('trApply'),D=document.getElementById('trDone');
+function show(w){var a=w==='apply';L.hidden=a;A.hidden=!a;D.hidden=true;document.getElementById('tabLogin').setAttribute('aria-selected',!a);document.getElementById('tabApply').setAttribute('aria-selected',a);}
+tabs.forEach(function(t){t.addEventListener('click',function(e){e.preventDefault();show(t.dataset.trtab);});});
+if(/applied=1/.test(location.search)){L.hidden=true;A.hidden=true;D.hidden=false;document.getElementById('tabApply').setAttribute('aria-selected',true);document.getElementById('tabLogin').setAttribute('aria-selected',false);}
+else if(location.hash==='#apply')show('apply');
+L.addEventListener('submit',function(e){e.preventDefault();document.getElementById('trLoginMsg').hidden=false;});
+})();</script>"""
+page("trade.html", "ADV Trade account | Trade prices | ADV Supplies", "Trade accounts for builders, landscapers, developers and contractors: trade prices on bulk landscape and building supplies delivered across Melbourne's south-east.", TRADE_PAGE, active="trade", scripts='<script src="/app.js"></script>\n' + TRADE_JS)
+
 print("pages built")
