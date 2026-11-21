@@ -24,7 +24,7 @@ def head(title, desc, extra=""):
 CART_SVG = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h9.7a1 1 0 0 0 1-.8L21 8H6.2"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>'
 
 def header(active="", roll=False, cart=True):
-    links = [("/products.html", "Products", "products"), ("/#delivery", "Need delivery?", "delivery"), ("/#calculator", "Need measurements?", "calc"), ("/delivery.html", "Delivery map", "map"), ("/trade.html", "Trade", "trade"), ("/about.html", "About", "about"), ("#contact", "Contact", "contact")]
+    links = [("/products.html", "Products", "products"), ("/#delivery", "Need delivery?", "delivery"), ("/#calculator", "Need measurements?", "calc"), ("/delivery.html", "Delivery map", "map"), ("/trade.html", "Trade", "trade"), ("/fleet.html", "Our trucks", "fleet"), ("/about.html", "About", "about"), ("#contact", "Contact", "contact")]
     nav = "".join(f'<a href="{h}"' + (' aria-current="page"' if k == active else "") + f'>{t}</a>' for h, t, k in links)
     cartbtn = f'<button class="sh-cart" id="cartBtn" type="button" aria-label="Open cart">{CART_SVG}<b id="cartCount">0</b></button>' if cart else f'<a class="sh-cart" href="/products.html" aria-label="Shop products">{CART_SVG}</a>'
     return f'''<header class="sh{' roll' if roll else ''}"><div class="sh-in">
@@ -35,11 +35,28 @@ def header(active="", roll=False, cart=True):
 <div class="sh-strip"></div>
 '''
 
+DRIVERS = '''<section class="dw" id="drivers" aria-label="Drivers wanted"><div class="dw-in">
+  <div class="dw-l">
+    <span class="dw-tag">Now hiring · Hampton Park</span>
+    <h2>Drivers <span>wanted</span></h2>
+    <p>Truck drivers for bulk landscape deliveries across Melbourne's south-east.</p>
+    <ul><li>HR licence required</li><li>Casual</li><li>Local daytime runs</li><li>Experience in garden supplies</li><li>Please submit your CV</li></ul>
+  </div>
+  <div class="dw-r">
+    <svg class="dw-truck" viewBox="0 0 260 130" aria-hidden="true"><path d="M8 34l116-16 10 70H8z"/><path d="M134 50h56l40 32v26H134z"/><path d="M150 60h34l22 20h-56z"/><circle cx="40" cy="108" r="16"/><circle cx="92" cy="108" r="16"/><circle cx="200" cy="108" r="16"/></svg>
+    <span class="dw-call">Call to apply</span>
+    <a class="dw-num" href="tel:0397996399">(03) 9799 6399</a>
+    <div class="dw-btns"><a class="dw-btn" href="tel:0397996399">Call now</a><a class="dw-btn ghost" href="/drivers-wanted.pdf" target="_blank" rel="noopener">View the flyer</a></div>
+    <small>Or drop your CV in at 320 Hallam Rd, Hampton Park VIC.</small>
+  </div>
+</div></section>
+'''
+
 FOOTER = '''<footer id="contact" class="sf"><div class="sf-in">
   <div class="sf-col">
     <div class="sf-brand">ADV Supplies <span>|</span> Garden &amp; Building</div>
     <p>Bulk landscape and building supplies for trade and home, delivered across Melbourne's south-east. It all starts from the ground UP.</p>
-    <nav class="sf-nav" aria-label="Footer"><a href="/products.html">Products</a><a href="/#delivery">Need delivery?</a><a href="/#calculator">Need measurements?</a><a href="/delivery.html">Delivery map</a><a href="/trade.html" class="sf-trade">Trade account</a><a href="/about.html">About ADV</a></nav>
+    <nav class="sf-nav" aria-label="Footer"><a href="/products.html">Products</a><a href="/#delivery">Need delivery?</a><a href="/#calculator">Need measurements?</a><a href="/delivery.html">Delivery map</a><a href="/fleet.html">Our trucks</a><a href="/trade.html" class="sf-trade">Trade account</a><a href="/about.html">About ADV</a><a href="#drivers">Drivers wanted</a></nav>
   </div>
   <div class="sf-col"><h4>Visit the yard</h4><p>320 Hallam Rd<br>Hampton Park VIC 3976<br>Open 7 days, 8am to 4pm</p></div>
   <div class="sf-col"><h4>Talk to us</h4><p><a href="tel:0397996399">(03) 9799 6399</a><br><a href="mailto:sales@advsupplies.com.au">sales@advsupplies.com.au</a></p></div>
@@ -49,7 +66,7 @@ FOOTER = '''<footer id="contact" class="sf"><div class="sf-in">
 '''
 
 def page(name, title, desc, body, active="", roll=False, scripts='<script src="/app.js"></script>', extra_head="", cart=True):
-    doc = head(title, desc, extra_head) + "<body>\n" + header(active, roll, cart) + body + FOOTER + scripts + "\n</body>\n</html>\n"
+    doc = head(title, desc, extra_head) + "<body>\n" + header(active, roll, cart) + body + DRIVERS + FOOTER + scripts + "\n</body>\n</html>\n"
     open(os.path.join(PUB, name), "w").write(doc)
 
 # ---------------- home ----------------
@@ -240,8 +257,12 @@ if '<header class="sh' not in s:
     s = s.replace('<link rel="stylesheet" href="/styles.css">', '<link rel="stylesheet" href="/styles.css">\n<link rel="stylesheet" href="/site.css">', 1)
     s = s.replace('family=Barlow+Condensed:wght@600;700;800&family=Barlow', 'family=Russo+One&family=Barlow+Condensed:wght@600;700;800&family=Barlow+Semi+Condensed:wght@600&family=Barlow', 1)
     fa = s.index('<footer'); fb = s.index('</footer>') + len('</footer>')
-    s = s[:fa] + FOOTER.rstrip() + s[fb:]
+    s = s[:fa] + DRIVERS + FOOTER.rstrip() + s[fb:]
     open(p, "w").write(s)
+
+s = open(p).read()
+if 'class="dw"' not in s:
+    s = s.replace('<footer id="contact" class="sf">', DRIVERS + '<footer id="contact" class="sf">', 1); open(p, "w").write(s)
 
 # ---------------- trade ----------------
 import json as _json
@@ -265,7 +286,7 @@ TRADE_SECTION = f"""
 """
 UNITS_LOADER = """<script>(function(){var el=document.querySelector('[data-adv-units]');if(!el)return;var go=function(){if(go.d)return;go.d=1;var s=document.createElement('script');s.src='/trade/units.js';document.body.appendChild(s);};if('IntersectionObserver' in window){new IntersectionObserver(function(es,o){if(es.some(function(e){return e.isIntersecting})){o.disconnect();go();}},{rootMargin:'300px'}).observe(el);}else go();})();</script>"""
 h = open(os.path.join(PUB, "index.html")).read()
-h = h.replace('<footer id="contact" class="sf">', TRADE_SECTION + '<footer id="contact" class="sf">', 1).replace('</body>', UNITS_LOADER + '\n</body>', 1)
+h = h.replace('<section class="dw"', TRADE_SECTION + '<section class="dw"', 1).replace('</body>', UNITS_LOADER + '\n</body>', 1)
 open(os.path.join(PUB, "index.html"), "w").write(h)
 
 TRADES = ['Landscaper', 'Builder', 'Developer', 'Concreter', 'Plumber or drainer', 'Council or civil', 'Other trade']
@@ -340,7 +361,7 @@ def stat(n, l): return f'<div class="ab-stat"><b>{n}</b><span>{l}</span></div>'
 def ix(t, d): return f'<div class="ab-card"><b>{t}</b><span>{d}</span></div>'
 ABOUT = f"""
 <section class="ab-hero" aria-label="About ADV Supplies">
-  <img src="/img/about/shed.jpg" alt="The ADV Building and Garden Supplies shed at 320 Hallam Rd, Hampton Park">
+  <img src="/img/about/yard-shed.jpg" alt="Material bays and the ADV shed at 320 Hallam Rd, Hampton Park">
   <div class="ab-o"><div class="ab-t"><span class="sx-bar"></span><h1>About <span>ADV</span></h1><p>It all starts from the ground up</p></div></div>
 </section>
 <section class="ab-story"><div class="sx-wrap sx-two">
@@ -351,18 +372,77 @@ ABOUT = f"""
     <p>On 1 June 2026 we became <b>ADV Garden and Building Supplies</b>. Same yard at 320 Hallam Rd, Hampton Park, with a new name and a full focus on bulk landscape and building supplies for homes, builders and landscapers.</p>
     <p><mark>[A few lines about the family and how Diaco's started]</mark></p>
   </div>
-  <img class="ab-img" src="/img/about/bays.jpg" alt="Aerial view of the material bays at the ADV yard with two trucks loading" loading="lazy">
+  <figure class="ab-fig"><img class="ab-img" src="/img/about/diacos.jpg" alt="The material bays with the old Diaco&#39;s Garden Centre sign behind them" loading="lazy"><figcaption>Spot the old Diaco&#39;s Garden Centre sign at the top, behind the bays.</figcaption></figure>
 </div></section>
 <section class="ab-stats"><div class="sx-wrap">{stat('6','Trucks on the road every day')}{stat('111','Suburbs across 10 delivery zones')}{stat('2','Materials per load with our split trays')}{stat('7','Days a week, 8am to 4pm')}</div></section>
 <section class="ab-do"><div class="sx-wrap">
   <h2>What we <span>do</span></h2>
   <div class="ab-grid">{ix('Bulk landscape supplies','Soil, compost, mulch, sand, pebbles, rocks, toppings and screenings, sold by the cubic metre.')}{ix('Building supplies','Bagged cement and mortar, blocks and pavers, timber sleepers, hardware and tools.')}{ix('Delivery','Flat rate per truck load by suburb, tipped on your driveway, crossover or nature strip.')}{ix('Trade','Trade prices and one-call ordering for builders, landscapers and developers. <a href="/trade.html">Open a trade account</a>.')}</div>
 </div></section>
+<section class="ab-gal" aria-label="Photos of the yard"><div class="sx-wrap">
+  <h2>Inside the <span>yard</span></h2>
+  <div class="ab-gal-g">
+    <figure class="g1"><img src="/img/about/overhead-shed.jpg" alt="Overhead view of the bays, pallets of pavers and the shed" loading="lazy"></figure>
+    <figure class="g2"><img src="/img/about/loader.jpg" alt="Loader working the pebble bays" loading="lazy"></figure>
+    <figure class="g3"><img src="/img/about/aerial-bays.jpg" alt="Top-down view of the material bays" loading="lazy"></figure>
+    <figure class="g4"><img src="/img/about/pebble-bays.jpg" alt="Scoria and river pebble bays" loading="lazy"></figure>
+    <figure class="g5"><img src="/img/about/white-pebbles.jpg" alt="White pebbles and river stone in the bays" loading="lazy"></figure>
+  </div>
+  <p class="ab-more"><a class="sx-btn" href="/fleet.html">Meet our trucks</a></p>
+</div></section>
 <section class="ab-visit" aria-label="Visit the yard">
-  <img src="/img/about/suburbs.jpg" alt="" loading="lazy">
+  <img src="/img/about/loading-mulch.jpg" alt="" loading="lazy">
   <div class="ab-vo"><h2>Come and see the <span>yard</span></h2><p>320 Hallam Rd, Hampton Park VIC 3976 · Open 7 days, 8am to 4pm</p><div class="ab-cta"><a class="sx-btn" href="tel:0397996399">Call (03) 9799 6399</a><a class="sx-btn alt" href="/products.html">Shop products</a></div></div>
 </section>
 """
 page("about.html", "About ADV Supplies | Formerly Diaco's Nursery | Hampton Park", "ADV Supplies, formerly Diaco's Discount Nursery, supplies bulk landscape and building materials from 320 Hallam Rd, Hampton Park across Melbourne's south-east.", ABOUT, active="about")
+
+# ---------------- fleet ----------------
+STOPS = [
+ ("Loaded at the yard", "Every load leaves our yard at 320 Hallam Rd, Hampton Park."),
+ ("Split tray", "Two materials in one load, for one delivery fee."),
+ ("Tipped where it's safe", "On your driveway, crossover or nature strip."),
+ ("111 suburbs", "Across 10 delivery zones in Melbourne's south-east."),
+ ("Everything for the job", "Soils, mulches, sands, stone, pebbles and more."),
+ ("Six trucks", "On the road and open 7 days."),
+]
+LZ = ' loading="lazy"'
+slides = "".join(f'<div class="fl-slide" data-i="{i}"><img src="/img/fleet/t{i+1}.jpg" alt="ADV tip truck {i+1}"{LZ if i else ""}></div>' for i in range(6))
+caps = "".join(f'<div class="fl-cap" data-i="{i}"><span class="fl-no">0{i+1}<small>/06</small></span><h2>{t}</h2><p>{d}</p></div>' for i, (t, d) in enumerate(STOPS))
+dots = "".join(f'<i data-i="{i}"></i>' for i in range(6))
+cards = "".join(f'<figure class="fl-card"><img src="/img/fleet/t{i+1}.jpg" alt="ADV tip truck {i+1}" loading="lazy"><figcaption><b>Truck 0{i+1}</b><span>{STOPS[i][0]}</span></figcaption></figure>' for i in range(6))
+FLEET_PAGE = f"""
+<section class="fl-top"><div class="sx-wrap">
+  <span class="fl-eye">The ADV fleet</span>
+  <h1>Six trucks.<br><span>One yard.</span></h1>
+  <p>Scroll to watch the convoy roll out of Hampton Park.</p>
+  <span class="fl-hint" aria-hidden="true"></span>
+</div></section>
+<section class="fl-run" id="flRun" aria-label="The ADV convoy">
+  <div class="fl-pin">
+    <div class="fl-track" id="flTrack">{slides}</div>
+    <div class="fl-lane" aria-hidden="true"></div>
+    <div class="fl-caps">{caps}</div>
+    <div class="fl-dots" aria-hidden="true">{dots}</div>
+  </div>
+</section>
+<section class="fl-line"><div class="sx-wrap">
+  <h2>The <span>line-up</span></h2>
+  <div class="fl-grid">{cards}</div>
+  <div class="fl-cta"><a class="sx-btn" href="/products.html">Order a load</a><a class="sx-btn dark" href="/delivery.html">Check your delivery zone</a><a class="sx-btn ghost" href="#drivers">Want to drive one?</a></div>
+</div></section>
+"""
+FLEET_JS = """<script>(function(){
+var run=document.getElementById('flRun'),tr=document.getElementById('flTrack');if(!run)return;
+var caps=run.querySelectorAll('.fl-cap'),dots=run.querySelectorAll('.fl-dots i'),sl=run.querySelectorAll('.fl-slide'),N=6,last=-1,raf=0;
+if(matchMedia('(prefers-reduced-motion: reduce)').matches){run.classList.add('static');return;}
+function f(){raf=0;var r=run.getBoundingClientRect(),h=run.offsetHeight-innerHeight,p=Math.min(1,Math.max(0,-r.top/h));
+ var x=p*(N-1),i=Math.round(x),fr=x-Math.floor(x),mv=Math.sin(fr*Math.PI);
+ sl.forEach(function(s,k){var d=x-k;s.style.visibility=Math.abs(d)>1.2?'hidden':'visible';s.style.transform='translate3d('+(d*100)+'vw,0,0)';s.firstChild.style.transform='translate3d(0,'+(Math.sin((x+k)*14)*mv*5)+'px,0) rotate('+(Math.max(-1,Math.min(1,d))*-0.8*mv)+'deg)';});
+ run.style.setProperty('--mv',mv.toFixed(3));
+ if(i!==last){last=i;caps.forEach(function(c,k){c.classList.toggle('on',k===i)});dots.forEach(function(c,k){c.classList.toggle('on',k===i)});}}
+addEventListener('scroll',function(){if(!raf)raf=requestAnimationFrame(f)},{passive:true});addEventListener('resize',f);f();
+})();</script>"""
+page("fleet.html", "Our Trucks | The ADV Fleet | ADV Supplies", "Meet the six ADV tip trucks that deliver soil, mulch, sand and rock from our Hampton Park yard across Melbourne's south-east.", FLEET_PAGE, active="fleet", scripts='<script src="/app.js"></script>\n' + FLEET_JS)
 
 print("pages built")
