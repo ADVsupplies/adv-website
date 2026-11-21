@@ -24,7 +24,7 @@ def head(title, desc, extra=""):
 CART_SVG = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h9.7a1 1 0 0 0 1-.8L21 8H6.2"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>'
 
 def header(active="", roll=False, cart=True):
-    links = [("/products.html", "Products", "products"), ("/#delivery", "Need delivery?", "delivery"), ("/#calculator", "Need measurements?", "calc"), ("/delivery.html", "Delivery map", "map"), ("/trade.html", "Trade", "trade"), ("#contact", "Contact", "contact")]
+    links = [("/products.html", "Products", "products"), ("/#delivery", "Need delivery?", "delivery"), ("/#calculator", "Need measurements?", "calc"), ("/delivery.html", "Delivery map", "map"), ("/trade.html", "Trade", "trade"), ("/about.html", "About", "about"), ("#contact", "Contact", "contact")]
     nav = "".join(f'<a href="{h}"' + (' aria-current="page"' if k == active else "") + f'>{t}</a>' for h, t, k in links)
     cartbtn = f'<button class="sh-cart" id="cartBtn" type="button" aria-label="Open cart">{CART_SVG}<b id="cartCount">0</b></button>' if cart else f'<a class="sh-cart" href="/products.html" aria-label="Shop products">{CART_SVG}</a>'
     return f'''<header class="sh{' roll' if roll else ''}"><div class="sh-in">
@@ -39,7 +39,7 @@ FOOTER = '''<footer id="contact" class="sf"><div class="sf-in">
   <div class="sf-col">
     <div class="sf-brand">ADV Supplies <span>|</span> Garden &amp; Building</div>
     <p>Bulk landscape and building supplies for trade and home, delivered across Melbourne's south-east. It all starts from the ground UP.</p>
-    <nav class="sf-nav" aria-label="Footer"><a href="/products.html">Products</a><a href="/#delivery">Need delivery?</a><a href="/#calculator">Need measurements?</a><a href="/delivery.html">Delivery map</a><a href="/trade.html" class="sf-trade">Trade account</a></nav>
+    <nav class="sf-nav" aria-label="Footer"><a href="/products.html">Products</a><a href="/#delivery">Need delivery?</a><a href="/#calculator">Need measurements?</a><a href="/delivery.html">Delivery map</a><a href="/trade.html" class="sf-trade">Trade account</a><a href="/about.html">About ADV</a></nav>
   </div>
   <div class="sf-col"><h4>Visit the yard</h4><p>320 Hallam Rd<br>Hampton Park VIC 3976<br>Open 7 days, 8am to 4pm</p></div>
   <div class="sf-col"><h4>Talk to us</h4><p><a href="tel:0397996399">(03) 9799 6399</a><br><a href="mailto:sales@advsupplies.com.au">sales@advsupplies.com.au</a></p></div>
@@ -334,5 +334,35 @@ else if(location.hash==='#apply')show('apply');
 L.addEventListener('submit',function(e){e.preventDefault();document.getElementById('trLoginMsg').hidden=false;});
 })();</script>"""
 page("trade.html", "ADV Trade account | Trade prices | ADV Supplies", "Trade accounts for builders, landscapers, developers and contractors: trade prices on bulk landscape and building supplies delivered across Melbourne's south-east.", TRADE_PAGE, active="trade", scripts='<script src="/app.js"></script>\n' + TRADE_JS)
+
+# ---------------- about ----------------
+def stat(n, l): return f'<div class="ab-stat"><b>{n}</b><span>{l}</span></div>'
+def ix(t, d): return f'<div class="ab-card"><b>{t}</b><span>{d}</span></div>'
+ABOUT = f"""
+<section class="ab-hero" aria-label="About ADV Supplies">
+  <img src="/img/about/shed.jpg" alt="The ADV Building and Garden Supplies shed at 320 Hallam Rd, Hampton Park">
+  <div class="ab-o"><div class="ab-t"><span class="sx-bar"></span><h1>About <span>ADV</span></h1><p>It all starts from the ground up</p></div></div>
+</section>
+<section class="ab-story"><div class="sx-wrap sx-two">
+  <div class="ab-copy">
+    <span class="sx-eye red">Our story</span>
+    <h2>Formerly <span>Diaco's Nursery</span></h2>
+    <p>ADV Supplies was formerly Diaco's Discount Nursery. For <mark>[number]</mark> years, Diaco's supplied gardens across Melbourne's south-east from our yard on Hallam Road.</p>
+    <p>On 1 June 2026 we became <b>ADV Garden and Building Supplies</b>. Same yard at 320 Hallam Rd, Hampton Park, with a new name and a full focus on bulk landscape and building supplies for homes, builders and landscapers.</p>
+    <p><mark>[A few lines about the family and how Diaco's started]</mark></p>
+  </div>
+  <img class="ab-img" src="/img/about/bays.jpg" alt="Aerial view of the material bays at the ADV yard with two trucks loading" loading="lazy">
+</div></section>
+<section class="ab-stats"><div class="sx-wrap">{stat('6','Trucks on the road every day')}{stat('111','Suburbs across 10 delivery zones')}{stat('2','Materials per load with our split trays')}{stat('7','Days a week, 8am to 4pm')}</div></section>
+<section class="ab-do"><div class="sx-wrap">
+  <h2>What we <span>do</span></h2>
+  <div class="ab-grid">{ix('Bulk landscape supplies','Soil, compost, mulch, sand, pebbles, rocks, toppings and screenings, sold by the cubic metre.')}{ix('Building supplies','Bagged cement and mortar, blocks and pavers, timber sleepers, hardware and tools.')}{ix('Delivery','Flat rate per truck load by suburb, tipped on your driveway, crossover or nature strip.')}{ix('Trade','Trade prices and one-call ordering for builders, landscapers and developers. <a href="/trade.html">Open a trade account</a>.')}</div>
+</div></section>
+<section class="ab-visit" aria-label="Visit the yard">
+  <img src="/img/about/suburbs.jpg" alt="" loading="lazy">
+  <div class="ab-vo"><h2>Come and see the <span>yard</span></h2><p>320 Hallam Rd, Hampton Park VIC 3976 · Open 7 days, 8am to 4pm</p><div class="ab-cta"><a class="sx-btn" href="tel:0397996399">Call (03) 9799 6399</a><a class="sx-btn alt" href="/products.html">Shop products</a></div></div>
+</section>
+"""
+page("about.html", "About ADV Supplies | Formerly Diaco's Nursery | Hampton Park", "ADV Supplies, formerly Diaco's Discount Nursery, supplies bulk landscape and building materials from 320 Hallam Rd, Hampton Park across Melbourne's south-east.", ABOUT, active="about")
 
 print("pages built")
