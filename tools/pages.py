@@ -285,8 +285,18 @@ TRADE_SECTION = f"""
 </div></section>
 """
 UNITS_LOADER = """<script>(function(){var el=document.querySelector('[data-adv-units]');if(!el)return;var go=function(){if(go.d)return;go.d=1;var s=document.createElement('script');s.src='/trade/units.js';document.body.appendChild(s);};if('IntersectionObserver' in window){new IntersectionObserver(function(es,o){if(es.some(function(e){return e.isIntersecting})){o.disconnect();go();}},{rootMargin:'300px'}).observe(el);}else go();})();</script>"""
+GIFT_FX = """<script>(function(){var g=document.querySelector('.sx-gift .gc');if(!g||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+g.classList.add('fx');var r=g.querySelector('.gc-red'),w=g.querySelector('.gc-white'),raf=0,hov=null;
+function f(){raf=0;if(!g.classList.contains('live'))return;var b=g.getBoundingClientRect(),p=(innerHeight-b.top)/(innerHeight+b.height);p=Math.max(0,Math.min(1,p))-.5;
+ r.style.setProperty('--x',(-p*36)+'px');r.style.setProperty('--y',(p*24)+'px');r.style.setProperty('--r',(-8-p*10)+'deg');
+ w.style.setProperty('--x',(p*36+(hov===w?6:0))+'px');w.style.setProperty('--y',(-p*30-(hov===w?14:0))+'px');w.style.setProperty('--r',(5+p*10)+'deg');
+ if(hov===r){r.style.setProperty('--y',(p*24-14)+'px')}}
+function on(){if(!raf)raf=requestAnimationFrame(f)}
+new IntersectionObserver(function(es,o){if(es[0].isIntersecting){o.disconnect();g.classList.add('in');setTimeout(function(){g.classList.add('live');f()},1300)}},{threshold:.35}).observe(g);
+addEventListener('scroll',on,{passive:true});[r,w].forEach(function(c){c.addEventListener('mouseenter',function(){hov=c;on()});c.addEventListener('mouseleave',function(){hov=null;on()})});
+})();</script>"""
 h = open(os.path.join(PUB, "index.html")).read()
-h = h.replace('<section class="dw"', TRADE_SECTION + '<section class="dw"', 1).replace('</body>', UNITS_LOADER + '\n</body>', 1)
+h = h.replace('<section class="dw"', TRADE_SECTION + '<section class="dw"', 1).replace('</body>', UNITS_LOADER + GIFT_FX + '\n</body>', 1)
 open(os.path.join(PUB, "index.html"), "w").write(h)
 
 TRADES = ['Landscaper', 'Builder', 'Developer', 'Concreter', 'Plumber or drainer', 'Council or civil', 'Other trade']
