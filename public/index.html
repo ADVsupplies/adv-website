@@ -243,5 +243,6 @@ function on(){if(!raf)raf=requestAnimationFrame(f)}
 new IntersectionObserver(function(es,o){if(es[0].isIntersecting){o.disconnect();g.classList.add('in');setTimeout(function(){g.classList.add('live');f()},1300)}},{threshold:.35}).observe(g);
 addEventListener('scroll',on,{passive:true});[r,w].forEach(function(c){c.addEventListener('mouseenter',function(){hov=c;on()});c.addEventListener('mouseleave',function(){hov=null;on()})});
 })();</script>
+<script src="/chat/chat.js" defer></script>
 </body>
 </html>

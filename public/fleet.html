@@ -75,5 +75,6 @@ function f(){raf=0;var r=run.getBoundingClientRect(),h=run.offsetHeight-innerHei
  if(i!==last){last=i;caps.forEach(function(c,k){c.classList.toggle('on',k===i)});dots.forEach(function(c,k){c.classList.toggle('on',k===i)});}}
 addEventListener('scroll',function(){if(!raf)raf=requestAnimationFrame(f)},{passive:true});addEventListener('resize',f);f();
 })();</script>
+<script src="/chat/chat.js" defer></script>
 </body>
 </html>
