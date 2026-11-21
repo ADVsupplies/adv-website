@@ -105,8 +105,17 @@ def gift_block():
     return old[a:b].rstrip()
 
 HOME = f'''
+<section class="vh" aria-label="Drone footage of the ADV Supplies yard at Hampton Park">
+  <video class="vh-v" src="/video/adv-yard.mp4" poster="/video/adv-yard.jpg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
+  <div class="vh-o"><div class="vh-t">
+    <span class="sx-bar"></span>
+    <h1>It starts from the ground <span>up.</span></h1>
+    <p>Simple, affordable, reliable</p>
+  </div></div>
+</section>
+
 <section class="hero3d" aria-label="ADV delivers to homes, new estates and construction sites">
-  <div class="m-hero"><div class="m-eye">We deliver to</div><h1>Homes · New estates <span>&amp;</span> construction sites</h1><p>Landscapers · Builders · Tradies · DIY</p><div class="m-cta"><a class="sx-btn" href="/products.html">Shop products</a><a class="sx-btn alt" href="tel:0397996399">(03) 9799 6399</a></div></div>
+  <div class="m-hero"><div class="m-eye">We deliver to</div><h2>Homes · New estates <span>&amp;</span> construction sites</h2><p>Landscapers · Builders · Tradies · DIY</p><div class="m-cta"><a class="sx-btn" href="/products.html">Shop products</a><a class="sx-btn alt" href="tel:0397996399">(03) 9799 6399</a></div></div>
   <div class="hero3d-box" data-adv-hero="1"></div>
 </section>
 

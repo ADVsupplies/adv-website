@@ -62,8 +62,8 @@ body{background:#fff}
 @media(max-width:760px){
   .m-hero{display:block;padding:26px 20px 10px;color:#fff}
   .m-eye{color:#E8302A;font:600 13px/1 ui-monospace,Menlo,monospace;letter-spacing:4px;text-transform:uppercase;margin-bottom:10px}
-  .m-hero h1{margin:0;font:800 38px/1.02 var(--cond);text-transform:uppercase}
-  .m-hero h1 span{color:#E8302A}
+  .m-hero h2{margin:0;font:800 38px/1.02 var(--cond);text-transform:uppercase}
+  .m-hero h2 span{color:#E8302A}
   .m-hero p{margin:10px 0 16px;color:#A39D92;font:13px ui-monospace,Menlo,monospace;letter-spacing:2px;text-transform:uppercase}
   .m-cta{display:flex;flex-wrap:wrap;gap:10px}
   .hero3d-box{aspect-ratio:4/3}
@@ -289,3 +289,16 @@ body{background:#fff}
 .tr-table .tp{font:800 24px var(--cond);color:var(--adv)}.tr-table small{font-size:12px;color:#6E6E6E}
 .tr-table .sv{background:var(--tyel);border-radius:999px;padding:4px 10px;font-weight:700;font-size:14px;white-space:nowrap}
 .tr-form[hidden],.tr-msg[hidden]{display:none}
+
+/* video banner */
+.vh{position:relative;background:#111;overflow:hidden}
+.vh-v{display:block;width:100%;height:clamp(320px,42vw,620px);object-fit:cover}
+.vh-o{position:absolute;inset:0;display:flex;align-items:center;background:linear-gradient(90deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.35) 55%,rgba(0,0,0,.05) 100%)}
+.vh-t{max-width:1440px;width:100%;margin:0 auto;padding:0 48px;color:#fff;display:flex;flex-direction:column;gap:14px}
+.vh-t .sx-bar{margin:0}
+.vh-t h1{margin:0;font:800 clamp(40px,6vw,84px)/.95 var(--cond);text-transform:uppercase;text-shadow:0 4px 18px rgba(0,0,0,.45);max-width:900px;animation:vhIn 1s .3s both}
+.vh-t h1 span{color:#E8302A}
+.vh-t p{margin:0;font:600 clamp(18px,2.2vw,30px) var(--semi);letter-spacing:.08em;text-transform:uppercase;text-shadow:0 2px 10px rgba(0,0,0,.5);animation:vhIn 1s .8s both}
+@keyframes vhIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@media(max-width:640px){.vh-t{padding:0 20px}}
+@media(prefers-reduced-motion:reduce){.vh-t h1,.vh-t p{animation:none}}
