@@ -434,3 +434,4 @@ body{background:#fff}
 
 .no-return{margin-top:12px;padding:10px 12px;border-left:5px solid var(--adv);background:#FFF1F1;color:#1A1A1A;font-size:14px;line-height:1.4;border-radius:6px}.no-return b{color:var(--adv);text-transform:uppercase;letter-spacing:.03em}
 .pv-note{margin-top:12px;padding:10px 12px;border-left:5px solid #F5C518;background:#FFF8E1;color:#1A1A1A;font-size:14px;line-height:1.4;border-radius:6px}.pv-note b{text-transform:uppercase;letter-spacing:.03em}.pv-note a{color:var(--adv);font-weight:700}
+.ps-sec+.ps-sec{border-top:1px solid #DADADA}

@@ -469,9 +469,7 @@
     var list = CATCFG.filter(function (c) { return DATA.categories.indexOf(c[0]) > -1; });
     DATA.categories.forEach(function (c) { if (known.indexOf(c) < 0) list.push([c, niceCat(c), "", ""]); });
     return list.map(function (c, i) {
-      var shade = SHADES[Math.round(i * (SHADES.length - 1) / Math.max(1, list.length - 1))];
-      var dark = SHADES.indexOf(shade) <= 9;
-      return { key: c[0], name: c[1], tag: c[2], img: c[3] ? "/img/cat-" + c[3] + ".jpg" : "", id: "cat-" + slug(c[1]), bg: shade, dark: dark, redHead: SHADES.indexOf(shade) >= 12 };
+      return { key: c[0], name: c[1], tag: c[2], img: c[3] ? "/img/cat-" + c[3] + ".jpg" : "", id: "cat-" + slug(c[1]), bg: "#F2F2F2", dark: false, redHead: true };
     });
   }
   function pcard(p, cat) {
@@ -484,7 +482,7 @@
     var box = $("#psSections"); if (!box || !DATA) return;
     var cats = psCats(), q = PS.q.toLowerCase(), any = false, SHOW = 8, html = "";
     var chips = $("#psChips");
-    if (chips && !chips.innerHTML) chips.innerHTML = cats.map(function (c) { return '<a href="#' + c.id + '" style="background:' + c.bg + ";color:" + (c.dark ? "#fff" : "#1A1A1A") + '">' + esc(c.name) + "</a>"; }).join("");
+    if (chips && !chips.innerHTML) chips.innerHTML = cats.map(function (c) { return '<a href="#' + c.id + '" style="background:#C80000;color:#fff">' + esc(c.name) + "</a>"; }).join("");
     cats.forEach(function (c) {
       var all = DATA.products.filter(function (p) { return p.category === c.key && !/\btrade\b/i.test(p.name) && (!q || p.name.toLowerCase().indexOf(q) > -1); });
       if (!all.length) return; any = true;
