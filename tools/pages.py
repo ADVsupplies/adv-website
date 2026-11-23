@@ -126,7 +126,7 @@ HOME = f'''
   <video class="vh-v" src="/video/adv-yard.mp4" poster="/video/adv-yard.jpg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
   <div class="vh-o"><div class="vh-t">
     <span class="sx-bar"></span>
-    <h1>It starts from the ground <span>up.</span></h1>
+    <h1>It starts from<br>the ground <span>up.</span></h1>
     <p>Simple, affordable, reliable</p>
   </div></div>
 </section>
