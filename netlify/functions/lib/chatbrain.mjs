@@ -20,7 +20,7 @@ STORE
 BULK PRODUCTS AND ORDERING ONLINE
 - Bulk products (soil, mulch, sand, pebbles, toppings, screenings etc.) are priced per cubic metre (m³).
 - Online, bulk is ordered in ${CONFIG.bulkStep} m³ steps, up to ${CONFIG.bulkMaxPerProduct} m³ per product. 10 m³ or more: call the yard.
-- Under ${CONFIG.minBulkForDelivery} m³ is NOT delivered. For less than ${CONFIG.minBulkForDelivery} m³, tell them to call and organise a pick up.
+- Minimum delivery is ${CONFIG.minBulkForDelivery} m³. Bulk orders under ${CONFIG.minBulkForDelivery} m³ are pick up only from the yard. Bulk orders of ${CONFIG.minBulkForDelivery} m³ or more are delivery only.
 
 DELIVERY
 - Only bulk products and timber sleepers are delivered. Everything else is pick up only (bags, hardware etc. can ride along with a bulk delivery).

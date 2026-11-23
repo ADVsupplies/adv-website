@@ -107,14 +107,14 @@
   function loads() { return loadsFor(bulkVols()); }
   function deliveryProblem() {
     if (co.mode !== "delivery") {
-      var bk = cart.filter(function (l) { var p = BYID[l.id]; return p && p.bulk; }).map(function (l) { return BYID[l.id].name; });
-      return bk.length ? "Bulk materials are delivery only online: " + esc(bk.join(", ")) + '. Choose delivery, or <a href="tel:0397996399">call (03) 9799 6399</a> to collect bulk from the yard.' : null;
+      var bt = bulkVols().reduce(function (a, b) { return a + b; }, 0), mn = DATA.settings.minBulkForDelivery;
+      return bt >= mn ? "Bulk orders of " + mn + " m³ or more are delivery only. Choose delivery, or reduce to under " + mn + " m³ to pick up." : null;
     }
     var st = DATA.settings;
     var nz = cart.filter(function (l) { var p = BYID[l.id]; return p && !p.deliver; }).map(function (l) { return BYID[l.id].name; });
     if (nz.length) return "Pick up only: " + esc(nz.join(", ")) + ". We deliver bulk materials and timber sleepers. Remove " + (nz.length > 1 ? "these items" : "this item") + " or choose pick up.";
     var vols = bulkVols(), tot = vols.reduce(function (a, b) { return a + b; }, 0);
-    if (vols.length && tot < st.minBulkForDelivery) return 'We deliver ' + st.minBulkForDelivery + ' m³ or more. For less, please <a href="tel:0397996399">call (03) 9799 6399</a> to organise a pick up.';
+    if (vols.length && tot < st.minBulkForDelivery) return 'Minimum delivery is ' + st.minBulkForDelivery + ' m³. Anything less is pick up only. Choose pick up, or add more.';
     if (loadsFor(vols) > st.maxLoads) return 'That order needs more than ' + st.maxLoads + ' truck loads. Please <a href="tel:0397996399">call us</a> and we\'ll organise it.';
     return null;
   }
@@ -380,7 +380,7 @@
 
   function readForm() {
     co.contact = { first: $("#fFirst").value.trim(), last: $("#fLast").value.trim(), phone: $("#fPhone").value.trim(), email: $("#fEmail").value.trim() };
-    if (co.mode !== "delivery" && deliveryProblem()) return "Bulk materials are delivery only online. Please go back to the cart and choose delivery.";
+    if (co.mode !== "delivery" && deliveryProblem()) return "Bulk orders of " + DATA.settings.minBulkForDelivery + " m³ or more are delivery only. Please go back to the cart and choose delivery.";
     if (co.mode === "delivery") {
       if (DATA.settings.addressSearch) { co.address = co.address || {}; co.address.line2 = $("#fLine2").value.trim(); }
       else co.address = { line1: $("#fLine1").value.trim(), line2: $("#fLine2").value.trim(), postcode: $("#fPc").value.trim() };

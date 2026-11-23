@@ -144,8 +144,8 @@ export function buildOrder(catalog, body, now = new Date()) {
   }
 
   const { lines, bulkCount, volumes, noZone } = buildLines(catalog, body.items);
-  if (mode === "pickup" && bulkCount)
-    throw new InputError(`Bulk materials are delivery only online. Please choose delivery, or call ${CONFIG.phone} to collect bulk from the yard.`);
+  if (mode === "pickup" && volumes.reduce((x, y) => x + y, 0) >= CONFIG.minBulkForDelivery)
+    throw new InputError(`Bulk orders of ${CONFIG.minBulkForDelivery} m³ or more are delivery only. Please choose delivery.`);
   const display = `${first} ${last}`;
   const ref = "WEB-" + now.getTime().toString(36).toUpperCase().slice(-6) + Math.random().toString(36).slice(2, 4).toUpperCase();
 
@@ -166,7 +166,7 @@ export function buildOrder(catalog, body, now = new Date()) {
       throw new InputError(`Pick up only: ${noZone.join(", ")}. We deliver bulk materials and timber sleepers. Remove ${noZone.length > 1 ? "these items" : "this item"} or choose pick up.`);
     const totalBulk = volumes.reduce((a, b) => a + b, 0);
     if (bulkCount && totalBulk < CONFIG.minBulkForDelivery)
-      throw new InputError(`We deliver ${CONFIG.minBulkForDelivery} m³ or more. For less, please call ${CONFIG.phone} to organise a pick up.`);
+      throw new InputError(`Minimum delivery is ${CONFIG.minBulkForDelivery} m³. Anything less is pick up only. Please choose pick up.`);
     const loads = loadsFor(volumes);
     if (loads > CONFIG.maxLoads)
       throw new InputError(`That order needs more than ${CONFIG.maxLoads} truck loads. Please call ${CONFIG.phone} and we'll organise it.`);
