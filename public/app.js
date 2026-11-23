@@ -105,6 +105,9 @@
   }
   function bulkVols() { return cart.filter(function (l) { return BYID[l.id] && BYID[l.id].bulk; }).map(function (l) { return +l.qty; }); }
   function loads() { return loadsFor(bulkVols()); }
+  function isPaver(p) { return !!p && (/paver/i.test(p.name || "") || (/paver/i.test(p.category || "") && !/block|wall|cap|step|edg|kerb|post|glue|adhesive|sealer/i.test(p.name || ""))); }
+  function hasPavers() { return cart.some(function (l) { return isPaver(BYID[l.id]); }); }
+  var PAVER_NOTE = '<div class="pv-note"><b>More than 90 pavers?</b> We can organise delivery. Please <a href="tel:0397996399">call the yard on (03) 9799 6399</a> ahead to organise it.</div>';
   function deliveryProblem() {
     if (co.mode !== "delivery") {
       var bt = bulkVols().reduce(function (a, b) { return a + b; }, 0), mn = DATA.settings.minBulkForDelivery;
@@ -172,13 +175,14 @@
         '<div class="field"><label>Depth (mm)</label><input id="cD" type="number" min="0" step="10" value="75" inputmode="numeric"></div></div>' +
         '<div class="calc-out" id="cOut">Enter your area to calculate.</div></details>';
       h += '<div class="field"><label>Quantity (cubic metres)</label><div class="qty"><button type="button" data-q="-1" aria-label="Less">−</button><input id="mQty" type="number" step="' + DATA.settings.bulkStep + '" min="' + DATA.settings.bulkStep + '" max="' + DATA.settings.bulkMaxPerProduct + '" value="1"><button type="button" data-q="1" aria-label="More">+</button></div>' +
-        '<div class="hint">Delivery is 1 m³ or more. For less, call <a href="tel:0397996399">(03) 9799 6399</a> to organise a pick up. 10 m³ or more? <a href="tel:0397996399">Call for bulk pricing</a>.</div></div>';
+        '<div class="hint">Delivery is 1 m³ or more in total (you can mix products). Under 1 m³ is pick up only. 10 m³ or more? <a href="tel:0397996399">Call for bulk pricing</a>.</div></div>';
     } else {
       if (p.variations.length > 1) {
         h += '<div class="field"><label>Option</label><select id="mVar">' + p.variations.map(function (v) { return '<option value="' + v.id + '"' + (v.stock === 0 ? " disabled" : "") + (v.id === M.variationId ? " selected" : "") + ">" + esc(v.name) + " — " + money2(v.price) + (v.stock === 0 ? " (out of stock)" : "") + "</option>"; }).join("") + "</select></div>";
       }
       h += '<div class="field"><label>Quantity</label><div class="qty"><button type="button" data-q="-1" aria-label="Less">−</button><input id="mQty" type="number" step="1" min="1" max="999" value="1"><button type="button" data-q="1" aria-label="More">+</button></div></div>';
     }
+    if (isPaver(p)) h += PAVER_NOTE;
     $("#mOpts").innerHTML = h;
     updModal();
     $("#modal").hidden = false; document.body.style.overflow = "hidden";
@@ -261,6 +265,7 @@
         return '<div class="li"><div class="li-img" style="background-image:url(\'' + esc(p.image || "") + '\')"></div><div><div class="li-n">' + esc(p.name) + '</div><div class="li-s">' +
           (p.bulk ? fmtM3(l.qty) + " · " + money2(p.price) + " per m³" : esc(variationName(l))) + "</div>" + qty + '</div><div class="li-r"><b>' + money2(linePrice(l)) + '</b><button class="li-rm" data-rm="' + i + '">Remove</button></div></div>';
       }).join("");
+      if (hasPavers()) h += PAVER_NOTE;
       h += '<div class="seg"><button data-mode="delivery" class="' + (co.mode === "delivery" ? "on" : "") + '">Delivery</button><button data-mode="pickup" class="' + (co.mode === "pickup" ? "on" : "") + '">Pick up</button></div>';
       if (co.mode === "delivery") {
         var s = findSuburb(co.suburb);
