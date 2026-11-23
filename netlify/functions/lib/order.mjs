@@ -166,7 +166,7 @@ export function buildOrder(catalog, body, now = new Date()) {
       throw new InputError(`Pick up only: ${noZone.join(", ")}. We deliver bulk materials and timber sleepers. Remove ${noZone.length > 1 ? "these items" : "this item"} or choose pick up.`);
     const totalBulk = volumes.reduce((a, b) => a + b, 0);
     if (bulkCount && totalBulk < CONFIG.minBulkForDelivery)
-      throw new InputError(`Minimum delivery is ${CONFIG.minBulkForDelivery} m³. Anything less is pick up only. Please choose pick up.`);
+      throw new InputError(`Minimum delivery is ${CONFIG.minBulkForDelivery} m³ in total (products can be mixed). Anything less is pick up only. Please choose pick up.`);
     const loads = loadsFor(volumes);
     if (loads > CONFIG.maxLoads)
       throw new InputError(`That order needs more than ${CONFIG.maxLoads} truck loads. Please call ${CONFIG.phone} and we'll organise it.`);

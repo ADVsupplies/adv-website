@@ -114,7 +114,7 @@
     var nz = cart.filter(function (l) { var p = BYID[l.id]; return p && !p.deliver; }).map(function (l) { return BYID[l.id].name; });
     if (nz.length) return "Pick up only: " + esc(nz.join(", ")) + ". We deliver bulk materials and timber sleepers. Remove " + (nz.length > 1 ? "these items" : "this item") + " or choose pick up.";
     var vols = bulkVols(), tot = vols.reduce(function (a, b) { return a + b; }, 0);
-    if (vols.length && tot < st.minBulkForDelivery) return 'Minimum delivery is ' + st.minBulkForDelivery + ' m³. Anything less is pick up only. Choose pick up, or add more.';
+    if (vols.length && tot < st.minBulkForDelivery) return 'Minimum delivery is ' + st.minBulkForDelivery + ' m³ in total. You can mix products (e.g. 0.5 + 0.5 m³). You have ' + r2(tot) + ' m³. Anything less is pick up only. Choose pick up, or add more.';
     if (loadsFor(vols) > st.maxLoads) return 'That order needs more than ' + st.maxLoads + ' truck loads. Please <a href="tel:0397996399">call us</a> and we\'ll organise it.';
     return null;
   }
@@ -282,6 +282,7 @@
           if (s && !co.address.postcode) co.address.postcode = s.pc;
           if (s) co.address.postcode = s.pc;
           save();
+          if (!$("#cSubRes")) return;
           $("#cSubRes").innerHTML = s ? zoneMsg(s) : outsideMsg();
           $("#dFoot").innerHTML = cartFoot();
         });
