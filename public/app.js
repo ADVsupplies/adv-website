@@ -106,7 +106,10 @@
   function bulkVols() { return cart.filter(function (l) { return BYID[l.id] && BYID[l.id].bulk; }).map(function (l) { return +l.qty; }); }
   function loads() { return loadsFor(bulkVols()); }
   function deliveryProblem() {
-    if (co.mode !== "delivery") return null;
+    if (co.mode !== "delivery") {
+      var bk = cart.filter(function (l) { var p = BYID[l.id]; return p && p.bulk; }).map(function (l) { return BYID[l.id].name; });
+      return bk.length ? "Bulk materials are delivery only online: " + esc(bk.join(", ")) + '. Choose delivery, or <a href="tel:0397996399">call (03) 9799 6399</a> to collect bulk from the yard.' : null;
+    }
     var st = DATA.settings;
     var nz = cart.filter(function (l) { var p = BYID[l.id]; return p && !p.deliver; }).map(function (l) { return BYID[l.id].name; });
     if (nz.length) return "Pick up only: " + esc(nz.join(", ")) + ". We deliver bulk materials and timber sleepers. Remove " + (nz.length > 1 ? "these items" : "this item") + " or choose pick up.";
@@ -239,6 +242,11 @@
     return h;
   }
 
+  function cartFoot() {
+    var ok = !deliveryProblem() && (co.mode === "pickup" || deliveryFee() != null);
+    return totalsHtml() + '<div class="no-return" role="note"><b>Choose wisely.</b> ' + (co.mode === "pickup" ? "Once the product has been loaded and collected, we do not return items." : "Once the product has been delivered and dumped, we do not return items.") + '</div>' + '<button class="btn block" id="toDetails" style="margin-top:12px"' + (ok ? "" : " disabled") + ">Continue</button>";
+  }
+
   function renderCart() {
     var body = $("#dBody"), foot = $("#dFoot");
     $("#dTitle").textContent = step === "cart" ? "Your cart" : "Your details";
@@ -260,11 +268,11 @@
           '<div id="cSubRes">' + (s ? zoneMsg(s) : (co.suburb.length > 3 ? outsideMsg() : "")) + "</div>" +
           (deliveryProblem() ? '<div class="err" style="margin-top:10px">' + deliveryProblem() + "</div>" : "");
       } else {
-        h += '<p class="note">Collect from our yard at 320 Hallam Rd, Hampton Park. Open 7 days, 8am to 4pm.</p>';
+        h += '<p class="note">Collect from our yard at 320 Hallam Rd, Hampton Park. Open 7 days, 8am to 4pm.</p>' +
+          (deliveryProblem() ? '<div class="err" style="margin-top:10px">' + deliveryProblem() + "</div>" : "");
       }
       body.innerHTML = h;
-      var ok = co.mode === "pickup" || (deliveryFee() != null && !deliveryProblem());
-      foot.innerHTML = totalsHtml() + '<div class="no-return" role="note"><b>Choose wisely.</b> ' + (co.mode === "pickup" ? "Once the product has been loaded and collected, we do not return items." : "Once the product has been delivered and dumped, we do not return items.") + '</div>' + '<button class="btn block" id="toDetails" style="margin-top:12px"' + (ok ? "" : " disabled") + ">Continue</button>";
+      foot.innerHTML = cartFoot();
       if (co.mode === "delivery") {
         autocomplete($("#cSub"), $("#cSubList"), function (s) {
           if (s === undefined) return;
@@ -275,7 +283,7 @@
           if (s) co.address.postcode = s.pc;
           save();
           $("#cSubRes").innerHTML = s ? zoneMsg(s) : outsideMsg();
-          $("#dFoot").innerHTML = totalsHtml() + '<button class="btn block" id="toDetails" style="margin-top:12px"' + (s && !deliveryProblem() ? "" : " disabled") + ">Continue</button>";
+          $("#dFoot").innerHTML = cartFoot();
         });
       }
     } else {
@@ -372,6 +380,7 @@
 
   function readForm() {
     co.contact = { first: $("#fFirst").value.trim(), last: $("#fLast").value.trim(), phone: $("#fPhone").value.trim(), email: $("#fEmail").value.trim() };
+    if (co.mode !== "delivery" && deliveryProblem()) return "Bulk materials are delivery only online. Please go back to the cart and choose delivery.";
     if (co.mode === "delivery") {
       if (DATA.settings.addressSearch) { co.address = co.address || {}; co.address.line2 = $("#fLine2").value.trim(); }
       else co.address = { line1: $("#fLine1").value.trim(), line2: $("#fLine2").value.trim(), postcode: $("#fPc").value.trim() };

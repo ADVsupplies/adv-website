@@ -144,6 +144,8 @@ export function buildOrder(catalog, body, now = new Date()) {
   }
 
   const { lines, bulkCount, volumes, noZone } = buildLines(catalog, body.items);
+  if (mode === "pickup" && bulkCount)
+    throw new InputError(`Bulk materials are delivery only online. Please choose delivery, or call ${CONFIG.phone} to collect bulk from the yard.`);
   const display = `${first} ${last}`;
   const ref = "WEB-" + now.getTime().toString(36).toUpperCase().slice(-6) + Math.random().toString(36).slice(2, 4).toUpperCase();
 
