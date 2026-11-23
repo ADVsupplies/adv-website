@@ -258,7 +258,6 @@
         var s = findSuburb(co.suburb);
         h += '<div class="field"><label for="cSub">Delivery suburb</label><div class="ac"><input id="cSub" type="text" autocomplete="off" placeholder="Start typing your suburb" value="' + esc(co.suburb) + '"><div class="ac-list" id="cSubList"></div></div></div>' +
           '<div id="cSubRes">' + (s ? zoneMsg(s) : (co.suburb.length > 3 ? outsideMsg() : "")) + "</div>" +
-          '<p class="note">Delivery is charged per truck load. One truck carries one material up to 10 m³, or two materials side by side (up to 4 m³ + 2 m³, or 3 m³ + 3 m³). Sleepers ride along free. Everything else is pick up only.</p>' +
           (deliveryProblem() ? '<div class="err" style="margin-top:10px">' + deliveryProblem() + "</div>" : "");
       } else {
         h += '<p class="note">Collect from our yard at 320 Hallam Rd, Hampton Park. Open 7 days, 8am to 4pm.</p>';
