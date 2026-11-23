@@ -265,7 +265,7 @@
       }
       body.innerHTML = h;
       var ok = co.mode === "pickup" || (deliveryFee() != null && !deliveryProblem());
-      foot.innerHTML = totalsHtml() + '<button class="btn block" id="toDetails" style="margin-top:12px"' + (ok ? "" : " disabled") + ">Continue</button>";
+      foot.innerHTML = totalsHtml() + '<div class="no-return" role="note"><b>Choose wisely.</b> ' + (co.mode === "pickup" ? "Once the product has been loaded and collected, we do not return items." : "Once the product has been delivered and dumped, we do not return items.") + '</div>' + '<button class="btn block" id="toDetails" style="margin-top:12px"' + (ok ? "" : " disabled") + ">Continue</button>";
       if (co.mode === "delivery") {
         autocomplete($("#cSub"), $("#cSubList"), function (s) {
           if (s === undefined) return;

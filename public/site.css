@@ -431,3 +431,5 @@ body{background:#fff}
 .tr-lock svg{flex:none;width:54px;height:54px;fill:none;stroke:var(--adv);stroke-width:2.2}
 .tr-lock h2{margin:0 0 6px;font:800 40px/1 var(--cond);text-transform:uppercase}.tr-lock h2 span{color:var(--adv)}
 .tr-lock p{margin:0;font-size:17px;max-width:720px}
+
+.no-return{margin-top:12px;padding:10px 12px;border-left:5px solid var(--adv);background:#FFF1F1;color:#1A1A1A;font-size:14px;line-height:1.4;border-radius:6px}.no-return b{color:var(--adv);text-transform:uppercase;letter-spacing:.03em}
