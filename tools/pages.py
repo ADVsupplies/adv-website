@@ -4,7 +4,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PUB = os.path.join(ROOT, "public")
 E = lambda s: html.escape(s, quote=True)
 
-FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,900&family=Barlow+Semi+Condensed:wght@600&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">'
+FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,900&family=Barlow+Semi+Condensed:wght@600&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">'
 
 def head(title, desc, extra=""):
     return f'''<!DOCTYPE html>
@@ -238,7 +238,7 @@ if '<header class="sh' not in s:
     a = s.index('<div class="topbar">'); b = s.index('</header>') + len('</header>')
     s = s[:a] + header("map", cart=False) + s[b:]
     s = s.replace('<link rel="stylesheet" href="/styles.css">', '<link rel="stylesheet" href="/styles.css">\n<link rel="stylesheet" href="/site.css">', 1)
-    s = s.replace('family=Barlow+Condensed:wght@600;700;800&family=Barlow', 'family=Russo+One&family=Barlow+Condensed:wght@600;700;800&family=Barlow+Semi+Condensed:wght@600&family=Barlow', 1)
+    s = s.replace('family=Barlow+Condensed:wght@600;700;800&family=Barlow', 'family=Barlow+Condensed:wght@600;700;800&family=Barlow+Semi+Condensed:wght@600&family=Barlow', 1)
     fa = s.index('<footer'); fb = s.index('</footer>') + len('</footer>')
     s = s[:fa] + DRIVERS + FOOTER.rstrip() + s[fb:]
     open(p, "w").write(s)

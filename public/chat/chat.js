@@ -17,7 +17,7 @@
     ".advc[hidden]{display:none}" +
     ".advc-h{background:#C80000;color:#fff;padding:14px 14px 12px;display:flex;align-items:center;gap:10px;border-bottom:5px solid #F5C518}" +
     ".advc-h img{width:38px;height:38px;border-radius:50%;background:#fff;padding:3px}" +
-    ".advc-h b{display:block;font:400 18px 'Russo One','Barlow Condensed',Impact,sans-serif;letter-spacing:.04em}" +
+    ".advc-h b{display:block;font:800 21px 'Barlow Condensed',Impact,sans-serif;letter-spacing:.02em}" +
     ".advc-h small{display:block;font-size:12.5px;opacity:.9}" +
     ".advc-h .x{margin-left:auto;background:none;border:0;color:#fff;font-size:26px;line-height:1;cursor:pointer;padding:4px 6px}" +
     ".advc-m{flex:1;overflow-y:auto;padding:14px;background:#F7F4F2;display:flex;flex-direction:column;gap:10px}" +
