@@ -436,3 +436,17 @@ body{background:#fff}
 .pv-note{margin-top:12px;padding:10px 12px;border-left:5px solid #F5C518;background:#FFF8E1;color:#1A1A1A;font-size:14px;line-height:1.4;border-radius:6px}.pv-note b{text-transform:uppercase;letter-spacing:.03em}.pv-note a{color:var(--adv);font-weight:700}
 .ps-sec+.ps-sec{border-top:1px solid #DADADA}
 #psChips{justify-content:center;text-align:center}
+
+/* footer email sign-up */
+.sf-news{max-width:1280px;margin:0 auto;padding:0 32px 32px}
+.sf-news form{display:grid;grid-template-columns:1fr 1.3fr;gap:10px 32px;align-items:center;background:#1F1F1F;border-left:6px solid var(--adv);border-radius:12px;padding:22px 24px}
+.sf-news-t h4{margin:0 0 4px}.sf-news-t p{margin:0;color:#CCC}
+.sf-news-f{display:flex;gap:10px;flex-wrap:wrap}
+.sf-news-f input{flex:1 1 150px;padding:13px 14px;border:0;border-radius:8px;font-size:16px;min-width:0}
+.sf-news-f input:focus{outline:3px solid var(--yel)}
+.sf-news-f button{border:0;border-radius:999px;background:var(--adv);color:#fff;padding:13px 24px;font:600 15px var(--semi);letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.sf-news-f button:hover{background:var(--adv-d)}.sf-news-f button:disabled{opacity:.6}
+.sf-news-m{grid-column:1/-1;margin:0;color:var(--yel);font-weight:600}
+.sf-news-s{grid-column:1/-1;margin:0;font-size:12.5px;color:#999}.sf-news-s a{color:#BBB}
+@media(max-width:760px){.sf-news form{grid-template-columns:1fr}}
+.tr-err{margin:0;color:#B00000;font-weight:700}

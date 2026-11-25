@@ -3,7 +3,7 @@ import { auPhone } from "./order.mjs";
 
 const HS = "https://api.hubapi.com";
 
-async function hs(path, body) {
+export async function hs(path, body) {
   const res = await fetch(HS + path, {
     method: "POST",
     headers: { Authorization: `Bearer ${process.env.HUBSPOT_TOKEN}`, "Content-Type": "application/json" },
@@ -33,13 +33,14 @@ export function tidyLead(input) {
   };
 }
 
-async function toHubSpot(l, transcript) {
-  const props = { firstname: l.firstname, lastname: l.lastname, phone: l.phone, city: l.suburb };
+// Create or update a HubSpot contact (matched on email when there is one). Empty fields never overwrite.
+export async function upsertContact(email, properties) {
+  const props = { ...properties };
   for (const k of Object.keys(props)) if (!props[k]) delete props[k];
   let id;
-  if (l.email) {
+  if (email) {
     const r = await hs("/crm/v3/objects/contacts/batch/upsert", {
-      inputs: [{ idProperty: "email", id: l.email, properties: { ...props, email: l.email } }],
+      inputs: [{ idProperty: "email", id: email, properties: { ...props, email } }],
     });
     id = r.results?.[0]?.id;
   } else {
@@ -47,19 +48,28 @@ async function toHubSpot(l, transcript) {
     id = r.id;
   }
   if (!id) throw new Error("HubSpot returned no contact id");
+  return id;
+}
+
+export async function addNote(contactId, html) {
+  await hs("/crm/v3/objects/notes", {
+    properties: { hs_timestamp: new Date().toISOString(), hs_note_body: html },
+    associations: [{ to: { id: contactId }, types: [{ associationCategory: "HUBSPOT_DEFINED", associationTypeId: 202 }] }],
+  });
+}
+
+async function toHubSpot(l, transcript) {
+  const id = await upsertContact(l.email, { firstname: l.firstname, lastname: l.lastname, phone: l.phone, city: l.suburb });
   const body =
     `<p><b>Website chat lead (ADV Assist)</b></p>` +
     `<p>${esc(l.summary)}</p>` +
     `<p>Suburb: ${esc(l.suburb || "-")} · Customer: ${esc(l.customer_type)}</p>` +
     (transcript ? `<p><b>Chat</b><br>${esc(transcript).replace(/\n/g, "<br>")}</p>` : "");
-  await hs("/crm/v3/objects/notes", {
-    properties: { hs_timestamp: new Date().toISOString(), hs_note_body: body },
-    associations: [{ to: { id }, types: [{ associationCategory: "HUBSPOT_DEFINED", associationTypeId: 202 }] }],
-  });
+  await addNote(id, body);
   return id;
 }
 
-const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+export const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
 export async function saveLead(input, transcript = "") {
   const l = tidyLead(input);

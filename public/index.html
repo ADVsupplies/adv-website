@@ -207,6 +207,13 @@
   <div class="sf-col"><h4>Visit the yard</h4><p>320 Hallam Rd<br>Hampton Park VIC 3976<br>Open 7 days, 8am to 4pm</p></div>
   <div class="sf-col"><h4>Talk to us</h4><p><a href="tel:0397996399">(03) 9799 6399</a><br><a href="mailto:sales@advsupplies.com.au">sales@advsupplies.com.au</a></p></div>
 </div>
+<div class="sf-news"><form name="email-signup" method="POST" data-netlify="true" netlify-honeypot="hp" action="/?subscribed=1">
+  <input type="hidden" name="form-name" value="email-signup"><p class="sr"><label>Leave this empty<input name="hp" tabindex="-1" autocomplete="off"></label></p>
+  <div class="sf-news-t"><h4>Get ADV offers &amp; news</h4><p>Specials, new products and seasonal tips. Unsubscribe any time.</p></div>
+  <div class="sf-news-f"><label class="sr" for="nlName">First name</label><input id="nlName" name="name" autocomplete="given-name" placeholder="First name"><label class="sr" for="nlEmail">Email</label><input id="nlEmail" name="email" type="email" autocomplete="email" placeholder="Your email" required><button type="submit">Sign up</button></div>
+  <p class="sf-news-m" data-msg hidden role="status"></p>
+  <p class="sf-news-s">By signing up you agree to receive marketing emails from ADV Supplies. See our <a href="/privacy.html">Privacy Policy</a>.</p>
+</form></div>
 <div class="sf-bot"><span>© ADV Garden and Building Supplies Pty Ltd · Payments processed securely by Square</span><span class="sf-legal"><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms &amp; Conditions</a><a href="/refunds.html">Refunds &amp; Returns</a><a href="/gift-cards.html">Gift Card Terms</a></span></div>
 </footer>
 <script src="/app.js"></script>
@@ -226,5 +233,6 @@ new IntersectionObserver(function(es,o){if(es[0].isIntersecting){o.disconnect();
 addEventListener('scroll',on,{passive:true});[r,w].forEach(function(c){c.addEventListener('mouseenter',function(){hov=c;on()});c.addEventListener('mouseleave',function(){hov=null;on()})});
 })();</script>
 <script src="/chat/chat.js" defer></script>
+<script src="/signup.js" defer></script>
 </body>
 </html>
