@@ -1,6 +1,7 @@
 // POST /api/signup — website sign-ups into HubSpot (needs HUBSPOT_TOKEN).
 //   { kind: "trade", business, abn, name, mobile, email, trade, suburbs }
 //   { kind: "news", email, name? }
+//   { kind: "quote", name, email, phone?, suburb?, mode?, items }  (from the cart prompt in nudge.js)
 // Netlify Forms keeps its own copy (the browser posts there too), so nothing is lost if HubSpot is down.
 import { upsertContact, addNote, esc } from "./lib/leads.mjs";
 import { auPhone } from "./lib/order.mjs";
@@ -44,13 +45,33 @@ export function newsContact(b) {
   };
 }
 
+export function quoteContact(b) {
+  const email = clean(b.email, 150).toLowerCase();
+  if (!validEmail(email)) return { error: "Please enter a valid email." };
+  if (!clean(b.name)) return { error: "Please enter your first name." };
+  const phone = clean(b.phone, 40);
+  const items = String(b.items || "").slice(0, 1500).split(/\n/).map((i) => clean(i, 150)).filter(Boolean).slice(0, 20);
+  if (!items.length) return { error: "Your cart is empty." };
+  const suburb = clean(b.suburb, 80);
+  return {
+    email,
+    props: { ...splitName(b.name), phone: auPhone(phone) || phone, city: suburb, hs_lead_status: "NEW" },
+    note:
+      `<p><b>Quote request from the website cart</b></p>` +
+      `<p>${items.map((i) => esc(i)).join("<br>")}</p>` +
+      `<p>${b.mode === "pickup" ? "Pick up" : "Delivery to: " + esc(suburb || "suburb not chosen yet")}<br>` +
+      `Phone: ${esc(phone || "-")} · Email: ${esc(email)}</p><p>Please send them the quote or give them a call.</p>`,
+  };
+}
+
 export default async (req) => {
   if (req.method !== "POST") return json({ error: "POST only" }, 405);
   let b;
   try { b = await req.json(); } catch { return json({ error: "Bad request" }, 400); }
   if (clean(b.company_website) || clean(b.hp)) return json({ ok: true }); // bot honeypot
 
-  const c = b.kind === "trade" ? tradeContact(b) : b.kind === "news" ? newsContact(b) : { error: "Bad request" };
+  const c =
+    b.kind === "trade" ? tradeContact(b) : b.kind === "news" ? newsContact(b) : b.kind === "quote" ? quoteContact(b) : { error: "Bad request" };
   if (c.error) return json({ error: c.error }, 400);
 
   if (!process.env.HUBSPOT_TOKEN) {
