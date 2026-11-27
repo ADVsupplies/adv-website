@@ -21,11 +21,17 @@
     get: function (k, d) { try { var v = localStorage.getItem("adv_" + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set: function (k, v) { try { localStorage.setItem("adv_" + k, JSON.stringify(v)); } catch (e) {} }
   };
+  // Checkout details (suburb, address, contact) only last for this visit, so every new visit starts blank.
+  var sess = {
+    get: function (k, d) { try { var v = sessionStorage.getItem("adv_" + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set: function (k, v) { try { sessionStorage.setItem("adv_" + k, JSON.stringify(v)); } catch (e) {} }
+  };
+  try { localStorage.removeItem("adv_checkout"); } catch (e) {}
   var cart = store.get("cart", []);
-  var co = store.get("checkout", { mode: "delivery", suburb: "", contact: {}, address: {}, date: "", notes: "" });
+  var co = sess.get("checkout", { mode: "delivery", suburb: "", contact: {}, address: {}, date: "", notes: "" });
   var step = "cart";
 
-  function save() { store.set("cart", cart); store.set("checkout", co); var cc = $("#cartCount"); if (cc) cc.textContent = cart.length; }
+  function save() { store.set("cart", cart); sess.set("checkout", co); var cc = $("#cartCount"); if (cc) cc.textContent = cart.length; }
 
   function toast(msg) { var t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(function () { t.classList.remove("show"); }, 2200); }
 
