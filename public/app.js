@@ -269,7 +269,7 @@
       h += '<div class="seg"><button data-mode="delivery" class="' + (co.mode === "delivery" ? "on" : "") + '">Delivery</button><button data-mode="pickup" class="' + (co.mode === "pickup" ? "on" : "") + '">Pick up</button></div>';
       if (co.mode === "delivery") {
         var s = findSuburb(co.suburb);
-        h += '<div class="field"><label for="cSub">Delivery suburb</label><div class="ac"><input id="cSub" type="text" autocomplete="off" placeholder="Start typing your suburb" value="' + esc(co.suburb) + '"><div class="ac-list" id="cSubList"></div></div></div>' +
+        h += '<div class="field"><label for="cSub">Delivery suburb</label><div class="ac"><input id="cSub" type="text" autocomplete="off" placeholder="Add suburb" value="' + esc(co.suburb) + '"><div class="ac-list" id="cSubList"></div></div></div>' +
           '<div id="cSubRes">' + (s ? zoneMsg(s) : (co.suburb.length > 3 ? outsideMsg() : "")) + "</div>" +
           (deliveryProblem() ? '<div class="err" style="margin-top:10px">' + deliveryProblem() + "</div>" : "");
       } else {
@@ -305,21 +305,21 @@
         if (DATA.settings.addressSearch) {
           f += a.placeId
             ? '<div class="field"><label>Delivery address</label><div class="res ok"><b>' + esc(a.line1) + ", " + esc(co.suburb) + " VIC " + esc(a.postcode) + '</b>Zone ' + (s2 ? s2.z : "") + ' delivery · <a href="#" id="addrChange">Change address</a></div></div>'
-            : '<div class="field"><label for="fAddr">Delivery address</label><div class="ac"><input id="fAddr" type="text" autocomplete="off" placeholder="Start typing your street address"><div class="ac-list" id="fAddrList"></div></div><div class="hint" id="fAddrHint">Pick your address from the list. Can\'t find it? Call <a href="tel:0397996399">(03) 9799 6399</a>.</div></div>';
+            : '<div class="field"><label for="fAddr">Delivery address</label><div class="ac"><input id="fAddr" type="text" autocomplete="off" placeholder="Add street address"><div class="ac-list" id="fAddrList"></div></div><div class="hint" id="fAddrHint">Pick your address from the list. Can\'t find it? Call <a href="tel:0397996399">(03) 9799 6399</a>.</div></div>';
           f += '<div class="field"><label for="fLine2">Unit, lot or site name (optional)</label><input id="fLine2" autocomplete="address-line2" value="' + esc(a.line2) + '"></div>';
         } else {
-          f += '<div class="field"><label for="fLine1">Delivery street address</label><input id="fLine1" autocomplete="address-line1" placeholder="e.g. 12 Smith Street" value="' + esc(a.line1) + '"></div>' +
+          f += '<div class="field"><label for="fLine1">Delivery street address</label><input id="fLine1" autocomplete="address-line1" placeholder="Add street address" value="' + esc(a.line1) + '"></div>' +
             '<div class="field"><label for="fLine2">Unit, lot or site name (optional)</label><input id="fLine2" autocomplete="address-line2" value="' + esc(a.line2) + '"></div>' +
             '<div class="row2"><div class="field"><label>Suburb</label><input value="' + esc(s2 ? s2.s : "") + '" disabled></div>' +
             '<div class="field"><label for="fPc">Postcode</label><input id="fPc" inputmode="numeric" maxlength="4" value="' + esc(a.postcode || (s2 && s2.pc) || "") + '"></div></div>';
         }
       }
-      f += '<div class="field"><label for="fDate">' + (dl ? "Delivery date" : "Pick-up date") + '</label><input id="fDate" type="date" min="' + dmin + '" max="' + dmax + '" value="' + esc(co.date && co.date >= dmin ? co.date : "") + '"><div class="hint">Monday to Saturday. We\'ll call to confirm a time.</div></div>' +
+      f += '<div class="field"><label for="fDate">' + (dl ? "Delivery date" : "Pick-up date") + '</label><input id="fDate" type="date" min="' + dmin + '" max="' + dmax + '" value="' + esc(co.date && co.date >= dmin ? co.date : "") + '"><div class="hint">Monday to Saturday. ' + (dl ? "You\'ll receive a text message to confirm your time of delivery." : "You\'ll receive a text message to confirm your pick-up time.") + '</div></div>' +
         (dl ? '<div class="field"><label>Where should we tip it?</label><div class="seg3">' + DATA.settings.tipLocations.map(function (t) { return '<button type="button" data-tip="' + esc(t) + '" aria-pressed="' + (co.tip === t) + '" class="' + (co.tip === t ? "on" : "") + '">' + esc(t) + "</button>"; }).join("") + '</div><div class="hint">Our trucks stay on the road, so we can\'t tip in backyards or on lawns past the nature strip.</div></div>' : "") +
         '<div class="field"><label for="fNotes">' + (dl ? "Access notes (optional)" : "Notes (optional)") + '</label><textarea id="fNotes" rows="2" maxlength="400" placeholder="' + (dl ? "e.g. Gate code, steep street, call when 10 minutes away." : "") + '">' + esc(co.notes) + "</textarea></div>";
       body.innerHTML = f;
       if (dl && DATA.settings.addressSearch && !a.placeId) addressSearch($("#fAddr"), $("#fAddrList"));
-      foot.innerHTML = totalsHtml() + '<button class="btn block" id="pay" style="margin-top:12px">Pay securely with Square</button><p class="note" style="text-align:center">You\'ll pay on Square\'s secure checkout page.</p>';
+      foot.innerHTML = totalsHtml() + '<button class="btn block" id="pay" style="margin-top:12px">Pay Secure Checkout</button>';
     }
   }
 
@@ -426,7 +426,7 @@
         window.location.href = res.j.url;
       })
       .catch(function (err) {
-        btn.disabled = false; btn.textContent = "Pay securely with Square";
+        btn.disabled = false; btn.textContent = "Pay Secure Checkout";
         $("#coErr").innerHTML = '<div class="err">' + esc(err.message) + "</div>"; $("#dBody").scrollTop = 0;
       });
   }
