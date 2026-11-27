@@ -35,6 +35,16 @@ export const CONFIG = {
   firstDayOffset: 1,       // earliest = tomorrow
   maxDaysAhead: 30,
   closedWeekdays: [0],     // 0 = Sunday
+  // Delivery times customers can pick (Mon-Sat). Latest time depends on the zone.
+  deliveryTimes: {
+    first: "08:00",        // earliest delivery time offered
+    stepMinutes: 30,
+    latestByZone: [        // first rule whose maxZone >= the zone wins
+      { maxZone: 3, latest: "15:30" },
+      { maxZone: 10, latest: "14:30" },
+    ],
+  },
+  sundayMessage: "Sunday deliveries: please call the yard on (03) 9799 6399 for availability. A Sunday surcharge applies.",
   deliverHour: 12,         // midday Melbourne = same calendar date in UTC, so Make/Detrack never shift the day
   timeZone: "Australia/Melbourne",
 

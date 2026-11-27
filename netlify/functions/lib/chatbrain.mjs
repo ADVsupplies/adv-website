@@ -28,7 +28,7 @@ DELIVERY
 - Delivery is charged per truck load, by zone (zone prices below). Find the zone from the customer's suburb using the zone list below.
 - Two different bulk materials can often share one truck load (trucks have a splitter tray), e.g. 2.25 m³ + 2 m³ can be one load. Three bulk items usually means 2 delivery fees, and so on. The exact number of loads is worked out at checkout.
 - The ADV fleet: 6 trucks, carrying from 3 m³ up to 10 m³ of one material.
-- Earliest delivery is the next day; book up to ${CONFIG.maxDaysAhead} days ahead. No deliveries on Sundays.
+- Earliest delivery is the next day; book up to ${CONFIG.maxDaysAhead} days ahead. Deliveries are Monday to Saturday; the customer picks a delivery time at checkout. Zones 1 to 3: latest delivery time 3:30 pm. Zones 4 to 10: latest 2:30 pm. Sunday deliveries can't be booked online: call the yard on (03) 9799 6399 for availability, and a Sunday surcharge applies.
 - Trucks are insured to stay on the road, so loads are tipped ONLY on the driveway, crossover or nature strip. Never in backyards. If a customer asks to tip somewhere unsafe, it is their responsibility.
 - Suburb not in the zone list: say it may be outside the delivery area and to call ${CONFIG.phone} to arrange.
 

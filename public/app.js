@@ -314,7 +314,8 @@
             '<div class="field"><label for="fPc">Postcode</label><input id="fPc" inputmode="numeric" maxlength="4" value="' + esc(a.postcode || (s2 && s2.pc) || "") + '"></div></div>';
         }
       }
-      f += '<div class="field"><label for="fDate">' + (dl ? "Delivery date" : "Pick-up date") + '</label><input id="fDate" type="date" min="' + dmin + '" max="' + dmax + '" value="' + esc(co.date && co.date >= dmin ? co.date : "") + '"><div class="hint">Monday to Saturday. ' + (dl ? "You\'ll receive a text message to confirm your time of delivery." : "You\'ll receive a text message to confirm your pick-up time.") + '</div></div>' +
+      f += '<div class="field"><label for="fDate">' + (dl ? "Delivery date" : "Pick-up date") + '</label><input id="fDate" type="date" min="' + dmin + '" max="' + dmax + '" value="' + esc(co.date && co.date >= dmin && !isClosed(co.date) ? co.date : "") + '"><div id="fDateErr"></div>' + (dl ? "" : '<div class="hint">Monday to Saturday. You\'ll receive a text message to confirm your pick-up time.</div>') + '</div>' +
+        (dl ? timeField() : "") +
         (dl ? '<div class="field"><label>Where should we tip it?</label><div class="seg3">' + DATA.settings.tipLocations.map(function (t) { return '<button type="button" data-tip="' + esc(t) + '" aria-pressed="' + (co.tip === t) + '" class="' + (co.tip === t ? "on" : "") + '">' + esc(t) + "</button>"; }).join("") + '</div><div class="hint">Our trucks stay on the road, so we can\'t tip in backyards or on lawns past the nature strip.</div></div>' : "") +
         '<div class="field"><label for="fNotes">' + (dl ? "Access notes (optional)" : "Notes (optional)") + '</label><textarea id="fNotes" rows="2" maxlength="400" placeholder="' + (dl ? "e.g. Gate code, steep street, call when 10 minutes away." : "") + '">' + esc(co.notes) + "</textarea></div>";
       body.innerHTML = f;
@@ -384,6 +385,31 @@
     return new Intl.DateTimeFormat("en-CA", { timeZone: "Australia/Melbourne", year: "numeric", month: "2-digit", day: "2-digit" }).format(d);
   }
 
+  /* ---------- delivery date + time rules ---------- */
+  function isClosed(d) { return !!d && DATA.settings.closedWeekdays.indexOf(new Date(d + "T12:00:00Z").getUTCDay()) > -1; }
+  function hhmm(m) { return ("0" + Math.floor(m / 60)).slice(-2) + ":" + ("0" + (m % 60)).slice(-2); }
+  function timeLabel(t) { var h = +t.slice(0, 2); return (h % 12 || 12) + ":" + t.slice(3, 5) + (h < 12 ? " am" : " pm"); }
+  function deliverySlots() {
+    var s = findSuburb(co.suburb), dt = DATA.settings.deliveryTimes; if (!s || !dt) return [];
+    var r = dt.latestByZone.filter(function (x) { return s.z <= x.maxZone; })[0] || dt.latestByZone[dt.latestByZone.length - 1];
+    var toM = function (t) { return +t.slice(0, 2) * 60 + +t.slice(3, 5); }, out = [];
+    for (var m = toM(dt.first); m <= toM(r.latest); m += dt.stepMinutes) out.push(hhmm(m));
+    return out;
+  }
+  function timeField() {
+    var sl = deliverySlots(); if (co.time && sl.indexOf(co.time) < 0) co.time = "";
+    return '<div class="field"><label for="fTime">Delivery time</label><select id="fTime"><option value="">Choose a time</option>' +
+      sl.map(function (t) { return '<option value="' + t + '"' + (co.time === t ? " selected" : "") + ">" + timeLabel(t) + "</option>"; }).join("") +
+      '</select><div class="hint">You\'ll receive a text message to confirm your time of delivery.</div></div>';
+  }
+  function checkDate(inp) {
+    var box = $("#fDateErr"); if (!box) return;
+    if (isClosed(inp.value)) {
+      box.innerHTML = '<div class="err" style="margin-top:8px">' + esc(co.mode === "delivery" ? DATA.settings.sundayMessage : "Pick up is Monday to Saturday. Please choose another date.") + "</div>";
+      inp.value = ""; co.date = ""; save();
+    } else box.innerHTML = "";
+  }
+
   function readForm() {
     co.contact = { first: $("#fFirst").value.trim(), last: $("#fLast").value.trim(), phone: $("#fPhone").value.trim(), email: $("#fEmail").value.trim() };
     if (co.mode !== "delivery" && deliveryProblem()) return "Bulk orders of " + DATA.settings.minBulkForDelivery + " m³ or more are delivery only. Please go back to the cart and choose delivery.";
@@ -392,6 +418,7 @@
       else co.address = { line1: $("#fLine1").value.trim(), line2: $("#fLine2").value.trim(), postcode: $("#fPc").value.trim() };
     }
     co.date = $("#fDate").value; co.notes = $("#fNotes").value.trim();
+    if ($("#fTime")) co.time = $("#fTime").value;
     save();
   }
   function formError() {
@@ -407,8 +434,8 @@
     }
     if (co.mode === "delivery" && DATA.settings.tipLocations.indexOf(co.tip) < 0) return "Please choose where to tip it: driveway, crossover or nature strip.";
     if (!co.date) return "Please choose a date.";
-    var wd = new Date(co.date + "T12:00:00Z").getUTCDay();
-    if (DATA.settings.closedWeekdays.indexOf(wd) > -1) return "We don't deliver on Sundays. Please choose Monday to Saturday.";
+    if (isClosed(co.date)) return co.mode === "delivery" ? DATA.settings.sundayMessage : "Pick up is Monday to Saturday. Please choose another date.";
+    if (co.mode === "delivery" && deliverySlots().indexOf(co.time) < 0) return "Please choose a delivery time.";
     return null;
   }
   function pay(btn) {
@@ -418,7 +445,7 @@
     btn.disabled = true; btn.textContent = "Opening secure checkout…";
     fetch("/api/checkout", {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items: cart, mode: co.mode, suburb: co.suburb, address: co.address, contact: co.contact, date: co.date, tip: co.tip, notes: co.notes })
+      body: JSON.stringify({ items: cart, mode: co.mode, suburb: co.suburb, address: co.address, contact: co.contact, date: co.date, time: co.mode === "delivery" ? co.time : "", tip: co.tip, notes: co.notes })
     }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
       .then(function (res) {
         if (!res.ok || !res.j.url) throw new Error(res.j.error || "Checkout failed");
@@ -566,6 +593,8 @@
     var t = e.target;
     if (t.id === "mQty") { t.value = clampQty(M.p, parseFloat(t.value), M.variationId); updModal(); }
     if (t.id === "mVar") { M.variationId = t.value; updModal(); }
+    if (t.id === "fDate") checkDate(t);
+    if (t.id === "fTime") { co.time = t.value; save(); }
     if (t.dataset && t.dataset.li != null && t.tagName === "INPUT") { var l = cart[+t.dataset.li]; l.qty = clampQty(BYID[l.id], parseFloat(t.value), l.variationId); save(); renderCart(); }
   });
   document.addEventListener("input", function (e) {

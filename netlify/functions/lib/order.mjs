@@ -39,6 +39,21 @@ export function validDate(dateStr, now = new Date()) {
   return diff >= CONFIG.firstDayOffset && diff <= CONFIG.maxDaysAhead && !CONFIG.closedWeekdays.includes(wd);
 }
 
+// Delivery times offered for a zone: ["08:00", "08:30", ...] up to the zone's latest time.
+const toMin = (t) => +t.slice(0, 2) * 60 + +t.slice(3, 5);
+const toHHMM = (m) => String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0");
+export function deliverySlots(zone) {
+  const dt = CONFIG.deliveryTimes;
+  const rule = dt.latestByZone.find((r) => zone <= r.maxZone) || dt.latestByZone[dt.latestByZone.length - 1];
+  const out = [];
+  for (let m = toMin(dt.first); m <= toMin(rule.latest); m += dt.stepMinutes) out.push(toHHMM(m));
+  return out;
+}
+export function timeLabel(t) {
+  const h = +t.slice(0, 2), m = t.slice(3, 5);
+  return (h % 12 || 12) + ":" + m + (h < 12 ? " AM" : " PM");
+}
+
 export function auPhone(p) {
   const d = String(p || "").replace(/[^\d+]/g, "");
   if (/^\+61\d{9}$/.test(d)) return d;
@@ -135,6 +150,8 @@ export function buildOrder(catalog, body, now = new Date()) {
   if (!first || !last) throw new InputError("Please enter your first and last name.");
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new InputError("Please enter a valid email address.");
   if (!phone) throw new InputError("Please enter a valid Australian phone number.");
+  if (/^\d{4}-\d{2}-\d{2}$/.test(body.date || "") && CONFIG.closedWeekdays.includes(new Date(body.date + "T12:00:00Z").getUTCDay()))
+    throw new InputError(mode === "delivery" ? CONFIG.sundayMessage : "Pick up is Monday to Saturday. Please choose another date.");
   if (!validDate(body.date, now)) throw new InputError("Please choose a valid date (Monday to Saturday, from tomorrow).");
   let notes = String(body.notes || "").trim().slice(0, 400);
   if (mode === "delivery") {
@@ -172,17 +189,22 @@ export function buildOrder(catalog, body, now = new Date()) {
       throw new InputError(`That order needs more than ${CONFIG.maxLoads} truck loads. Please call ${CONFIG.phone} and we'll organise it.`);
     lines.push({ catalog_object_id: zone.variationId, quantity: String(loads) });
     address = { line1: line2 ? `${line1}, ${line2}` : line1, suburb: suburb.s, postcode };
+    const slots = deliverySlots(suburb.z);
+    if (!slots.includes(String(body.time || "")))
+      throw new InputError(`Please choose a delivery time between ${timeLabel(slots[0])} and ${timeLabel(slots[slots.length - 1])} for Zone ${suburb.z}.`);
+    notes = "TIME: " + timeLabel(body.time) + " | " + notes;
     zoneLine = lines[lines.length - 1];
   }
 
   // Delivery details travel on the Square order in a note on the delivery line:
-  //   DELIVER TO: address | date | name | phone | email | TIP ON: X | customer notes
+  //   DELIVER TO: address | date | name | phone | email | TIME: 9:30 AM | TIP ON: X | customer notes
   // Make splits it on " | " to build the Detrack job. Square payment links keep neither a
   // delivery fulfillment nor order metadata, so nothing relies on those.
   const clip = (s, n = 250) => String(s).slice(0, n);
   const bar = (s) => String(s).replace(/\s*\|\s*/g, " "); // keep the note's " | " separators unambiguous
   const metadata = { adv_mode: mode, adv_name: clip(display), adv_phone: phone, adv_email: clip(email), adv_date: body.date };
   if (notes) metadata.adv_note = clip(notes);
+  if (mode === "delivery") metadata.adv_time = String(body.time);
   if (mode === "delivery") {
     metadata.adv_line1 = clip(address.line1);
     metadata.adv_suburb = address.suburb;

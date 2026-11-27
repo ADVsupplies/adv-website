@@ -224,6 +224,8 @@ export function publicCatalog(data) {
       firstDayOffset: CONFIG.firstDayOffset,
       maxDaysAhead: CONFIG.maxDaysAhead,
       closedWeekdays: CONFIG.closedWeekdays,
+      deliveryTimes: CONFIG.deliveryTimes,
+      sundayMessage: CONFIG.sundayMessage,
       addressSearch: placesEnabled(),
     },
   };
