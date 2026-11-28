@@ -26,7 +26,7 @@ export function tradeContact(b) {
   const mobile = clean(b.mobile, 40);
   return {
     email,
-    props: { ...splitName(b.name), phone: auPhone(mobile) || mobile, company: clean(b.business, 150), hs_lead_status: "NEW" },
+    props: { ...splitName(b.name), phone: auPhone(mobile) || mobile, company: clean(b.business, 150), hs_lead_status: "NEW", website_lead_source: "Trade application" },
     note:
       `<p><b>Trade account application (website)</b></p>` +
       `<p>Business: ${esc(clean(b.business, 150))}<br>ABN: ${esc(abn)}<br>Name: ${esc(clean(b.name, 100))}<br>` +
@@ -40,7 +40,7 @@ export function newsContact(b) {
   if (!validEmail(email)) return { error: "Please enter a valid email." };
   return {
     email,
-    props: splitName(b.name),
+    props: { ...splitName(b.name), website_lead_source: "Email sign-up" },
     note: `<p><b>Signed up to ADV emails (website footer)</b></p><p>Agreed to receive offers and news by email on ${new Date().toISOString().slice(0, 10)}.</p>`,
   };
 }
@@ -55,7 +55,7 @@ export function quoteContact(b) {
   const suburb = clean(b.suburb, 80);
   return {
     email,
-    props: { ...splitName(b.name), phone: auPhone(phone) || phone, city: suburb, hs_lead_status: "NEW" },
+    props: { ...splitName(b.name), phone: auPhone(phone) || phone, city: suburb, hs_lead_status: "NEW", website_lead_source: "Quote request" },
     note:
       `<p><b>Quote request from the website cart</b></p>` +
       `<p>${items.map((i) => esc(i)).join("<br>")}</p>` +
