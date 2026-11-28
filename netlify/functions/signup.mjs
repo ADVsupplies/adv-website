@@ -64,6 +64,27 @@ export function quoteContact(b) {
   };
 }
 
+// SMS alert to the yard mobile via Make → ClickSend (scenario "Website lead → SMS alert").
+const SMS_HOOK = process.env.LEAD_SMS_WEBHOOK_URL || "https://hook.us2.make.com/r2ygivoj1y42iih4paqhi4u5w2jngfqw";
+export function smsText(kind, b) {
+  const name = clean(b.name, 60), phone = clean(b.phone || b.mobile, 30);
+  if (kind === "trade") return `New ADV trade application: ${name}, ${clean(b.business, 60)}, ${phone}. Suburbs: ${clean(b.suburbs, 60) || "-"}. Check HubSpot.`;
+  if (kind === "quote") {
+    const items = String(b.items || "").split(/\n/).map((i) => clean(i, 60)).filter(Boolean).slice(0, 3).join("; ");
+    return `New ADV quote request: ${name}, ${phone || clean(b.email, 60)}, ${clean(b.suburb, 40) || "suburb n/a"}. ${items}. Check HubSpot.`;
+  }
+  return null;
+}
+async function smsAlert(kind, b) {
+  const text = smsText(kind, b);
+  if (!text || !SMS_HOOK) return;
+  try {
+    await fetch(SMS_HOOK, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: text.slice(0, 300), kind }) });
+  } catch (e) {
+    console.error("sms alert failed", e.message);
+  }
+}
+
 export default async (req) => {
   if (req.method !== "POST") return json({ error: "POST only" }, 405);
   let b;
@@ -73,6 +94,8 @@ export default async (req) => {
   const c =
     b.kind === "trade" ? tradeContact(b) : b.kind === "news" ? newsContact(b) : b.kind === "quote" ? quoteContact(b) : { error: "Bad request" };
   if (c.error) return json({ error: c.error }, 400);
+
+  await smsAlert(b.kind, b);
 
   if (!process.env.HUBSPOT_TOKEN) {
     console.error("signup: HUBSPOT_TOKEN not set", b.kind, c.email);
