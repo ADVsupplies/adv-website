@@ -5,6 +5,7 @@
 // Netlify Forms keeps its own copy (the browser posts there too), so nothing is lost if HubSpot is down.
 import { upsertContact, addNote, esc } from "./lib/leads.mjs";
 import { auPhone } from "./lib/order.mjs";
+import { sendAlert, alertHtml } from "./lib/alert.mjs";
 
 const json = (obj, status = 200) =>
   new Response(JSON.stringify(obj), { status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } });
@@ -55,7 +56,8 @@ export function quoteContact(b) {
   const suburb = clean(b.suburb, 80);
   return {
     email,
-    props: { ...splitName(b.name), phone: auPhone(phone) || phone, city: suburb, hs_lead_status: "NEW", website_lead_source: "Quote request" },
+    props: { ...splitName(b.name), phone: auPhone(phone) || phone, city: suburb, hs_lead_status: "NEW", website_lead_source: "Quote request",
+      website_quote_items: items.join(" · ").slice(0, 600) },
     note:
       `<p><b>Quote request from the website cart</b></p>` +
       `<p>${items.map((i) => esc(i)).join("<br>")}</p>` +
@@ -64,8 +66,7 @@ export function quoteContact(b) {
   };
 }
 
-// SMS alert to the yard mobile via Make → ClickSend (scenario "Website lead → SMS alert").
-const SMS_HOOK = process.env.LEAD_SMS_WEBHOOK_URL || "https://hook.us2.make.com/r2ygivoj1y42iih4paqhi4u5w2jngfqw";
+// Team alert: email to sales@ for every sign-up; SMS too for trade + quote (Make → Gmail + ClickSend).
 export function smsText(kind, b) {
   const name = clean(b.name, 60), phone = clean(b.phone || b.mobile, 30);
   if (kind === "trade") return `New ADV trade application: ${name}, ${clean(b.business, 60)}, ${phone}. Suburbs: ${clean(b.suburbs, 60) || "-"}. Check HubSpot.`;
@@ -75,14 +76,26 @@ export function smsText(kind, b) {
   }
   return null;
 }
-async function smsAlert(kind, b) {
-  const text = smsText(kind, b);
-  if (!text || !SMS_HOOK) return;
-  try {
-    await fetch(SMS_HOOK, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: text.slice(0, 300), kind }) });
-  } catch (e) {
-    console.error("sms alert failed", e.message);
+export function teamAlert(kind, b) {
+  const name = clean(b.name, 100), email = clean(b.email, 150), phone = clean(b.phone || b.mobile, 40);
+  if (kind === "trade")
+    return {
+      subject: `Trade application: ${clean(b.business, 80)} (${name})`,
+      html: alertHtml("New ADV Trade application", [["Business", clean(b.business, 150)], ["ABN", clean(b.abn, 20)], ["Name", name], ["Mobile", phone], ["Email", email], ["Trade", clean(b.trade, 60)], ["Suburbs", clean(b.suburbs, 300)]], "Call them within one business day to set up trade pricing."),
+    };
+  if (kind === "quote") {
+    const items = String(b.items || "").split(/\n/).map((i) => clean(i, 150)).filter(Boolean).slice(0, 20).join("\n");
+    return {
+      subject: `Quote request: ${name}, ${clean(b.suburb, 40) || "suburb n/a"}`,
+      html: alertHtml("New quote request from the website cart", [["Name", name], ["Phone", phone], ["Email", email], [b.mode === "pickup" ? "Pick up" : "Deliver to", b.mode === "pickup" ? "Yes" : clean(b.suburb, 80) || "Suburb not chosen yet"], ["Items", items]], "Send the prices within one business day."),
+    };
   }
+  if (kind === "news") return { subject: `Email sign-up: ${email}`, html: alertHtml("New email sign-up (website footer)", [["Email", email], ["Name", name]]) };
+  return null;
+}
+async function notifyTeam(kind, b) {
+  const a = teamAlert(kind, b);
+  if (a) await sendAlert({ kind, ...a, text: smsText(kind, b) || a.subject, sms: kind === "trade" || kind === "quote" });
 }
 
 export default async (req) => {
@@ -95,7 +108,7 @@ export default async (req) => {
     b.kind === "trade" ? tradeContact(b) : b.kind === "news" ? newsContact(b) : b.kind === "quote" ? quoteContact(b) : { error: "Bad request" };
   if (c.error) return json({ error: c.error }, 400);
 
-  await smsAlert(b.kind, b);
+  await notifyTeam(b.kind, b);
 
   if (!process.env.HUBSPOT_TOKEN) {
     console.error("signup: HUBSPOT_TOKEN not set", b.kind, c.email);

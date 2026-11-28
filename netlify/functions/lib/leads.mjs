@@ -1,5 +1,6 @@
 // Save a chat lead: HubSpot contact + note (HUBSPOT_TOKEN), and optionally a Make webhook (LEAD_WEBHOOK_URL) for Notion.
 import { auPhone } from "./order.mjs";
+import { sendAlert, alertHtml } from "./alert.mjs";
 
 const HS = "https://api.hubapi.com";
 
@@ -96,6 +97,12 @@ export async function saveLead(input, transcript = "") {
       console.error("lead -> webhook failed", e.message);
     }
   }
+  await sendAlert({
+    kind: "chat",
+    subject: `Website chat lead: ${l.name}${l.suburb ? ", " + l.suburb : ""}`,
+    html: alertHtml("New lead from ADV Assist (website chat)", [["Name", l.name], ["Phone", l.phone], ["Email", l.email], ["Suburb", l.suburb], ["Customer", l.customer_type], ["Summary", l.summary]]),
+    sms: false,
+  });
   if (!out.saved.length) console.log("LEAD (not saved anywhere, set HUBSPOT_TOKEN):", JSON.stringify(l));
   out.ok = out.saved.length > 0;
   return out;
