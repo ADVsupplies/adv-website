@@ -26,7 +26,7 @@ export function tradeContact(b) {
   const mobile = clean(b.mobile, 40);
   return {
     email,
-    props: { ...splitName(b.name), phone: auPhone(mobile) || mobile, company: clean(b.business, 150), hs_lead_status: "NEW" },
+    props: { ...splitName(b.name), phone: auPhone(mobile) || mobile, company: clean(b.business, 150), hs_lead_status: "NEW", website_lead_source: "Trade application" },
     note:
       `<p><b>Trade account application (website)</b></p>` +
       `<p>Business: ${esc(clean(b.business, 150))}<br>ABN: ${esc(abn)}<br>Name: ${esc(clean(b.name, 100))}<br>` +
@@ -40,7 +40,7 @@ export function newsContact(b) {
   if (!validEmail(email)) return { error: "Please enter a valid email." };
   return {
     email,
-    props: splitName(b.name),
+    props: { ...splitName(b.name), website_lead_source: "Email sign-up" },
     note: `<p><b>Signed up to ADV emails (website footer)</b></p><p>Agreed to receive offers and news by email on ${new Date().toISOString().slice(0, 10)}.</p>`,
   };
 }
@@ -55,13 +55,34 @@ export function quoteContact(b) {
   const suburb = clean(b.suburb, 80);
   return {
     email,
-    props: { ...splitName(b.name), phone: auPhone(phone) || phone, city: suburb, hs_lead_status: "NEW" },
+    props: { ...splitName(b.name), phone: auPhone(phone) || phone, city: suburb, hs_lead_status: "NEW", website_lead_source: "Quote request" },
     note:
       `<p><b>Quote request from the website cart</b></p>` +
       `<p>${items.map((i) => esc(i)).join("<br>")}</p>` +
       `<p>${b.mode === "pickup" ? "Pick up" : "Delivery to: " + esc(suburb || "suburb not chosen yet")}<br>` +
       `Phone: ${esc(phone || "-")} · Email: ${esc(email)}</p><p>Please send them the quote or give them a call.</p>`,
   };
+}
+
+// SMS alert to the yard mobile via Make → ClickSend (scenario "Website lead → SMS alert").
+const SMS_HOOK = process.env.LEAD_SMS_WEBHOOK_URL || "https://hook.us2.make.com/r2ygivoj1y42iih4paqhi4u5w2jngfqw";
+export function smsText(kind, b) {
+  const name = clean(b.name, 60), phone = clean(b.phone || b.mobile, 30);
+  if (kind === "trade") return `New ADV trade application: ${name}, ${clean(b.business, 60)}, ${phone}. Suburbs: ${clean(b.suburbs, 60) || "-"}. Check HubSpot.`;
+  if (kind === "quote") {
+    const items = String(b.items || "").split(/\n/).map((i) => clean(i, 60)).filter(Boolean).slice(0, 3).join("; ");
+    return `New ADV quote request: ${name}, ${phone || clean(b.email, 60)}, ${clean(b.suburb, 40) || "suburb n/a"}. ${items}. Check HubSpot.`;
+  }
+  return null;
+}
+async function smsAlert(kind, b) {
+  const text = smsText(kind, b);
+  if (!text || !SMS_HOOK) return;
+  try {
+    await fetch(SMS_HOOK, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: text.slice(0, 300), kind }) });
+  } catch (e) {
+    console.error("sms alert failed", e.message);
+  }
 }
 
 export default async (req) => {
@@ -73,6 +94,8 @@ export default async (req) => {
   const c =
     b.kind === "trade" ? tradeContact(b) : b.kind === "news" ? newsContact(b) : b.kind === "quote" ? quoteContact(b) : { error: "Bad request" };
   if (c.error) return json({ error: c.error }, 400);
+
+  await smsAlert(b.kind, b);
 
   if (!process.env.HUBSPOT_TOKEN) {
     console.error("signup: HUBSPOT_TOKEN not set", b.kind, c.email);

@@ -59,7 +59,7 @@ export async function addNote(contactId, html) {
 }
 
 async function toHubSpot(l, transcript) {
-  const id = await upsertContact(l.email, { firstname: l.firstname, lastname: l.lastname, phone: l.phone, city: l.suburb });
+  const id = await upsertContact(l.email, { firstname: l.firstname, lastname: l.lastname, phone: l.phone, city: l.suburb, hs_lead_status: "NEW", website_lead_source: "Website chat" });
   const body =
     `<p><b>Website chat lead (ADV Assist)</b></p>` +
     `<p>${esc(l.summary)}</p>` +
