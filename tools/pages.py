@@ -317,7 +317,7 @@ TRADE_PAGE = f"""
       <label>Email<input name="email" type="email" autocomplete="email" required></label>
       <label>Your trade<select name="trade">{''.join(f'<option>{t}</option>' for t in TRADES)}</select></label>
       <label>Delivery suburbs you work in most<input name="suburbs" placeholder="e.g. Clyde North, Officer, Cranbourne East"></label>
-      <label class="tr-check"><input type="checkbox" name="agree" value="yes" required><span>I agree to the <a href="/terms.html">Terms &amp; Conditions</a> and the <mark>[trade account terms]</mark>.</span></label>
+      <label class="tr-check"><input type="checkbox" name="agree" value="yes" required><span>I agree to the <a href="/terms.html">Terms &amp; Conditions</a>.</span></label>
       <button type="submit" class="tr-btn">Apply for a trade account</button>
     </form>
     <div class="tr-form" id="trDone" hidden>
